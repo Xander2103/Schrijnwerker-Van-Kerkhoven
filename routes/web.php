@@ -77,18 +77,14 @@ Route::get('/trappen', function () {
 })->name('trappen');
 
 Route::get('/houtsoorten', function () {
+    // Massief hout is the overarching category — passed separately so the blade
+    // can present it as a hierarchy intro above the specific wood-type cards.
+    $massieHoutBeschrijving = 'In de wereld van houtbewerking onderscheidt elk type hout zich door zijn unieke kenmerken en kwaliteiten. Neem bijvoorbeeld massief hout, dat alom geprezen wordt om zijn lange levensduur in vergelijking met samengestelde houtproducten. Bovendien straalt het een natuurlijke schoonheid uit, waarbij de zichtbare nerfpatronen en kleurschakeringen elk stuk een unieke identiteit geven. Deze schoonheid gaat hand in hand met zijn kracht en weerstand tegen aanzienlijke gewichten en druk. Bovendien is het bijzonder bewerkbaar, waardoor deze houtsoort zich zeer goed leent voor zagen, schuren en schaven.';
+
     $woodTypes = [
         [
-            'name'        => 'Massief hout',
-            'description' => 'De klassieke keuze voor duurzaam schrijnwerk. Massief hout biedt maximale sterkte, eerlijke uitstraling en is gemakkelijk te bewerken en restaureren.',
-            'best_for'    => ['Ramen', 'Buitendeuren', 'Trappen', 'Binnendeuren'],
-            'tone'        => 'Warm naturel, van blond tot diepbruin',
-            'tone_color'  => '#C69B5E',
-            'image' => 'assets/client/images/massieifhout.webp',
-        ],
-        [
             'name'        => 'Afzelia',
-            'description' => 'Een tropische houtsoort met uitzonderlijke weerstand tegen vocht, schimmels en insecten. Ideaal voor buitentoepassingen die decennialang meegaan.',
+            'description' => 'Afzelia, met zijn opvallende roodbruine kleur en prominente nerf, is niet alleen mooi om naar te kijken, maar staat ook bekend om zijn indrukwekkende duurzaamheid. Een bijzonder kenmerk van Afzelia is de dimensionale stabiliteit, wat betekent dat het hout slechts minimaal krimpt of zwelt bij veranderingen in vochtigheid.',
             'best_for'    => ['Buitendeuren', 'Gevelbekleding', 'Buitenramen', 'Drempels'],
             'tone'        => 'Roodbruin tot goudbruin, edel en diep',
             'tone_color'  => '#8B4513',
@@ -96,15 +92,15 @@ Route::get('/houtsoorten', function () {
         ],
         [
             'name'        => 'Afrormosia',
-            'description' => 'Wordt ook "Afrikaanse teak" genoemd. Bijzonder stabiel en geschikt voor veeleisende omgevingen. Herkenbaar aan zijn warme gouden tint.',
+            'description' => 'Afromosia onderscheidt zich door zijn weerstand tegen houtetende insecten zoals termieten. De aantrekkelijke gouden tot donkerbruine tint, gecombineerd met een fijne textuur, maakt het geliefd onder houtbewerkers. Net als Afzelia blinkt Afromosia uit in dimensionale stabiliteit, wat garant staat voor een langdurige vormvastheid van het product.',
             'best_for'    => ['Buitenramen', 'Buitendeuren', 'Gevelbekleding'],
             'tone'        => 'Goudgeel tot goudbruin, warm en edel',
             'tone_color'  => '#B8860B',
             'image'       => 'assets/client/images/afrormosia.webp',
         ],
         [
-            'name'        => 'Beuk',
-            'description' => 'Licht van kleur, fijn van nerf en uitstekend bewerkbaar. Beuk is een inlandse houtsoort bij uitstek geschikt voor binnenwerk waar hardheid en een egale afwerking tellen.',
+            'name'        => 'Beukenhout',
+            'description' => 'Beukenhout is herkenbaar aan zijn hardheid en hoge slijtvastheid, waardoor het bijzonder duurzaam is. Deze hardheid doet echter niets af aan de mogelijkheid om het hout te bewerken, mede dankzij de uniforme textuur. Als het goed is afgewerkt, kan beukenhout een prachtig glad oppervlak verkrijgen.',
             'best_for'    => ['Binnendeuren', 'Trappen', 'Maatwerk interieur'],
             'tone'        => 'Lichtblond tot roze-beige, helder en fris',
             'tone_color'  => '#E8C9A0',
@@ -112,7 +108,7 @@ Route::get('/houtsoorten', function () {
         ],
         [
             'name'        => 'Eik / Franse eik',
-            'description' => 'Een eerste keuze en populaire premiumhoutsoort voor authentieke ramen en deuren. Herkenbaar aan zijn karakteristieke nerf, zachte glans en tijdloze uitstraling. Franse eik staat bekend om zijn constante kwaliteit en rijke tekening.',
+            'description' => 'Franse eik, vaak geassocieerd met luxe en traditie, heeft karakteristieke nerfpatronen en een rijke kleur die het een tijdloze uitstraling geven. Afgezien van zijn esthetische aantrekkingskracht, is het ook opvallend duurzaam en biedt het een natuurlijke weerstand tegen insecten en schimmels. Ondanks dat het een hardhout is, is het verrassend bewerkbaar.',
             'best_for'    => ['Ramen', 'Deuren', 'Trappen', 'Maatwerk'],
             'tone'        => 'Warm goudbruin, rijke nerf, tijdloos',
             'tone_color'  => '#A0522D',
@@ -121,7 +117,7 @@ Route::get('/houtsoorten', function () {
         [
             // TODO: Confirm exact Meranti variant/species used in production before updating this description.
             'name'        => 'Meranti',
-            'description' => 'Een toegankelijke houtsoort met een warme roodachtige tint. Goed bewerkbaar en eenvoudig te behandelen of te lakken. Populaire keuze voor ramen en deuren in middenklasse renovaties.',
+            'description' => 'Ook is er Meranti, een veelzijdige en populaire houtsoort. Het is niet alleen geschikt voor diverse toepassingen, van meubels tot deurbekledingen, maar het is ook vaak voordeliger in vergelijking met andere hardhoutsoorten. Deze economische efficiëntie gaat niet ten koste van de kwaliteit, aangezien Meranti prachtig afgewerkt kan worden om zijn natuurlijke schoonheid te accentueren. Afhankelijk van zijn herkomst, biedt het ook een matige tot goede weerstand tegen schimmels en insecten.',
             'best_for'    => ['Ramen', 'Binnendeuren', 'Buitendeuren'],
             'tone'        => 'Roodachtig bruin, licht en warm',
             'tone_color'  => '#C04000',
@@ -129,5 +125,5 @@ Route::get('/houtsoorten', function () {
         ],
     ];
 
-    return view('pages.houtsoorten', compact('woodTypes'));
+    return view('pages.houtsoorten', compact('woodTypes', 'massieHoutBeschrijving'));
 });

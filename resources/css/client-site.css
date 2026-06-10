@@ -161,6 +161,12 @@
     @apply relative flex items-center overflow-hidden;
     min-height: 100svh;
     background-color: var(--color-primary);
+    /* Pull hero flush to top of viewport — cancels the has-fixed-nav padding-top */
+    margin-top: -4rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero { margin-top: -4.5rem; }
   }
 
   /* Separate background layer so it can be animated without affecting layout */
@@ -183,9 +189,9 @@
     @apply absolute inset-0 z-10;
     background: linear-gradient(
       160deg,
-      rgba(26, 14, 7, 0.90) 0%,
-      rgba(44, 26, 14, 0.68) 55%,
-      rgba(100, 55, 18, 0.28) 100%
+      rgba(20, 10, 4, 0.78) 0%,
+      rgba(38, 22, 10, 0.52) 55%,
+      rgba(80, 42, 12, 0.18) 100%
     );
   }
 
@@ -364,18 +370,7 @@
 
   /* --- Gallery / Images --- */
 
-  .gallery-grid {
-    @apply grid grid-cols-2 md:grid-cols-4 gap-4;
-  }
-
-  .gallery-item {
-    @apply rounded-xl overflow-hidden;
-    aspect-ratio: 1 / 1;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--color-secondary);
-    transition: opacity 0.42s ease;
-  }
+  /* gallery-grid / gallery-item removed — homepage animated gallery removed */
 
   .image-frame {
     @apply rounded-xl overflow-hidden;
@@ -895,6 +890,19 @@
     border-bottom: 1px solid var(--color-border);
   }
 
+  .massief-intro-block {
+    max-width: 740px;
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1.75rem;
+  }
+
+  .massief-intro-text {
+    @apply text-base leading-relaxed;
+    color: var(--color-text-light);
+    margin-top: 1rem;
+    max-width: 62ch;
+  }
+
   .wood-types-grid {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
   }
@@ -913,13 +921,14 @@
   }
 
   .wood-type-image {
-    height: 120px;
+    height: 180px;
     background-size: cover;
     background-position: center;
   }
 
-  .wood-type-image-fallback {
-    opacity: 0.6;
+  /* fallback only dims gradient placeholders, not real photos */
+  .wood-type-image-fallback:not([style*="url("]) {
+    opacity: 0.65;
   }
 
   .wood-type-body {
@@ -1140,11 +1149,11 @@ body.custom-cursor-ready select {
           Wood grain is kept subtle in the header/footer only. ---- */
 
   /* Warm scale from lightest ivory to richest sand */
-  .wood-bg-ivory  { background-color: #FAF5ED; }
-  .wood-bg-cream  { background-color: #F5EDE0; }
-  .wood-bg-oak    { background-color: #EDE0CC; }
-  .wood-bg-beige  { background-color: #EAD8C0; }
-  .wood-bg-sand   { background-color: #E3CEAE; }
+  .wood-bg-ivory  { background-color: #F6EFE3; }
+  .wood-bg-cream  { background-color: #EFE4D1; }
+  .wood-bg-oak    { background-color: #E5D4B3; }
+  .wood-bg-beige  { background-color: #DBBF97; }
+  .wood-bg-sand   { background-color: #D2AF84; }
 
   /* ---- Dark variant: amber grain on deep walnut ---- */
   .wood-bg-dark {

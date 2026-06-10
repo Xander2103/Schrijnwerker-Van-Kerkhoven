@@ -1,22 +1,49 @@
 @extends('layouts.client')
 
+@section('page_title', 'Massief hout — Houtsoorten bij Van Kerkhoven Schrijnwerkerij Huldenberg')
+@section('page_description', 'Van Kerkhoven werkt uitsluitend met massief hout. Ontdek onze houtsoorten: Afzelia, Afrormosia, Beukenhout, Eik / Franse eik en Meranti voor ramen, deuren en trappen op maat.')
+
 @section('content')
 
+{{-- ─── Page hero ───────────────────────────────────────────────── --}}
 <section class="client-section houtsoorten-hero wood-bg-sand">
     <div class="client-container">
         <div class="section-header">
+            <a href="/" class="page-back-link" style="justify-content:center;margin-bottom:1.5rem;" aria-label="Terug naar home">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M10 12L6 8l4-4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Terug naar home
+            </a>
             <span class="section-eyebrow">Materialen</span>
             <h1 class="section-title">Onze houtsoorten</h1>
             <p class="section-intro">
-                De keuze van het juiste hout bepaalt mee de duurzaamheid, uitstraling en prijs van uw schrijnwerk.
-                Wij werken met een selectie van kwalitatieve houtsoorten voor elk type project.
+                Bij Van Kerkhoven werken we uitsluitend met massief hout. Binnen die hoofdsoort bieden we verschillende houttypes aan, elk met hun eigen uitstraling, eigenschappen en toepassingen.
             </p>
         </div>
     </div>
 </section>
 
+{{-- ─── Massief hout: hoofdsoort intro ─────────────────────────────── --}}
+<section class="client-section">
+    <div class="client-container">
+        <div class="massief-intro-block reveal">
+            <span class="section-eyebrow">Hoofdsoort</span>
+            <h2 style="font-family:var(--font-serif,serif);font-size:1.75rem;font-weight:700;color:var(--color-text);margin-bottom:0;">Massief hout</h2>
+            <p class="massief-intro-text">{{ $massieHoutBeschrijving }}</p>
+        </div>
+    </div>
+</section>
+
+{{-- ─── Houtsoorten grid ────────────────────────────────────────────── --}}
 <section class="client-section-alt wood-bg-ivory">
     <div class="client-container">
+
+        <div class="section-header reveal">
+            <span class="section-eyebrow">Houtsoorten</span>
+            <h2 class="section-title">Soorten binnen massief hout</h2>
+            <p class="section-intro">Afhankelijk van de toepassing, uw stijl en het budget adviseren wij de meest geschikte houtsoort voor uw project.</p>
+        </div>
 
         <div class="wood-types-grid reveal-stagger">
             @foreach($woodTypes as $wood)
