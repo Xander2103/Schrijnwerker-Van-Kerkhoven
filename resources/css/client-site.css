@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    Client Site — Design System
    Tailwind v4 @layer + @apply. Theme colors via CSS variables.
    No utility strings in Blade templates.
@@ -198,17 +198,7 @@
   .hero-content {
     @apply relative py-20 w-full;
     z-index: 20;
-
-    h1 {
-      @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-6;
-      color: #ffffff;
-      text-wrap: balance;
-    }
-
-    > p {
-      @apply text-xl max-w-xl mb-2;
-      color: rgba(255, 255, 255, 0.85);
-    }
+    /* h1 and p typography handled by .hero-text inside the two-column layout */
   }
 
   /* Slow zoom keyframe — used on hero and specialisatie images */
@@ -1745,12 +1735,14 @@ body.custom-cursor-ready select {
   }
 
   @media (min-width: 1024px) {
-    .wood-hub-grid { grid-template-columns: repeat(3, 1fr); }
+    /* 6-column base: each card spans 2 cols = 3 items per row */
+    .wood-hub-grid {
+      grid-template-columns: repeat(6, 1fr);
+      align-items: start;
+    }
 
-    /* Center the last partial row (items 4 & 5 of 5) */
-    .wood-hub-grid:has(> :nth-child(5):last-child) > :nth-child(4) {
-      grid-column-start: 1;
-      margin-left: calc(50% + 0.75rem);
+    .wood-hub-grid > * {
+      grid-column: span 2;
     }
   }
 
@@ -1762,4 +1754,308 @@ body.custom-cursor-ready select {
       border-color: rgba(184, 112, 28, 0.45);
     }
   }
+
+  /*
+   * Centered row: when used with .wood-hub-grid--centered (last 2 cards),
+   * items are flexed and centered horizontally at all breakpoints.
+   */
+  .wood-hub-grid--centered {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+
+    > * {
+      width: 100%;
+      flex: 0 0 100%;
+    }
+
+    @media (min-width: 560px) {
+      > * { flex: 0 0 calc(50% - 0.75rem); max-width: calc(50% - 0.75rem); }
+    }
+
+    @media (min-width: 1024px) {
+      > * { flex: 0 0 calc(33.333% - 1rem); max-width: calc(33.333% - 1rem); }
+    }
+  }
 }
+
+/* ============================================================
+   Nav branding — logo + two-line business name
+   ============================================================ */
+@layer components {
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .nav-logo-img {
+    display: block;
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .nav-brand-name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    gap: 0.05rem;
+
+    > span:first-child {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+    }
+
+    > span:last-child {
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: var(--font-serif, serif);
+      color: var(--color-text);
+      letter-spacing: -0.01em;
+    }
+  }
+}
+
+/* ============================================================
+   Hero — two-column layout: logo left, text right
+   ============================================================ */
+@layer components {
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .hero-inner {
+      grid-template-columns: auto 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .hero-logo-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-logo-img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 3px rgba(184, 112, 28, 0.45),
+      0 12px 40px rgba(0, 0, 0, 0.35);
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .hero-logo-img {
+      width: 240px;
+      height: 240px;
+    }
+  }
+
+  .hero-logo-fallback {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: var(--font-serif, serif);
+  }
+
+  /* Hero text inherits from existing .hero-content selectors;
+     only override the direct-child p selector which moved into .hero-text */
+  .hero-text {
+    h1 {
+      @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-6;
+      color: #ffffff;
+      text-wrap: balance;
+    }
+
+    > p {
+      @apply text-xl max-w-xl mb-2;
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+}
+
+/* ============================================================
+   Atelier section — dark walnut, 5-frame 2+3 cycling gallery
+   ============================================================ */
+@layer components {
+
+  .atelier-section {
+    background-color: var(--color-primary);
+    @apply py-16 md:py-24;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .atelier-header {
+    @apply text-center mb-10;
+  }
+
+  .atelier-title {
+    @apply text-3xl md:text-4xl font-bold mb-4;
+    color: #ffffff;
+  }
+
+  .atelier-intro {
+    @apply text-base leading-relaxed max-w-2xl mx-auto;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  /* 5-frame grid: 2 large top + 3 medium bottom using 6-col base */
+  .atelier-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 640px) {
+    .atelier-grid { gap: 1rem; }
+  }
+
+  @media (min-width: 768px) {
+    .atelier-grid {
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1.25rem;
+    }
+
+    /* Frame 1 + 2: top row, 3 cols each */
+    .atelier-frame:nth-child(1),
+    .atelier-frame:nth-child(2) { grid-column: span 3; }
+
+    /* Frame 3 + 4 + 5: bottom row, 2 cols each */
+    .atelier-frame:nth-child(3),
+    .atelier-frame:nth-child(4),
+    .atelier-frame:nth-child(5) { grid-column: span 2; }
+  }
+
+  .atelier-frame {
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-radius: 0.5rem;
+    border: 2px solid rgba(184, 112, 28, 0.30);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.30);
+    cursor: pointer;
+    padding: 0;
+    /* Subtle fade transition for auto-cycling */
+    transition: opacity 0.7s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      border-color: rgba(184, 112, 28, 0.65);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .atelier-frame { transition: border-color 0.2s ease; }
+  }
+
+  /* Lightbox reuses the same pattern as the realisaties lightbox */
+  .atelier-lightbox {
+    background: rgba(10, 5, 2, 0.95);
+    border: none;
+    padding: 0;
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+
+    &[open] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &::backdrop { background: rgba(10, 5, 2, 0.92); }
+  }
+}
+
+/* ============================================================
+   Contact CTA — simple homepage link section
+   ============================================================ */
+@layer components {
+
+  .contact-cta-section {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .contact-cta-inner {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .contact-cta-inner {
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+    }
+  }
+
+  .contact-cta-heading {
+    @apply text-3xl md:text-4xl font-bold mb-3;
+    color: var(--color-text);
+    line-height: 1.2;
+  }
+
+  .contact-cta-desc {
+    @apply text-base leading-relaxed m-0;
+    color: var(--color-text-light);
+    max-width: 52ch;
+  }
+
+  .contact-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+
+    @media (min-width: 768px) {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+  }
+
+  /* Rate-limit warning alert in contact form */
+  .form-rate-alert {
+    @apply flex items-start gap-3 p-4 rounded-lg mb-4;
+    background-color: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+

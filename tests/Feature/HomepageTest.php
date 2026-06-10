@@ -86,15 +86,15 @@ class HomepageTest extends TestCase
         $this->get('/')->assertDontSee('id="houtsoorten-teaser"', false);
     }
 
-    public function test_external_quote_block_rendered_when_configured(): void
+    public function test_contact_cta_rendered_when_enabled(): void
     {
-        config(['site.external_quote_url' => 'https://example.com/offerte']);
-        $this->get('/')->assertSee('external-quote-block', false);
+        config(['site.sections.contact_cta' => true]);
+        $this->get('/')->assertSee('id="contact-cta"', false);
     }
 
-    public function test_external_quote_block_hidden_when_not_configured(): void
+    public function test_contact_cta_hidden_when_disabled(): void
     {
-        config(['site.external_quote_url' => '']);
-        $this->get('/')->assertDontSee('external-quote-block', false);
+        config(['site.sections.contact_cta' => false]);
+        $this->get('/')->assertDontSee('id="contact-cta"', false);
     }
 }

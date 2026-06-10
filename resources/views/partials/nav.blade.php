@@ -1,11 +1,19 @@
 <nav class="nav-bar" aria-label="Hoofdnavigatie">
 
     <a href="/" class="nav-logo" aria-label="{{ config('site.name') }}">
-        @if(config('images.logo'))
-            <img src="{{ asset(config('images.logo')) }}" alt="{{ config('site.name') }}" height="40">
-        @else
-            {{ config('site.nav_brand', config('site.name')) }}
+        @if(config('images.logo_header'))
+            <img
+                src="{{ asset(config('images.logo_header')) }}"
+                alt=""
+                height="44"
+                class="nav-logo-img"
+                aria-hidden="true"
+            >
         @endif
+        <span class="nav-brand-name">
+            <span>Alg. schrijnwerkerij</span>
+            <span>Van Kerkhoven</span>
+        </span>
     </a>
 
     <ul class="nav-links" role="list">
@@ -15,7 +23,7 @@
     </ul>
 
     @if(!empty(config('site.cta_primary')))
-        <a href="/#contact" class="btn btn-primary nav-cta-btn">
+        <a href="/contact" class="btn btn-primary nav-cta-btn">
             {{ config('site.cta_primary') }}
         </a>
     @endif
@@ -47,7 +55,7 @@
     @endforeach
 
     @if(!empty(config('site.cta_primary')))
-        <a href="/#contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
+        <a href="/contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
     @endif
 </div>
 

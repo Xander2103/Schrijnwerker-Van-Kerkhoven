@@ -3,8 +3,8 @@
 
         <div class="section-header reveal">
             <span class="section-eyebrow">Contact</span>
-            <h2 class="section-title">Maak een afspraak</h2>
-            <p class="section-intro">Vul het formulier in en wij nemen zo snel mogelijk contact met u op om uw project te bespreken.</p>
+            <h2 class="section-title">Wij helpen u graag</h2>
+            <p class="section-intro">Van eerste vraag tot oplevering — wij begeleiden elk project persoonlijk.</p>
         </div>
 
         <div class="two-column-grid">
@@ -32,6 +32,16 @@
             </div>
 
             <div class="reveal" data-reveal-delay="100">
+
+                @if(session('contact_rate_error'))
+                    <div class="form-rate-alert" role="alert">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true" style="flex-shrink:0;margin-top:.1rem;">
+                            <circle cx="10" cy="10" r="10" fill="#fed7aa"/>
+                            <path d="M10 6v5M10 14v.5" stroke="#9a3412" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>{{ session('contact_rate_error') }}</span>
+                    </div>
+                @endif
 
                 @if(session('contact_success'))
                     <div class="form-success-alert" role="alert">
@@ -135,18 +145,6 @@
             </div>
 
         </div>
-
-        @if(!empty(config('site.external_quote_url')))
-            <div class="external-quote-block reveal" style="max-width:740px;margin:2rem auto 0;">
-                <strong>Wilt u liever offertes vergelijken?</strong>
-                Vraag gratis offertes aan via
-                <a
-                    href="{{ config('site.external_quote_url') }}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >{{ config('site.external_quote_label', 'Schrijnwerkergids') }}</a>.
-            </div>
-        @endif
 
     </div>
 </section>

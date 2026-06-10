@@ -6,7 +6,10 @@
 @section('content')
 
 {{-- ─── Page hero ─────────────────────────────────────────────────── --}}
-<section class="page-hero wood-bg-sand">
+<section
+    class="page-hero page-hero--image"
+    style="--page-hero-image: url('{{ asset('assets/client/images/trappen-hero.webp') }}');"
+>
     <div class="client-container">
         <div class="page-hero-content">
             <a href="/" class="page-back-link" aria-label="Terug naar home">

@@ -1,4 +1,4 @@
-﻿@extends('layouts.client')
+@extends('layouts.client')
 
 @section('content')
 
@@ -14,20 +14,24 @@
         @include('sections.trust')
     @endif
 
-    @if(config('site.sections.reviews', true) && config('reviews.enabled', false))
-        @include('sections.reviews')
-    @endif
-
-    @if(config('site.sections.gallery', true))
-        @include('sections.gallery')
-    @endif
-
     @if(config('site.sections.wood_teaser', true))
         @include('sections.wood-teaser')
     @endif
 
-    @if(config('site.sections.contact', true))
-        @include('sections.contact')
+    @if(config('site.sections.reviews', true) && config('reviews.enabled', false))
+        @include('sections.reviews')
+    @endif
+
+    @if(config('site.sections.gallery', false))
+        @include('sections.gallery')
+    @endif
+
+    @if(config('site.sections.atelier', true))
+        @include('sections.atelier')
+    @endif
+
+    @if(config('site.sections.contact_cta', true))
+        @include('sections.contact-cta')
     @endif
 
     @if(config('site.sections.location', true))

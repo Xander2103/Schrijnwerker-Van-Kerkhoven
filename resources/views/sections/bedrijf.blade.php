@@ -12,7 +12,7 @@
                 <span class="section-eyebrow">Ons bedrijf</span>
                 <h2 class="bedrijf-heading">45 jaar vakmanschap, van boom tot plaatsing</h2>
                 <div class="bedrijf-text">
-                    <p>Bij Algemene Schrijnwerkerij Van Kerkhoven draait elk project rond vakmanschap, kwaliteit en persoonlijk contact. Vanuit het eigen werkhuis maken ze houten ramen, deuren, trappen en maatwerk in massief hout, volledig afgestemd op uw woning of bedrijfsruimte.</p>
+                    <p>Bij Algemene Schrijnwerkerij Van Kerkhoven draait elk project rond vakmanschap, kwaliteit en persoonlijk contact. Vanuit het eigen werkhuis maken wij houten ramen, deuren, trappen en maatwerk in massief hout, volledig afgestemd op uw woning of bedrijfsruimte.</p>
                     <p>De eigen plaatsingsdienst zorgt daarna voor een nauwkeurige installatie met oog voor detail. Zo blijft het volledige traject in vertrouwde handen: van advies en productie tot plaatsing en opvolging nadien.</p>
                 </div>
                 <ul class="bedrijf-kenmerken" aria-label="Kenmerken">

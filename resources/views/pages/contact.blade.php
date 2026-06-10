@@ -1,0 +1,35 @@
+@extends('layouts.client')
+
+@section('page_title', 'Contact — Schrijnwerkerij Van Kerkhoven Huldenberg')
+@section('page_description', 'Neem contact op met Algemene Schrijnwerkerij Van Kerkhoven in Huldenberg. Vraag een afspraak aan voor ramen, deuren, trappen of maatwerk in massief hout.')
+
+@section('content')
+
+{{-- ─── Compact page header ─────────────────────────────────────────────── --}}
+<section class="contact-page-hero section-compact wood-bg-sand">
+    <div class="client-container">
+        <a href="/" class="page-back-link" aria-label="Terug naar home">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M10 12L6 8l4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Terug naar home
+        </a>
+        <div class="hout-hero-content">
+            <span class="section-eyebrow">Contact</span>
+            <h1 class="section-title" style="margin-bottom:0.5rem;">Maak een afspraak</h1>
+            <p class="section-intro" style="margin:0;">
+                Vul het formulier in en wij nemen zo snel mogelijk contact op om uw project te bespreken.
+            </p>
+        </div>
+    </div>
+</section>
+
+{{-- ─── Contact form section ────────────────────────────────────────────── --}}
+@include('sections.contact')
+
+{{-- ─── Location ────────────────────────────────────────────────────────── --}}
+@if(config('site.sections.location', true))
+    @include('sections.location')
+@endif
+
+@endsection

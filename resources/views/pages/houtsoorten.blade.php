@@ -56,43 +56,25 @@
             <div class="hub-connector-line"></div>
         </div>
 
-        {{-- ─── 5 wood type cards ────────────────────────────── --}}
+        {{-- ─── Wood type cards: first 3 in top row, last 2 centered below --}}
+        @php
+            $firstRow = array_slice($woodTypes, 0, 3);
+            $lastRow  = array_slice($woodTypes, 3);
+        @endphp
+
         <div class="wood-hub-grid reveal-stagger">
-            @foreach($woodTypes as $wood)
-                <article class="wood-type-card wood-hub-card reveal">
-
-                    <div class="wood-type-image wood-type-image-fallback"
-                         @if(!empty($wood['image']))
-                             style="background-image:url('{{ asset($wood['image']) }}');background-color:{{ $wood['tone_color'] }}20;"
-                         @else
-                             style="background: linear-gradient(135deg, {{ $wood['tone_color'] }}55 0%, {{ $wood['tone_color'] }}22 100%);"
-                         @endif
-                         role="img"
-                         aria-label="{{ $wood['name'] }}"
-                    ></div>
-
-                    <div class="wood-type-body">
-                        <h2 class="wood-type-name">{{ $wood['name'] }}</h2>
-                        <p class="wood-type-description">{{ $wood['description'] }}</p>
-
-                        <div class="wood-type-meta">
-                            <p class="wood-meta-label">Geschikt voor</p>
-                            <ul class="wood-best-for-list" role="list">
-                                @foreach($wood['best_for'] as $use)
-                                    <li>{{ $use }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-
-                        <p class="wood-tone-note">
-                            <span class="wood-tone-dot" style="background-color:{{ $wood['tone_color'] }};" aria-hidden="true"></span>
-                            {{ $wood['tone'] }}
-                        </p>
-                    </div>
-
-                </article>
+            @foreach($firstRow as $wood)
+                @include('partials.wood-type-card', compact('wood'))
             @endforeach
         </div>
+
+        @if(count($lastRow) > 0)
+            <div class="wood-hub-grid wood-hub-grid--centered reveal-stagger" style="margin-top:1.5rem;">
+                @foreach($lastRow as $wood)
+                    @include('partials.wood-type-card', compact('wood'))
+                @endforeach
+            </div>
+        @endif
 
         <div class="section-actions" style="margin-top:3rem;">
             @if(!empty(config('site.cta_primary')))

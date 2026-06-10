@@ -6,7 +6,8 @@ return [
     'deuren'  => 'assets/client/images/deuren.webp',
     'trappen' => 'assets/client/images/trappen.webp',
     'about'   => 'assets/client/images/hero1.webp',
-    'logo'    => 'assets/client/images/logo.webp',
+    'logo'        => 'assets/client/images/logo.webp',
+    'logo_header' => 'assets/client/images/logoHeader.webp',
     'favicon' => null,
 
     'gallery' => [

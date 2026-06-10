@@ -21,7 +21,7 @@ return [
         ['label' => 'Houtsoorten', 'href' => '/houtsoorten'],
         ['label' => 'Ons bedrijf', 'href' => '/#bedrijf'],
         ['label' => 'Reviews',     'href' => '/#reviews'],
-        ['label' => 'Contact',     'href' => '/#contact'],
+        ['label' => 'Contact',     'href' => '/contact'],
     ],
 
     'footer_text'   => '© ' . date('Y') . ' Algemene Schrijnwerkerij bv Van Kerkhoven · Hoekstraat 15–19B · 3040 Huldenberg · BTW BE 0700.781.844',
@@ -53,17 +53,18 @@ return [
         'Eerlijke communicatie en kwaliteitsafwerking',
     ],
 
-    'external_quote_url'   => 'https://www.schrijnwerkergids.be/offerte-aanvragen/',
-    'external_quote_label' => 'Vergelijk gratis offertes',
+    // Removed: external_quote_url (Vergelijk gratis offertes block removed per client feedback)
 
     'sections' => [
         'hero'        => true,
-        'bedrijf'     => true,     // merged welcome + ons bedrijf section
+        'bedrijf'     => true,
         'trust'       => true,
+        'wood_teaser' => true,  // Geschreven in hout — moved above reviews
         'reviews'     => true,
-        'gallery'     => false,    // sfeerbeelden removed from homepage
-        'wood_teaser' => true,
-        'contact'     => true,
+        'gallery'     => false,
+        'atelier'     => true,  // NEW: atelier workshop photos section
+        'contact_cta' => true,  // NEW: simple CTA linking to /contact
+        'contact'     => false, // Contact moved to dedicated /contact page
         'location'    => true,
     ],
 ];

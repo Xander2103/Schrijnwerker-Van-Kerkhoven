@@ -1,21 +1,41 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $galleryImages = scanGallery();
-    return view('pages.home', compact('galleryImages'));
+    return view('pages.home', [
+        'galleryImages' => scanGallery(),
+        'atelierImages' => scanGallery('atelier'),
+    ]);
 });
 
 Route::get('/privacy', function () {
     return view('pages.privacy');
 })->name('privacy');
 
+Route::get('/contact', function () {
+    return view('pages.contact');
+})->name('contact');
+
 Route::post('/contact', function (Request $request) {
     // Honeypot: bots fill hidden fields, humans don't
     if (!empty($request->input('website_url'))) {
         return redirect()->back();
+    }
+
+    // Daily rate limit: max 2 successful submissions per IP per day
+    $ip      = $request->ip();
+    $cacheKey = 'contact:daily:' . sha1($ip . ':' . today()->toDateString());
+    $count   = (int) Cache::get($cacheKey, 0);
+
+    if ($count >= 2) {
+        return redirect()->route('contact')
+            ->withInput()
+            ->with('contact_rate_error',
+                'U heeft vandaag al het maximale aantal berichten verstuurd. ' .
+                'Probeer morgen opnieuw of bel ons direct op ' . config('site.phone') . '.');
     }
 
     $request->validate([
@@ -35,7 +55,10 @@ Route::post('/contact', function (Request $request) {
         'privacy.accepted'      => 'U moet akkoord gaan met het privacybeleid.',
     ]);
 
-    return redirect()->back()->with(
+    // Increment daily counter after successful validation
+    Cache::put($cacheKey, $count + 1, now()->endOfDay());
+
+    return redirect()->route('contact')->with(
         'contact_success',
         'Bedankt, uw aanvraag werd ontvangen. We nemen zo snel mogelijk contact op.'
     );
