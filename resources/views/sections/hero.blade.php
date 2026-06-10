@@ -19,7 +19,7 @@
                 <a href="/#contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
             @endif
             @if(!empty(config('site.cta_secondary')))
-                <a href="/#ramen" class="btn btn-secondary-light">{{ config('site.cta_secondary') }}</a>
+                <a href="/#bedrijf" class="btn btn-secondary-light">{{ config('site.cta_secondary') }}</a>
             @endif
         </div>
 

@@ -1365,7 +1365,8 @@ body.custom-cursor-ready select {
 @layer components {
 
   .realisaties-lightbox {
-    @apply fixed inset-0 flex flex-col items-center justify-center p-4;
+    @apply fixed inset-0 flex-col items-center justify-center p-4;
+    display: none; /* hidden until opened — prevents overlay on page load */
     width: 100vw;
     max-width: 100vw;
     height: 100vh;
