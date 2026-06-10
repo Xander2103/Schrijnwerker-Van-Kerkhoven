@@ -43,8 +43,8 @@ Route::post('/contact', function (Request $request) {
 
 // ── Helper: scan gallerij directory ─────────────────────────────────────────
 if (!function_exists('scanGallery')) {
-function scanGallery(): array {
-    $dir     = public_path('assets/client/images/gallerij');
+function scanGallery(string $folder = 'gallerij'): array {
+    $dir     = public_path('assets/client/images/' . $folder);
     $allowed = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
     $images  = [];
     if (is_dir($dir)) {
@@ -54,7 +54,7 @@ function scanGallery(): array {
         }));
         natsort($files);
         foreach ($files as $file) {
-            $images[] = 'assets/client/images/gallerij/' . $file;
+            $images[] = 'assets/client/images/' . $folder . '/' . $file;
         }
     }
     return $images;
@@ -62,17 +62,17 @@ function scanGallery(): array {
 } // end if (!function_exists)
 
 Route::get('/ramen', function () {
-    $galleryImages = scanGallery();
+    $galleryImages = scanGallery('ramen');
     return view('pages.ramen', compact('galleryImages'));
 })->name('ramen');
 
 Route::get('/deuren', function () {
-    $galleryImages = scanGallery();
+    $galleryImages = scanGallery('deuren');
     return view('pages.deuren', compact('galleryImages'));
 })->name('deuren');
 
 Route::get('/trappen', function () {
-    $galleryImages = scanGallery();
+    $galleryImages = scanGallery('trap');
     return view('pages.trappen', compact('galleryImages'));
 })->name('trappen');
 
@@ -107,10 +107,10 @@ Route::get('/houtsoorten', function () {
             'image'       => 'assets/client/images/beukenhout.webp',
         ],
         [
-            'name'        => 'Eik / Franse eik',
+            'name'        => 'Eerste keus',
             'description' => 'Franse eik, vaak geassocieerd met luxe en traditie, heeft karakteristieke nerfpatronen en een rijke kleur die het een tijdloze uitstraling geven. Afgezien van zijn esthetische aantrekkingskracht, is het ook opvallend duurzaam en biedt het een natuurlijke weerstand tegen insecten en schimmels. Ondanks dat het een hardhout is, is het verrassend bewerkbaar.',
             'best_for'    => ['Ramen', 'Deuren', 'Trappen', 'Maatwerk'],
-            'tone'        => 'Warm goudbruin, rijke nerf, tijdloos',
+            'tone'        => 'Eik / Franse eik — warm goudbruin, rijke nerf, tijdloos',
             'tone_color'  => '#A0522D',
             'image'       => 'assets/client/images/franseEik.webp',
         ],

@@ -1,14 +1,20 @@
 {{-- ============================================================
-     Realisaties photo gallery with dialog lightbox.
+     Category gallery: wooden-framed 6-up grid with auto-swap.
      Requires: $galleryImages (array of relative public paths)
-     Optional: $galleryTitle (string, defaults to "Onze realisaties")
+     Optional: $galleryTitle (string)
+
+     Shows up to 6 images at a time. If more images are
+     available, frames auto-swap one-at-a-time with a gentle
+     fade. Lightbox opens on click. Respects prefers-reduced-motion.
      ============================================================ --}}
 @php
     $galleryTitle = $galleryTitle ?? 'Onze realisaties';
-    $assetUrls    = array_map(fn($p) => asset($p), $galleryImages ?? []);
+    $allUrls      = array_values(array_map(fn($p) => asset($p), $galleryImages ?? []));
+    $displayUrls  = array_slice($allUrls, 0, 6);
+    $hasImages    = count($allUrls) > 0;
 @endphp
 
-<section class="realisaties-section client-section-alt wood-bg-ivory">
+<section class="curated-gallery-section client-section">
     <div class="client-container">
 
         <div class="section-header reveal">
@@ -16,21 +22,20 @@
             <h2 class="section-title">{{ $galleryTitle }}</h2>
         </div>
 
-        @if(!empty($assetUrls))
-            <div class="realisaties-grid reveal-stagger" id="realisaties-grid">
-                @foreach($assetUrls as $index => $url)
+        @if($hasImages)
+            <div class="curated-gallery" id="curated-gallery">
+                @foreach($displayUrls as $i => $url)
                     <button
-                        class="realisatie-btn reveal"
+                        class="curated-frame"
                         type="button"
-                        aria-label="Realisatie {{ $index + 1 }} vergroot weergeven"
-                        data-lightbox-src="{{ $url }}"
-                        data-lightbox-index="{{ $index }}"
+                        aria-label="Foto {{ $i + 1 }} vergroot weergeven"
+                        data-lightbox-index="{{ $i }}"
                         style="background-image:url('{{ $url }}')"
                     ></button>
                 @endforeach
             </div>
         @else
-            <p class="section-intro" style="text-align:center;color:var(--color-text-light);">
+            <p class="section-intro" style="text-align:center;padding:3rem 0;">
                 Foto's worden hier geplaatst.
             </p>
         @endif
@@ -38,7 +43,7 @@
     </div>
 </section>
 
-{{-- Lightbox dialog --}}
+{{-- ─── Lightbox ──────────────────────────────────────────────────── --}}
 <dialog
     class="realisaties-lightbox"
     id="realisaties-lightbox"
@@ -69,80 +74,108 @@
 </dialog>
 
 @push('scripts')
-<script id="realisaties-data" type="application/json">
-{!! json_encode(array_values($assetUrls), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+{{-- All image URLs for lightbox + auto-swap --}}
+<script id="curated-gallery-data" type="application/json">
+{!! json_encode($allUrls, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
 </script>
 <script>
 (function () {
   'use strict';
 
-  var dataEl  = document.getElementById('realisaties-data');
-  var dialog  = document.getElementById('realisaties-lightbox');
+  var dataEl = document.getElementById('curated-gallery-data');
+  var dialog = document.getElementById('realisaties-lightbox');
   if (!dataEl || !dialog) return;
 
-  var images;
-  try { images = JSON.parse(dataEl.textContent); } catch (e) { return; }
-  if (!images || !images.length) return;
+  var allImages;
+  try { allImages = JSON.parse(dataEl.textContent); } catch (e) { return; }
+  if (!allImages || !allImages.length) return;
 
-  var lightboxImg  = dialog.querySelector('.lightbox-img');
-  var counter      = dialog.querySelector('.lightbox-counter');
-  var closeBtn     = dialog.querySelector('.lightbox-close');
-  var prevBtn      = dialog.querySelector('.lightbox-prev');
-  var nextBtn      = dialog.querySelector('.lightbox-next');
-  var current      = 0;
+  var frames   = Array.from(document.querySelectorAll('.curated-frame'));
+  var lbImg    = dialog.querySelector('.lightbox-img');
+  var counter  = dialog.querySelector('.lightbox-counter');
+  var closeBtn = dialog.querySelector('.lightbox-close');
+  var prevBtn  = dialog.querySelector('.lightbox-prev');
+  var nextBtn  = dialog.querySelector('.lightbox-next');
+  var lbCurrent = 0;
 
-  function show(index) {
-    current = ((index % images.length) + images.length) % images.length;
-    lightboxImg.src = images[current];
-    lightboxImg.alt = 'Realisatie ' + (current + 1);
-    if (counter) counter.textContent = (current + 1) + ' / ' + images.length;
+  /* ── Lightbox ──────────────────────────────────────────────── */
+  function lbShow(idx) {
+    lbCurrent = ((idx % allImages.length) + allImages.length) % allImages.length;
+    lbImg.src = allImages[lbCurrent];
+    lbImg.alt = 'Realisatie ' + (lbCurrent + 1);
+    if (counter) counter.textContent = (lbCurrent + 1) + ' / ' + allImages.length;
   }
+  function lbOpen(idx) { lbShow(idx); dialog.showModal(); document.body.style.overflow = 'hidden'; }
+  function lbClose()   { dialog.close(); document.body.style.overflow = ''; }
 
-  function open(index) {
-    show(index);
-    dialog.showModal();
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close() {
-    dialog.close();
-    document.body.style.overflow = '';
-  }
-
-  // Open on tile click
-  document.querySelectorAll('.realisatie-btn').forEach(function (btn) {
+  frames.forEach(function (btn) {
     btn.addEventListener('click', function () {
-      open(parseInt(btn.dataset.lightboxIndex, 10));
+      lbOpen(parseInt(btn.dataset.lightboxIndex, 10));
     });
   });
 
-  // Controls
-  if (closeBtn) closeBtn.addEventListener('click', close);
-  if (prevBtn)  prevBtn.addEventListener('click', function () { show(current - 1); });
-  if (nextBtn)  nextBtn.addEventListener('click', function () { show(current + 1); });
+  if (closeBtn) closeBtn.addEventListener('click', lbClose);
+  if (prevBtn)  prevBtn.addEventListener('click',  function () { lbShow(lbCurrent - 1); });
+  if (nextBtn)  nextBtn.addEventListener('click',  function () { lbShow(lbCurrent + 1); });
 
-  // Backdrop click closes
-  dialog.addEventListener('click', function (e) {
-    if (e.target === dialog) close();
-  });
-
-  // Keyboard navigation
+  dialog.addEventListener('click', function (e) { if (e.target === dialog) lbClose(); });
   dialog.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowLeft')  show(current - 1);
-    if (e.key === 'ArrowRight') show(current + 1);
+    if (e.key === 'ArrowLeft')  lbShow(lbCurrent - 1);
+    if (e.key === 'ArrowRight') lbShow(lbCurrent + 1);
   });
 
-  // Swipe support (touch)
-  var touchStartX = null;
-  dialog.addEventListener('touchstart', function (e) {
-    touchStartX = e.touches[0].clientX;
+  var touchX = null;
+  dialog.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+  dialog.addEventListener('touchend',   function (e) {
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) dx < 0 ? lbShow(lbCurrent + 1) : lbShow(lbCurrent - 1);
+    touchX = null;
   }, { passive: true });
-  dialog.addEventListener('touchend', function (e) {
-    if (touchStartX === null) return;
-    var dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 50) dx < 0 ? show(current + 1) : show(current - 1);
-    touchStartX = null;
-  }, { passive: true });
+
+  /* ── Auto-swap ─────────────────────────────────────────────── */
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (allImages.length <= frames.length) return; // nothing to cycle
+
+  // frameShown[i] = which allImages index is currently in frames[i]
+  var frameShown = frames.map(function (_, i) { return i; });
+  var nextPtr    = frames.length; // index into allImages for next swap
+
+  var FADE_MS  = 680;
+  var INTERVAL = 3600;
+
+  function swapOneFrame() {
+    // Pick a random frame slot to update
+    var slot  = Math.floor(Math.random() * frames.length);
+    var shown = new Set(frameShown);
+
+    // Find next image not currently visible
+    var candidate = nextPtr % allImages.length;
+    var tries = 0;
+    while (shown.has(candidate) && tries < allImages.length) {
+      nextPtr++;
+      candidate = nextPtr % allImages.length;
+      tries++;
+    }
+    if (tries >= allImages.length) return; // all images visible — skip
+
+    var newSrc = allImages[candidate];
+    frameShown[slot] = candidate;
+
+    // Update lightbox index on the frame button
+    frames[slot].dataset.lightboxIndex = candidate;
+
+    // Smooth fade swap
+    frames[slot].style.opacity = '0';
+    setTimeout(function () {
+      frames[slot].style.backgroundImage = 'url("' + newSrc + '")';
+      frames[slot].style.opacity = '1';
+    }, FADE_MS);
+
+    nextPtr++;
+  }
+
+  setInterval(swapOneFrame, INTERVAL);
 }());
 </script>
 @endpush

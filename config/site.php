@@ -57,15 +57,13 @@ return [
     'external_quote_label' => 'Vergelijk gratis offertes',
 
     'sections' => [
-        'hero'           => true,
-        'welcome'        => true,
-        'specialisaties' => false,   // teaser cards moved to /ramen /deuren /trappen pages
-        'about'          => true,
-        'trust'          => true,
-        'reviews'        => true,
-        'gallery'        => false,   // sfeerbeelden removed from homepage
-        'wood_teaser'    => true,
-        'contact'        => true,
-        'location'       => true,
+        'hero'        => true,
+        'bedrijf'     => true,     // merged welcome + ons bedrijf section
+        'trust'       => true,
+        'reviews'     => true,
+        'gallery'     => false,    // sfeerbeelden removed from homepage
+        'wood_teaser' => true,
+        'contact'     => true,
+        'location'    => true,
     ],
 ];

@@ -6,16 +6,8 @@
         @include('sections.hero')
     @endif
 
-    @if(config('site.sections.welcome', true))
-        @include('sections.welcome')
-    @endif
-
-    @if(config('site.sections.specialisaties', true))
-        @include('sections.specialisaties')
-    @endif
-
-    @if(config('site.sections.about', true))
-        @include('sections.about')
+    @if(config('site.sections.bedrijf', true))
+        @include('sections.bedrijf')
     @endif
 
     @if(config('site.sections.trust', true))

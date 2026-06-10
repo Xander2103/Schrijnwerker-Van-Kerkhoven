@@ -1470,3 +1470,296 @@ body.custom-cursor-ready select {
     .realisatie-btn { transition: none; }
   }
 }
+
+/* ============================================================
+   Curated category gallery — wooden frames, 6-up, auto-swap
+   ============================================================ */
+@layer components {
+
+  .curated-gallery-section {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .curated-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 560px) {
+    .curated-gallery { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  }
+
+  .curated-frame {
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-secondary);
+    border-radius: 5px;
+    /* Warm wooden border — two-tone: outer dark frame + inner highlight */
+    border: 3px solid rgba(140, 80, 24, 0.5);
+    box-shadow:
+      0 4px 14px rgba(44, 26, 14, 0.20),
+      0 1px 4px  rgba(44, 26, 14, 0.12),
+      inset 0 1px 0 rgba(255, 235, 185, 0.20);
+    cursor: pointer;
+    padding: 0;
+    /* Slight hand-placed angle per cell */
+    &:nth-child(1) { transform: rotate(-0.8deg); }
+    &:nth-child(2) { transform: rotate(0.5deg);  }
+    &:nth-child(3) { transform: rotate(-0.4deg); }
+    &:nth-child(4) { transform: rotate(0.7deg);  }
+    &:nth-child(5) { transform: rotate(-0.6deg); }
+    &:nth-child(6) { transform: rotate(0.3deg);  }
+    transition: opacity 0.68s ease, transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: rotate(0deg) scale(1.03) !important;
+      box-shadow: 0 10px 32px rgba(44, 26, 14, 0.25), inset 0 1px 0 rgba(255,235,185,0.3);
+      border-color: rgba(184, 112, 28, 0.75);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+      transform: rotate(0deg) !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .curated-frame {
+      transform: none !important;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+  }
+}
+
+/* ============================================================
+   Ons bedrijf — merged welcome + about section
+   ============================================================ */
+@layer components {
+
+  .bedrijf-section {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .bedrijf-inner {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .bedrijf-inner { grid-template-columns: 1fr 1fr; }
+  }
+
+  .bedrijf-heading {
+    @apply text-3xl md:text-4xl font-bold mb-5;
+    color: var(--color-text);
+    line-height: 1.2;
+  }
+
+  .bedrijf-text {
+    p {
+      @apply text-base leading-relaxed mb-4;
+      color: var(--color-text-light);
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .bedrijf-kenmerken {
+    @apply flex flex-col gap-2 my-6;
+    list-style: none;
+    padding: 0;
+
+    li {
+      @apply flex items-start gap-3 text-sm font-medium;
+      color: var(--color-text);
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.4rem;
+        border-radius: 50%;
+        background-color: var(--color-accent);
+        flex-shrink: 0;
+        margin-top: 0.45em;
+      }
+    }
+  }
+
+  /* Overlapping photo stack */
+  .bedrijf-images {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bedrijf-photo-stack {
+    position: relative;
+    width: 100%;
+    height: 360px;
+
+    @media (max-width: 767px) { height: 280px; }
+  }
+
+  .bedrijf-photo {
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.75rem;
+    border: 3px solid var(--color-bg);
+    box-shadow: 0 8px 28px rgba(44, 26, 14, 0.18);
+  }
+
+  .bedrijf-photo--1 {
+    width: 74%;
+    height: 56%;
+    top: 0;
+    left: 0;
+    transform: rotate(-2.2deg);
+    z-index: 1;
+  }
+
+  .bedrijf-photo--2 {
+    width: 68%;
+    height: 56%;
+    bottom: 0;
+    right: 0;
+    transform: rotate(1.8deg);
+    z-index: 2;
+  }
+
+  .bedrijf-photo--3 {
+    width: 44%;
+    height: 38%;
+    top: 28%;
+    left: 28%;
+    transform: rotate(-0.6deg);
+    z-index: 3;
+    border-color: rgba(184, 112, 28, 0.55);
+    box-shadow: 0 4px 20px rgba(44, 26, 14, 0.28);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bedrijf-photo { transform: none !important; }
+  }
+}
+
+/* ============================================================
+   Houtsoorten — compact hero + massief hub + spoke grid
+   ============================================================ */
+@layer components {
+
+  /* Compact page header — less vertical padding than client-section */
+  .section-compact {
+    @apply py-8 md:py-12;
+  }
+
+  .hout-hero-content {
+    margin-top: 1.25rem;
+    max-width: 660px;
+  }
+
+  /* ── Massief hout hub card ─────────────────────────────── */
+  .massief-hub-section {
+    background-color: var(--color-bg);
+  }
+
+  .massief-hub-card {
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #180C04 100%);
+    box-shadow: 0 8px 40px rgba(44, 26, 14, 0.25);
+    margin-bottom: 0;
+  }
+
+  .massief-hub-inner {
+    display: grid;
+    align-items: stretch;
+  }
+
+  @media (min-width: 768px) {
+    .massief-hub-inner { grid-template-columns: 1fr 1.4fr; }
+  }
+
+  .massief-hub-image {
+    min-height: 220px;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.88;
+  }
+
+  .massief-hub-image--fallback {
+    opacity: 0.7;
+  }
+
+  .massief-hub-text {
+    @apply p-8 md:p-10;
+  }
+
+  .massief-hub-title {
+    @apply text-3xl md:text-4xl font-bold mb-4;
+    color: #ffffff;
+    line-height: 1.15;
+  }
+
+  .massief-hub-description {
+    @apply text-base leading-relaxed;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 56ch;
+  }
+
+  /* ── Hub connector visual ──────────────────────────────── */
+  .hub-connector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.75rem 0 1.5rem;
+  }
+
+  .hub-connector-line {
+    flex: 1;
+    height: 1px;
+    background-color: var(--color-border);
+  }
+
+  .hub-connector-label {
+    @apply text-xs font-semibold uppercase tracking-widest;
+    color: var(--color-text-light);
+    white-space: nowrap;
+  }
+
+  /* ── 5 wood type cards (spoke grid) ───────────────────── */
+  .wood-hub-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 560px) {
+    .wood-hub-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 1024px) {
+    .wood-hub-grid { grid-template-columns: repeat(3, 1fr); }
+
+    /* Center the last partial row (items 4 & 5 of 5) */
+    .wood-hub-grid:has(> :nth-child(5):last-child) > :nth-child(4) {
+      grid-column-start: 1;
+      margin-left: calc(50% + 0.75rem);
+    }
+  }
+
+  /* Slightly more prominent borders for the hub-child cards */
+  .wood-hub-card {
+    border-color: var(--color-border);
+
+    &:hover {
+      border-color: rgba(184, 112, 28, 0.45);
+    }
+  }
+}

@@ -5,7 +5,7 @@ return [
     'ramen'   => 'assets/client/images/ramen.webp',
     'deuren'  => 'assets/client/images/deuren.webp',
     'trappen' => 'assets/client/images/trappen.webp',
-    'about'   => 'assets/client/images/overons.webp',
+    'about'   => 'assets/client/images/hero1.webp',
     'logo'    => 'assets/client/images/logo.webp',
     'favicon' => null,
 
