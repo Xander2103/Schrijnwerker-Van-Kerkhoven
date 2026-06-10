@@ -4,19 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $galleryDir = public_path('assets/client/images/gallerij');
-    $galleryImages = [];
-    if (is_dir($galleryDir)) {
-        $allowed = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
-        $files = array_values(array_filter(scandir($galleryDir), function ($f) use ($galleryDir, $allowed) {
-            return is_file($galleryDir . DIRECTORY_SEPARATOR . $f)
-                && in_array(strtolower(pathinfo($f, PATHINFO_EXTENSION)), $allowed, true);
-        }));
-        natsort($files);
-        foreach ($files as $file) {
-            $galleryImages[] = 'assets/client/images/gallerij/' . $file;
-        }
-    }
+    $galleryImages = scanGallery();
     return view('pages.home', compact('galleryImages'));
 });
 
@@ -52,6 +40,41 @@ Route::post('/contact', function (Request $request) {
         'Bedankt, uw aanvraag werd ontvangen. We nemen zo snel mogelijk contact op.'
     );
 })->middleware('throttle:5,1')->name('contact.submit');
+
+// ── Helper: scan gallerij directory ─────────────────────────────────────────
+if (!function_exists('scanGallery')) {
+function scanGallery(): array {
+    $dir     = public_path('assets/client/images/gallerij');
+    $allowed = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+    $images  = [];
+    if (is_dir($dir)) {
+        $files = array_values(array_filter(scandir($dir), function ($f) use ($dir, $allowed) {
+            return is_file($dir . DIRECTORY_SEPARATOR . $f)
+                && in_array(strtolower(pathinfo($f, PATHINFO_EXTENSION)), $allowed, true);
+        }));
+        natsort($files);
+        foreach ($files as $file) {
+            $images[] = 'assets/client/images/gallerij/' . $file;
+        }
+    }
+    return $images;
+}
+} // end if (!function_exists)
+
+Route::get('/ramen', function () {
+    $galleryImages = scanGallery();
+    return view('pages.ramen', compact('galleryImages'));
+})->name('ramen');
+
+Route::get('/deuren', function () {
+    $galleryImages = scanGallery();
+    return view('pages.deuren', compact('galleryImages'));
+})->name('deuren');
+
+Route::get('/trappen', function () {
+    $galleryImages = scanGallery();
+    return view('pages.trappen', compact('galleryImages'));
+})->name('trappen');
 
 Route::get('/houtsoorten', function () {
     $woodTypes = [

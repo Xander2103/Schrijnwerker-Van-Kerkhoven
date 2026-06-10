@@ -1156,3 +1156,307 @@ body.custom-cursor-ready select {
     background-repeat: repeat, no-repeat;
   }
 }
+
+/* ============================================================
+   Specialisaties teaser cards (homepage)
+   ============================================================ */
+@layer components {
+
+  .spec-teaser-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+  }
+
+  .spec-teaser-card {
+    @apply rounded-2xl overflow-hidden;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 2px 12px rgba(44, 26, 14, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 32px rgba(44, 26, 14, 0.10);
+    }
+  }
+
+  .spec-teaser-image {
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-secondary);
+  }
+
+  .spec-teaser-body {
+    @apply p-6 flex flex-col;
+    flex: 1;
+  }
+
+  .spec-teaser-title {
+    @apply text-xl font-bold font-serif mb-3;
+    color: var(--color-primary);
+    line-height: 1.3;
+  }
+
+  .spec-teaser-text {
+    @apply text-sm leading-relaxed mb-5 flex-1;
+    color: var(--color-text-light);
+  }
+
+  .spec-teaser-link {
+    @apply inline-flex items-center gap-2 text-sm font-semibold no-underline;
+    color: var(--color-accent);
+    transition: gap 0.2s ease, color 0.2s ease;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      color: var(--color-primary);
+      gap: 0.625rem;
+
+      svg { transform: translateX(3px); }
+    }
+  }
+}
+
+/* ============================================================
+   Specialisation pages — page hero
+   ============================================================ */
+@layer components {
+
+  .page-hero {
+    @apply py-16 md:py-24;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-hero-content {
+    @apply max-w-2xl;
+  }
+
+  .page-back-link {
+    @apply inline-flex items-center gap-2 text-sm font-medium no-underline mb-6;
+    color: var(--color-text-light);
+    transition: color 0.15s ease;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    &:hover { color: var(--color-primary); }
+  }
+
+  .page-hero-title {
+    @apply text-4xl md:text-5xl font-bold mb-4;
+    color: var(--color-text);
+    line-height: 1.15;
+  }
+
+  .page-hero-intro {
+    @apply text-lg max-w-xl;
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* Page intro two-column layout */
+  .page-intro-inner {
+    @apply grid md:grid-cols-2 gap-12 items-start;
+  }
+
+  .page-intro-heading {
+    @apply text-2xl md:text-3xl font-bold mb-4;
+    color: var(--color-text);
+  }
+
+  .page-intro-text {
+    p {
+      @apply text-base leading-relaxed mb-4;
+      color: var(--color-text-light);
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .page-intro-highlights {
+    @apply flex flex-col;
+  }
+
+  .page-highlight-list {
+    @apply flex flex-col gap-3;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      @apply flex items-start gap-3 text-sm;
+      color: var(--color-text);
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.4rem;
+        border-radius: 50%;
+        background-color: var(--color-accent);
+        flex-shrink: 0;
+        margin-top: 0.45em;
+      }
+    }
+  }
+
+  /* Bottom CTA row */
+  .page-cta-row {
+    @apply flex flex-col md:flex-row items-start md:items-center justify-between gap-6;
+
+    p { margin: 0; }
+  }
+
+  .page-cta-heading {
+    @apply text-2xl font-bold mb-2;
+    color: var(--color-text);
+  }
+}
+
+/* ============================================================
+   Realisaties gallery grid
+   ============================================================ */
+@layer components {
+
+  .realisaties-section {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .realisaties-grid {
+    @apply grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6;
+  }
+
+  .realisatie-btn {
+    @apply rounded-xl overflow-hidden cursor-pointer;
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-secondary);
+    border: 1px solid var(--color-border);
+    padding: 0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+    &:hover {
+      transform: scale(1.025);
+      box-shadow: 0 8px 28px rgba(44, 26, 14, 0.13);
+      border-color: rgba(193, 123, 48, 0.4);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+    }
+  }
+}
+
+/* ============================================================
+   Realisaties lightbox — <dialog>-based
+   ============================================================ */
+@layer components {
+
+  .realisaties-lightbox {
+    @apply fixed inset-0 flex flex-col items-center justify-center p-4;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    background: rgba(20, 10, 4, 0.94);
+    border: none;
+    margin: 0;
+    z-index: 200;
+
+    /* Reset dialog default positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    &::backdrop {
+      background: transparent; /* we handle the dim ourselves */
+    }
+
+    &[open] {
+      display: flex;
+    }
+  }
+
+  .lightbox-inner {
+    @apply flex items-center justify-center;
+    flex: 1;
+    width: 100%;
+    max-height: calc(100vh - 8rem);
+    overflow: hidden;
+  }
+
+  .lightbox-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  .lightbox-close {
+    @apply absolute cursor-pointer border-none bg-transparent flex items-center justify-center;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    transition: background-color 0.2s ease;
+    z-index: 10;
+
+    svg { width: 1.25rem; height: 1.25rem; }
+
+    &:hover { background-color: rgba(255, 255, 255, 0.22); }
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+  }
+
+  .lightbox-nav {
+    @apply flex items-center gap-6 mt-4;
+    flex-shrink: 0;
+  }
+
+  .lightbox-nav-btn {
+    @apply flex items-center justify-center cursor-pointer border-none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    transition: background-color 0.2s ease;
+
+    svg { width: 1rem; height: 1rem; }
+
+    &:hover { background-color: rgba(255, 255, 255, 0.22); }
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+  }
+
+  .lightbox-counter {
+    @apply text-sm;
+    color: rgba(255, 255, 255, 0.65);
+    min-width: 4rem;
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .realisatie-btn { transition: none; }
+  }
+}

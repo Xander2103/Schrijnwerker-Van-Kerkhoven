@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ config('seo.title') }}</title>
-    <meta name="description" content="{{ config('seo.description') }}">
+    <title>@yield('page_title', config('seo.title'))</title>
+    <meta name="description" content="@yield('page_description', config('seo.description'))">
 
     @if(!empty(config('seo.keywords')))
         <meta name="keywords" content="{{ implode(', ', config('seo.keywords', [])) }}">

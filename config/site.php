@@ -15,9 +15,9 @@ return [
     'trust_intro'    => 'Kwaliteit begint bij eerlijk vakmanschap en een vertrouwde aanpak van begin tot oplevering.',
 
     'nav_items' => [
-        ['label' => 'Ramen',       'href' => '/#ramen'],
-        ['label' => 'Deuren',      'href' => '/#deuren'],
-        ['label' => 'Trappen',     'href' => '/#trappen'],
+        ['label' => 'Ramen',       'href' => '/ramen'],
+        ['label' => 'Deuren',      'href' => '/deuren'],
+        ['label' => 'Trappen',     'href' => '/trappen'],
         ['label' => 'Houtsoorten', 'href' => '/houtsoorten'],
         ['label' => 'Ons bedrijf', 'href' => '/#bedrijf'],
         ['label' => 'Reviews',     'href' => '/#reviews'],
