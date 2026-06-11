@@ -1,17 +1,16 @@
 {{-- ============================================================
-     Category gallery: wooden-framed 6-up grid with auto-swap.
+     Category gallery: wooden-framed static grid.
      Requires: $galleryImages (array of relative public paths)
      Optional: $galleryTitle (string)
 
-     Shows up to 6 images at a time. If more images are
-     available, frames auto-swap one-at-a-time with a gentle
-     fade. Lightbox opens on click. Respects prefers-reduced-motion.
+     Shows all available images. Lightbox opens on click.
+     Respects prefers-reduced-motion.
      ============================================================ --}}
 @php
     $galleryTitle = $galleryTitle ?? 'Onze realisaties';
     $allUrls      = array_values(array_map(fn($p) => asset($p), $galleryImages ?? []));
-    $displayUrls  = array_slice($allUrls, 0, 6);
     $hasImages    = count($allUrls) > 0;
+    $manyImages   = count($allUrls) > 9;
 @endphp
 
 <section class="curated-gallery-section client-section">
@@ -23,12 +22,18 @@
         </div>
 
         @if($hasImages)
-            <div class="curated-gallery" id="curated-gallery">
-                @foreach($displayUrls as $i => $url)
+            <div
+                class="curated-gallery{{ $manyImages ? ' curated-gallery--many' : '' }}"
+                id="curated-gallery"
+                role="list"
+                aria-label="{{ $galleryTitle }}"
+            >
+                @foreach($allUrls as $i => $url)
                     <button
                         class="curated-frame"
                         type="button"
-                        aria-label="Foto {{ $i + 1 }} vergroot weergeven"
+                        role="listitem"
+                        aria-label="Foto {{ $i + 1 }} van {{ count($allUrls) }} — klik om te vergroten"
                         data-lightbox-index="{{ $i }}"
                         style="background-image:url('{{ $url }}')"
                     ></button>
@@ -74,7 +79,6 @@
 </dialog>
 
 @push('scripts')
-{{-- All image URLs for lightbox + auto-swap --}}
 <script id="curated-gallery-data" type="application/json">
 {!! json_encode($allUrls, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
 </script>
@@ -98,15 +102,23 @@
   var nextBtn  = dialog.querySelector('.lightbox-next');
   var lbCurrent = 0;
 
-  /* ── Lightbox ──────────────────────────────────────────────── */
   function lbShow(idx) {
     lbCurrent = ((idx % allImages.length) + allImages.length) % allImages.length;
     lbImg.src = allImages[lbCurrent];
-    lbImg.alt = 'Realisatie ' + (lbCurrent + 1);
+    lbImg.alt = 'Realisatie ' + (lbCurrent + 1) + ' van ' + allImages.length;
     if (counter) counter.textContent = (lbCurrent + 1) + ' / ' + allImages.length;
   }
-  function lbOpen(idx) { lbShow(idx); dialog.showModal(); document.body.style.overflow = 'hidden'; }
-  function lbClose()   { dialog.close(); document.body.style.overflow = ''; }
+
+  function lbOpen(idx) {
+    lbShow(idx);
+    dialog.showModal();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function lbClose() {
+    dialog.close();
+    document.body.style.overflow = '';
+  }
 
   frames.forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -119,9 +131,12 @@
   if (nextBtn)  nextBtn.addEventListener('click',  function () { lbShow(lbCurrent + 1); });
 
   dialog.addEventListener('click', function (e) { if (e.target === dialog) lbClose(); });
-  dialog.addEventListener('keydown', function (e) {
+
+  document.addEventListener('keydown', function (e) {
+    if (!dialog.open) return;
     if (e.key === 'ArrowLeft')  lbShow(lbCurrent - 1);
     if (e.key === 'ArrowRight') lbShow(lbCurrent + 1);
+    if (e.key === 'Escape')     lbClose();
   });
 
   var touchX = null;
@@ -129,53 +144,9 @@
   dialog.addEventListener('touchend',   function (e) {
     if (touchX === null) return;
     var dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 50) dx < 0 ? lbShow(lbCurrent + 1) : lbShow(lbCurrent - 1);
+    if (Math.abs(dx) > 50) { dx < 0 ? lbShow(lbCurrent + 1) : lbShow(lbCurrent - 1); }
     touchX = null;
   }, { passive: true });
-
-  /* ── Auto-swap ─────────────────────────────────────────────── */
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (allImages.length <= frames.length) return; // nothing to cycle
-
-  // frameShown[i] = which allImages index is currently in frames[i]
-  var frameShown = frames.map(function (_, i) { return i; });
-  var nextPtr    = frames.length; // index into allImages for next swap
-
-  var FADE_MS  = 680;
-  var INTERVAL = 3600;
-
-  function swapOneFrame() {
-    // Pick a random frame slot to update
-    var slot  = Math.floor(Math.random() * frames.length);
-    var shown = new Set(frameShown);
-
-    // Find next image not currently visible
-    var candidate = nextPtr % allImages.length;
-    var tries = 0;
-    while (shown.has(candidate) && tries < allImages.length) {
-      nextPtr++;
-      candidate = nextPtr % allImages.length;
-      tries++;
-    }
-    if (tries >= allImages.length) return; // all images visible — skip
-
-    var newSrc = allImages[candidate];
-    frameShown[slot] = candidate;
-
-    // Update lightbox index on the frame button
-    frames[slot].dataset.lightboxIndex = candidate;
-
-    // Smooth fade swap
-    frames[slot].style.opacity = '0';
-    setTimeout(function () {
-      frames[slot].style.backgroundImage = 'url("' + newSrc + '")';
-      frames[slot].style.opacity = '1';
-    }, FADE_MS);
-
-    nextPtr++;
-  }
-
-  setInterval(swapOneFrame, INTERVAL);
 }());
 </script>
 @endpush

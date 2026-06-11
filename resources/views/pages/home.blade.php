@@ -26,10 +26,6 @@
         @include('sections.gallery')
     @endif
 
-    @if(config('site.sections.atelier', true))
-        @include('sections.atelier')
-    @endif
-
     @if(config('site.sections.contact_cta', true))
         @include('sections.contact-cta')
     @endif

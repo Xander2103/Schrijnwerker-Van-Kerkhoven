@@ -5,8 +5,11 @@
 
 @section('content')
 
-{{-- ─── Page hero ─────────────────────────────────────────────────── --}}
-<section class="page-hero wood-bg-sand">
+{{-- ─── Page hero with background image ──────────────────────────── --}}
+<section
+    class="page-hero page-hero--image"
+    style="--page-hero-image: url('{{ asset('assets/client/images/deuren/hero-deuren.webp') }}')"
+>
     <div class="client-container">
         <div class="page-hero-content">
             <a href="/" class="page-back-link" aria-label="Terug naar home">
@@ -17,51 +20,23 @@
             </a>
             <span class="section-eyebrow">Specialisatie</span>
             <h1 class="page-hero-title">Houten deuren met karakter</h1>
-            <p class="page-hero-intro">Van een solide voordeur tot stijlvolle binnendeuren — elk op maat, in massief hout, met persoonlijke begeleiding.</p>
+            <p class="page-hero-intro">Van een solide voordeur tot stijlvolle binnendeuren — elk op maat, in massief hout.</p>
         </div>
     </div>
 </section>
 
-{{-- ─── Intro tekst ────────────────────────────────────────────────── --}}
-<section class="client-section">
+{{-- ─── Short intro + CTA ──────────────────────────────────────────── --}}
+<section class="client-section section-compact">
     <div class="client-container">
-        <div class="page-intro-inner reveal">
-            <div class="page-intro-text">
-                <h2 class="page-intro-heading">Deuren die indruk maken</h2>
-                <p>Een houten deur in massief hout geeft uw woning karakter en uitstraling. Of het gaat om een robuuste voordeur, een elegante binnendeur of een bijzonder ontwerp voor een renovatieproject — bij Van Kerkhoven wordt elke deur met vakmanschap gemaakt in eigen werkhuis.</p>
-                <p>Buitendeuren worden behandeld met weersbestendige afwerkingen voor maximale duurzaamheid. Binnendeuren stemmen we af op de sfeer en stijl van uw interieur, van klassiek tot modern. Elke afmeting, profilering en afwerking is bespreekbaar.</p>
-                <p>Wij werken samen met architecten en interieurvormgevers voor projecten waarbij de deur een centrale designrol speelt. Plaatsing gebeurt door onze eigen dienst, met aandacht voor een nette, duurzame montage.</p>
-            </div>
-            <div class="page-intro-highlights">
-                <ul class="page-highlight-list">
-                    <li>Buitendeuren in weersbestendig massief hout</li>
-                    <li>Binnendeuren op maat van stijl en ruimte</li>
-                    <li>Klassieke en moderne profileringen</li>
-                    <li>Samenwerking met architecten mogelijk</li>
-                    <li>Plaatsing door eigen dienst</li>
-                    <li>Keuze uit meerdere houtsoorten en afwerkingen</li>
-                </ul>
-                <a href="/#contact" class="btn btn-primary" style="margin-top:1.5rem;align-self:flex-start;">Maak een afspraak</a>
-            </div>
-        </div>
+        <p style="color:var(--color-text-light); max-width:60ch; font-size:1rem; line-height:1.75; margin:0 0 1.5rem;">
+            Buitendeuren in weersbestendig massief hout, binnendeuren op maat van stijl en ruimte — klassieke of moderne profileringen, keuze uit meerdere houtsoorten. Plaatsing door eigen dienst.
+        </p>
+        <a href="/contact" class="btn btn-primary">Maak een afspraak</a>
     </div>
 </section>
 
-{{-- ─── Realisaties gallery ─────────────────────────────────────────── --}}
+{{-- ─── Photo gallery ───────────────────────────────────────────────── --}}
 @php $galleryTitle = 'Realisaties houten deuren'; @endphp
 @include('partials.realisaties-gallery')
-
-{{-- ─── Bottom CTA ──────────────────────────────────────────────────── --}}
-<section class="client-section wood-bg-sand">
-    <div class="client-container">
-        <div class="page-cta-row reveal">
-            <div>
-                <h2 class="page-cta-heading">Interesse in houten deuren?</h2>
-                <p style="color:var(--color-text-light);">Wij bespreken graag uw project op afspraak. Neem contact op voor een vrijblijvend gesprek.</p>
-            </div>
-            <a href="/#contact" class="btn btn-primary">Maak een afspraak</a>
-        </div>
-    </div>
-</section>
 
 @endsection

@@ -5,8 +5,11 @@
 
 @section('content')
 
-{{-- ─── Page hero ─────────────────────────────────────────────────── --}}
-<section class="page-hero wood-bg-sand">
+{{-- ─── Page hero with background image ──────────────────────────── --}}
+<section
+    class="page-hero page-hero--image"
+    style="--page-hero-image: url('{{ asset('assets/client/images/ramen/hero-ramen.webp') }}')"
+>
     <div class="client-container">
         <div class="page-hero-content">
             <a href="/" class="page-back-link" aria-label="Terug naar home">
@@ -17,51 +20,23 @@
             </a>
             <span class="section-eyebrow">Specialisatie</span>
             <h1 class="page-hero-title">Houten ramen op maat</h1>
-            <p class="page-hero-intro">Authentiek vakmanschap, duurzame materialen en een persoonlijke aanpak — van houtkeuze tot plaatsing.</p>
+            <p class="page-hero-intro">Authentiek vakmanschap in massief hout — van houtkeuze tot plaatsing door eigen dienst.</p>
         </div>
     </div>
 </section>
 
-{{-- ─── Intro tekst ────────────────────────────────────────────────── --}}
-<section class="client-section">
+{{-- ─── Short intro + CTA ──────────────────────────────────────────── --}}
+<section class="client-section section-compact">
     <div class="client-container">
-        <div class="page-intro-inner reveal">
-            <div class="page-intro-text">
-                <h2 class="page-intro-heading">Ramen die passen bij uw woning</h2>
-                <p>Houten ramen zijn meer dan een functioneel onderdeel — ze bepalen mee het karakter en de uitstraling van uw woning. Bij Van Kerkhoven maken wij houten ramen volledig op maat, in de houtsoort, profilering en afwerking die bij uw project past.</p>
-                <p>Of het nu gaat om de restauratie van authentieke ramen in een jaren '30 woning, een renovatieproject met aandacht voor stijl en isolatie, of nieuwbouw met een eigentijdse uitstraling — wij begeleiden u van de eerste bespreking tot de vakkundige plaatsing door onze eigen dienst.</p>
-                <p>Wij werken met massief hout: eik, meranti, afrormosia en andere soorten die duurzaamheid combineren met uitstraling. Elke raam wordt gemonteerd met isolerende beglazing naar uw keuze.</p>
-            </div>
-            <div class="page-intro-highlights">
-                <ul class="page-highlight-list">
-                    <li>Volledig op maat, in eigen werkhuis</li>
-                    <li>Keuze uit meerdere houtsoorten</li>
-                    <li>Enkelvoudige, dubbele of driedubbele beglazing</li>
-                    <li>Restauratie van authentiek schrijnwerk</li>
-                    <li>Plaatsing door eigen dienst</li>
-                    <li>Geschikt voor renovatie en nieuwbouw</li>
-                </ul>
-                <a href="/#contact" class="btn btn-primary" style="margin-top:1.5rem;align-self:flex-start;">Maak een afspraak</a>
-            </div>
-        </div>
+        <p style="color:var(--color-text-light); max-width:60ch; font-size:1rem; line-height:1.75; margin:0 0 1.5rem;">
+            Massief houten ramen volledig op maat — eik, meranti, afrormosia of afzelia — met isolerende beglazing naar keuze. Geschikt voor renovatie en nieuwbouw, geplaatst door onze eigen dienst.
+        </p>
+        <a href="/contact" class="btn btn-primary">Maak een afspraak</a>
     </div>
 </section>
 
-{{-- ─── Realisaties gallery ─────────────────────────────────────────── --}}
+{{-- ─── Photo gallery ───────────────────────────────────────────────── --}}
 @php $galleryTitle = 'Realisaties houten ramen'; @endphp
 @include('partials.realisaties-gallery')
-
-{{-- ─── Bottom CTA ──────────────────────────────────────────────────── --}}
-<section class="client-section wood-bg-sand">
-    <div class="client-container">
-        <div class="page-cta-row reveal">
-            <div>
-                <h2 class="page-cta-heading">Interesse in houten ramen?</h2>
-                <p style="color:var(--color-text-light);">Wij bespreken graag uw project op afspraak. Neem contact op voor een vrijblijvend gesprek.</p>
-            </div>
-            <a href="/#contact" class="btn btn-primary">Maak een afspraak</a>
-        </div>
-    </div>
-</section>
 
 @endsection

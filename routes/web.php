@@ -85,12 +85,18 @@ function scanGallery(string $folder = 'gallerij'): array {
 } // end if (!function_exists)
 
 Route::get('/ramen', function () {
-    $galleryImages = scanGallery('ramen');
+    $galleryImages = array_values(array_filter(
+        scanGallery('ramen'),
+        fn($p) => !str_contains(basename($p), 'hero')
+    ));
     return view('pages.ramen', compact('galleryImages'));
 })->name('ramen');
 
 Route::get('/deuren', function () {
-    $galleryImages = scanGallery('deuren');
+    $galleryImages = array_values(array_filter(
+        scanGallery('deuren'),
+        fn($p) => !str_contains(basename($p), 'hero')
+    ));
     return view('pages.deuren', compact('galleryImages'));
 })->name('deuren');
 
