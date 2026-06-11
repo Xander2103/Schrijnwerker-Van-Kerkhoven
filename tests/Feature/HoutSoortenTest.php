@@ -33,7 +33,7 @@ class HoutSoortenTest extends TestCase
 
     public function test_houtsoorten_page_contains_cta_link(): void
     {
-        $this->get('/houtsoorten')->assertSee('/#contact', false);
+        $this->get('/houtsoorten')->assertSee('href="/contact"', false);
     }
 
     public function test_houtsoorten_page_contains_back_link(): void

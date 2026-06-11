@@ -1,5 +1,7 @@
 @extends('layouts.client')
 
+@section('body_class', 'page-home')
+
 @section('content')
 
     @if(config('site.sections.hero', true))

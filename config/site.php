@@ -58,11 +58,11 @@ return [
     'sections' => [
         'hero'        => true,
         'bedrijf'     => true,
-        'trust'       => true,
+        'trust'       => false,
         'wood_teaser' => true,  // Geschreven in hout — moved above reviews
         'reviews'     => true,
         'gallery'     => false,
-        'atelier'     => true,  // NEW: atelier workshop photos section
+        'atelier'     => false, // merged into bedrijf section
         'contact_cta' => true,  // NEW: simple CTA linking to /contact
         'contact'     => false, // Contact moved to dedicated /contact page
         'location'    => true,

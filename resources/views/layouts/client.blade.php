@@ -75,7 +75,8 @@
 
     @stack('head')
 </head>
-<body class="client-page{{ config('interaction.custom_cursor.enabled') ? ' custom-cursor-enabled' : '' }}">
+@php $bodyClass = trim($__env->yieldContent('body_class')); @endphp
+<body class="client-page{{ $bodyClass ? ' '.$bodyClass : '' }}{{ config('interaction.custom_cursor.enabled') ? ' custom-cursor-enabled' : '' }}">
 
     @include('partials.nav')
 

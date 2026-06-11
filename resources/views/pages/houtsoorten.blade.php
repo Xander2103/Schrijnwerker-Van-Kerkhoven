@@ -78,7 +78,7 @@
 
         <div class="section-actions" style="margin-top:3rem;">
             @if(!empty(config('site.cta_primary')))
-                <a href="/#contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
+                <a href="/contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
             @endif
             <a href="/" class="btn btn-secondary">Terug naar home</a>
         </div>

@@ -27,8 +27,8 @@
                     <div class="wood-swatch" style="--swatch-color:#E8C9A0;" role="img" aria-label="Beuk — licht en fijn">
                         <span class="wood-swatch-label">Beuk</span>
                     </div>
-                    <div class="wood-swatch" style="--swatch-color:#A0522D;" role="img" aria-label="Eik / Franse eik — warm goudbruin tijdloos">
-                        <span class="wood-swatch-label">Eik / Franse eik</span>
+                    <div class="wood-swatch" style="--swatch-color:#A0522D;" role="img" aria-label="Eerste keus — eik / Franse eik, warm goudbruin tijdloos">
+                        <span class="wood-swatch-label">Eerste keus</span>
                     </div>
                     <div class="wood-swatch" style="--swatch-color:#C04000;" role="img" aria-label="Meranti — roodachtig toegankelijk">
                         <span class="wood-swatch-label">Meranti</span>

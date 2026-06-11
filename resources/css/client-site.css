@@ -2138,3 +2138,71 @@ body.custom-cursor-ready select {
   }
 }
 
+/* ============================================================
+   Transparent hero nav — homepage only.
+   JS toggles body.nav-scrolled after 70 % of viewport height.
+   CSS handles transparent→opaque transition.
+   ============================================================ */
+
+/* Smooth transitions on all nav elements so the switch is seamless */
+.nav-bar {
+  transition:
+    background-color 0.38s ease,
+    background-image 0.38s ease,
+    border-color 0.38s ease,
+    box-shadow 0.38s ease;
+}
+
+.nav-logo-img               { transition: filter 0.38s ease; }
+.nav-brand-name > span      { transition: color 0.38s ease; }
+.nav-toggle span            { transition: background-color 0.38s ease,
+                                          transform 0.2s ease,
+                                          opacity 0.2s ease; }
+
+/* Transparent state: body.page-home before user scrolls */
+body.page-home:not(.nav-scrolled) .nav-bar {
+  background-color: transparent;
+  /* Subtle top-of-page darkening for readability over hero image */
+  background-image: linear-gradient(to bottom, rgba(6, 2, 1, 0.52) 0%, transparent 100%);
+  background-size: 100% 100%;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+body.page-home:not(.nav-scrolled) .nav-logo-img {
+  filter: brightness(0) invert(1);
+}
+
+body.page-home:not(.nav-scrolled) .nav-brand-name > span:first-child {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+body.page-home:not(.nav-scrolled) .nav-brand-name > span:last-child {
+  color: #ffffff;
+}
+
+body.page-home:not(.nav-scrolled) .nav-links a {
+  color: rgba(255, 255, 255, 0.80);
+}
+
+body.page-home:not(.nav-scrolled) .nav-links a:hover {
+  color: #ffffff;
+}
+
+body.page-home:not(.nav-scrolled) .nav-toggle span {
+  background-color: rgba(255, 255, 255, 0.88);
+}
+
+/* ============================================================
+   Hero — content left-anchored for premium editorial feel.
+   Container starts from the left edge on wide screens.
+   hero-inner max-width keeps text tight, not stretched.
+   ============================================================ */
+.hero > .client-container {
+  margin-left: 0;
+}
+
+.hero-inner {
+  max-width: 920px;
+}
+

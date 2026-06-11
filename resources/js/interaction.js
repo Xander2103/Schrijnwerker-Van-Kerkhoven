@@ -238,12 +238,33 @@
   }
 
   // ─────────────────────────────────────────────
+  // Transparent hero nav — homepage only.
+  // Adds body.nav-scrolled once user scrolls 70 %
+  // of viewport height; CSS handles the visual switch.
+  // ─────────────────────────────────────────────
+  function initHeroNav() {
+    if (!document.body.classList.contains('page-home')) return;
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    var threshold = window.innerHeight * 0.70;
+
+    function update() {
+      document.body.classList.toggle('nav-scrolled', window.pageYOffset > threshold);
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  // ─────────────────────────────────────────────
   // Boot
   // ─────────────────────────────────────────────
   function boot() {
     initScrollReveal();
     initCarousels();
     initCustomCursor();
+    initHeroNav();
   }
 
   if (document.readyState === 'loading') {

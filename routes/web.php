@@ -128,7 +128,7 @@ Route::get('/houtsoorten', function () {
             'image'       => 'assets/client/images/afrormosia.webp',
         ],
         [
-            'name'        => 'Beukenhout',
+            'name'        => 'Beuk',
             'description' => 'Beukenhout is herkenbaar aan zijn hardheid en hoge slijtvastheid, waardoor het bijzonder duurzaam is. Deze hardheid doet echter niets af aan de mogelijkheid om het hout te bewerken, mede dankzij de uniforme textuur. Als het goed is afgewerkt, kan beukenhout een prachtig glad oppervlak verkrijgen.',
             'best_for'    => ['Binnendeuren', 'Trappen', 'Maatwerk interieur'],
             'tone'        => 'Lichtblond tot roze-beige, helder en fris',
