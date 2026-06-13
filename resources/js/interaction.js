@@ -238,6 +238,96 @@
   }
 
   // ─────────────────────────────────────────────
+  // Atelier photo cycling — Ons bedrijf section.
+  // Reads all image URLs from data-atelier-images, then rotates
+  // each photo frame through the full pool using a soft crossfade.
+  // Respects prefers-reduced-motion (skips cycling if reduced).
+  // ─────────────────────────────────────────────
+  function initAtelierCycle() {
+    if (prefersReduced) return;
+
+    var stack = document.querySelector('[data-atelier-images]');
+    if (!stack) return;
+
+    var allImages;
+    try { allImages = JSON.parse(stack.dataset.atelierImages); } catch (e) { return; }
+    if (!allImages || allImages.length < 2) return;
+
+    var frames = Array.from(stack.querySelectorAll('.bedrijf-photo'));
+    if (!frames.length) return;
+
+    // Preload all images so there is no flicker on first cycle
+    allImages.forEach(function (url) {
+      var img = new Image();
+      img.src = url;
+    });
+
+    // Track which index of allImages each frame is currently showing.
+    // Seed: frame 0 → index 0, frame 1 → index 1, frame 2 → index 2 (mod length).
+    var currentIdx = frames.map(function (_, i) {
+      return i % allImages.length;
+    });
+
+    // Apply initial backgrounds (may override Blade inline styles, that is fine)
+    frames.forEach(function (frame, i) {
+      frame.style.backgroundImage = "url('" + allImages[currentIdx[i]] + "')";
+    });
+
+    var rotateFrame = 0; // which frame gets updated next
+
+    function cycleNext() {
+      var frameIdx = rotateFrame;
+      var frame    = frames[frameIdx];
+      var layer    = frame.querySelector('.bedrijf-photo-layer');
+      if (!layer) return;
+
+      // Build pool: images not currently visible in any frame
+      var shown = new Set(currentIdx);
+      var pool  = [];
+      for (var i = 0; i < allImages.length; i++) {
+        if (!shown.has(i)) pool.push(i);
+      }
+
+      // Fallback: any image other than what this specific frame shows
+      if (!pool.length) {
+        for (var j = 0; j < allImages.length; j++) {
+          if (j !== currentIdx[frameIdx]) { pool.push(j); }
+        }
+      }
+
+      if (!pool.length) return; // only one image — nothing to cycle
+
+      var nextIdx = pool[Math.floor(Math.random() * pool.length)];
+      var nextUrl = allImages[nextIdx];
+
+      // Phase 1: Set layer to new image and fade it in over 0.75 s
+      layer.style.backgroundImage = "url('" + nextUrl + "')";
+      layer.style.transition = 'opacity 0.75s ease';
+      layer.style.opacity    = '1';
+
+      // Phase 2: after fade completes, commit new image to base layer and hide overlay
+      setTimeout(function () {
+        frame.style.backgroundImage = "url('" + nextUrl + "')";
+        layer.style.transition = 'none';
+        layer.style.opacity    = '0';
+        // Re-enable transition for the next cycle without a flash
+        setTimeout(function () {
+          layer.style.transition = 'opacity 0.75s ease';
+        }, 60);
+        currentIdx[frameIdx] = nextIdx;
+      }, 800);
+
+      rotateFrame = (rotateFrame + 1) % frames.length;
+    }
+
+    // Stagger start 2 s after page load; then rotate one frame every 3.5 s.
+    // With 3 frames each frame changes roughly every 10.5 s — subtle and premium.
+    setTimeout(function () {
+      setInterval(cycleNext, 3500);
+    }, 2000);
+  }
+
+  // ─────────────────────────────────────────────
   // Transparent hero nav — homepage only.
   // Adds body.nav-scrolled once user scrolls 70 %
   // of viewport height; CSS handles the visual switch.
@@ -265,6 +355,7 @@
     initCarousels();
     initCustomCursor();
     initHeroNav();
+    initAtelierCycle();
   }
 
   if (document.readyState === 'loading') {

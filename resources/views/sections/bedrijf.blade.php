@@ -5,10 +5,13 @@
      ============================================================ --}}
 
 @php
-    $bedrijfPhotos = array_values(array_filter(
-        array_slice($atelierImages ?? [], 0, 5),
-        fn($p) => !empty($p)
-    ));
+    $atelierAll    = array_values(array_filter($atelierImages ?? [], fn($p) => !empty($p)));
+    $bedrijfPhotos = array_slice($atelierAll, 0, 3);
+    // All atelier URLs encoded for JS cycling — serialised into data attribute
+    $atelierJson   = htmlspecialchars(
+        json_encode(array_map(fn($p) => asset($p), $atelierAll), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        ENT_QUOTES, 'UTF-8'
+    );
 @endphp
 
 <section id="bedrijf" class="client-section bedrijf-section bedrijf-section--dark wood-bg-dark">
@@ -41,17 +44,21 @@
                 @endif
             </div>
 
-            {{-- ─── Atelier photo collage ─────────────────────── --}}
+            {{-- ─── Atelier photo collage — images cycle via JS ──────── --}}
             <div class="bedrijf-images reveal" data-reveal-delay="100" aria-hidden="true">
                 @if(count($bedrijfPhotos) >= 2)
-                    <div class="bedrijf-photo-stack">
-                        @foreach(array_slice($bedrijfPhotos, 0, 3) as $i => $img)
+                    {{-- data-atelier-images passes the full pool to JS for cycling --}}
+                    <div class="bedrijf-photo-stack" data-atelier-images="{{ $atelierJson }}">
+                        @foreach($bedrijfPhotos as $i => $img)
                             <div
                                 class="bedrijf-photo bedrijf-photo--{{ $i + 1 }}"
                                 style="background-image:url('{{ asset($img) }}')"
                                 role="img"
                                 aria-label="Van Kerkhoven atelier"
-                            ></div>
+                            >
+                                {{-- Crossfade overlay — JS swaps src here, fades in, then resets --}}
+                                <div class="bedrijf-photo-layer" aria-hidden="true"></div>
+                            </div>
                         @endforeach
                     </div>
                 @elseif(count($bedrijfPhotos) === 1)
