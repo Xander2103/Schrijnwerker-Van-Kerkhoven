@@ -2268,18 +2268,9 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
   left: 24%;
 }
 
-/* Crossfade overlay layer — sits on top of the photo base,
-   JS fades it in with the new image then resets */
+/* Full-set crossfade: JS fades all 3 frames out simultaneously,
+   swaps background-image on each, then fades back in. */
 .bedrijf-photo {
-  overflow: hidden; /* clip layer to rounded corners */
-}
-
-.bedrijf-photo-layer {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  pointer-events: none;
+  overflow: hidden; /* keep background-image clipped to border-radius */
 }
 

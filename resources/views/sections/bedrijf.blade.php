@@ -55,10 +55,7 @@
                                 style="background-image:url('{{ asset($img) }}')"
                                 role="img"
                                 aria-label="Van Kerkhoven atelier"
-                            >
-                                {{-- Crossfade overlay — JS swaps src here, fades in, then resets --}}
-                                <div class="bedrijf-photo-layer" aria-hidden="true"></div>
-                            </div>
+                            ></div>
                         @endforeach
                     </div>
                 @elseif(count($bedrijfPhotos) === 1)

@@ -239,9 +239,16 @@
 
   // ─────────────────────────────────────────────
   // Atelier photo cycling — Ons bedrijf section.
-  // Reads all image URLs from data-atelier-images, then rotates
-  // each photo frame through the full pool using a soft crossfade.
-  // Respects prefers-reduced-motion (skips cycling if reduced).
+  //
+  // Swaps ALL 3 frames simultaneously every ~4.5 s:
+  //   1. Fade out all 3 frames together (0.65 s).
+  //   2. Swap all 3 background-images at once.
+  //   3. Fade back in (0.65 s).
+  //
+  // Set-selection rule: the next set of 3 must share
+  // NO images with the current set — no direct repetition.
+  //
+  // Respects prefers-reduced-motion (static images if reduced).
   // ─────────────────────────────────────────────
   function initAtelierCycle() {
     if (prefersReduced) return;
@@ -251,80 +258,91 @@
 
     var allImages;
     try { allImages = JSON.parse(stack.dataset.atelierImages); } catch (e) { return; }
-    if (!allImages || allImages.length < 2) return;
+    if (!allImages || allImages.length < 3) return;
 
     var frames = Array.from(stack.querySelectorAll('.bedrijf-photo'));
-    if (!frames.length) return;
+    if (frames.length < 3) return;
 
-    // Preload all images so there is no flicker on first cycle
-    allImages.forEach(function (url) {
-      var img = new Image();
-      img.src = url;
-    });
+    // Enable opacity fade on each photo frame (CSS class handles transition duration)
+    frames.forEach(function (f) { f.style.transition = 'opacity 0.65s ease'; });
 
-    // Track which index of allImages each frame is currently showing.
-    // Seed: frame 0 → index 0, frame 1 → index 1, frame 2 → index 2 (mod length).
-    var currentIdx = frames.map(function (_, i) {
-      return i % allImages.length;
-    });
-
-    // Apply initial backgrounds (may override Blade inline styles, that is fine)
-    frames.forEach(function (frame, i) {
-      frame.style.backgroundImage = "url('" + allImages[currentIdx[i]] + "')";
-    });
-
-    var rotateFrame = 0; // which frame gets updated next
-
-    function cycleNext() {
-      var frameIdx = rotateFrame;
-      var frame    = frames[frameIdx];
-      var layer    = frame.querySelector('.bedrijf-photo-layer');
-      if (!layer) return;
-
-      // Build pool: images not currently visible in any frame
-      var shown = new Set(currentIdx);
-      var pool  = [];
-      for (var i = 0; i < allImages.length; i++) {
-        if (!shown.has(i)) pool.push(i);
+    // Fisher-Yates shuffle — returns a NEW shuffled array, does not mutate input
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
       }
-
-      // Fallback: any image other than what this specific frame shows
-      if (!pool.length) {
-        for (var j = 0; j < allImages.length; j++) {
-          if (j !== currentIdx[frameIdx]) { pool.push(j); }
-        }
-      }
-
-      if (!pool.length) return; // only one image — nothing to cycle
-
-      var nextIdx = pool[Math.floor(Math.random() * pool.length)];
-      var nextUrl = allImages[nextIdx];
-
-      // Phase 1: Set layer to new image and fade it in over 0.75 s
-      layer.style.backgroundImage = "url('" + nextUrl + "')";
-      layer.style.transition = 'opacity 0.75s ease';
-      layer.style.opacity    = '1';
-
-      // Phase 2: after fade completes, commit new image to base layer and hide overlay
-      setTimeout(function () {
-        frame.style.backgroundImage = "url('" + nextUrl + "')";
-        layer.style.transition = 'none';
-        layer.style.opacity    = '0';
-        // Re-enable transition for the next cycle without a flash
-        setTimeout(function () {
-          layer.style.transition = 'opacity 0.75s ease';
-        }, 60);
-        currentIdx[frameIdx] = nextIdx;
-      }, 800);
-
-      rotateFrame = (rotateFrame + 1) % frames.length;
+      return a;
     }
 
-    // Stagger start 2 s after page load; then rotate one frame every 3.5 s.
-    // With 3 frames each frame changes roughly every 10.5 s — subtle and premium.
-    setTimeout(function () {
-      setInterval(cycleNext, 3500);
-    }, 2000);
+    // Preload a single URL into the browser cache
+    function preload(url) { var img = new Image(); img.src = url; }
+
+    // Preload every image at startup so transitions are smooth from the first swap
+    allImages.forEach(preload);
+
+    // currentSet: the 3 URLs that are currently visible on screen.
+    // Seeded from allImages[0..2] which matches Blade's initial render.
+    var currentSet = allImages.slice(0, 3);
+
+    // Return 3 URLs that share NO entries with currentSet.
+    // Edge-case guard: if total pool < 6, pad with shuffled currentSet items.
+    function getNextSet() {
+      var pool = allImages.filter(function (url) {
+        return currentSet.indexOf(url) === -1;
+      });
+
+      if (pool.length < 3) {
+        // Not enough images outside currentSet — append shuffled currentSet as padding
+        pool = pool.concat(shuffle(currentSet));
+      }
+
+      return shuffle(pool).slice(0, 3);
+    }
+
+    // Speculatively preload the first upcoming set right after init
+    getNextSet().forEach(preload);
+
+    // FADE: CSS transition duration (ms). Must match the transition set on frames above.
+    // CYCLE: total time between cycle starts (ms).
+    //   Visible time per set ≈ CYCLE − FADE (fade-out) − FADE (fade-in) ≈ 4.5 s.
+    var FADE  = 650;
+    var CYCLE = 5800;
+
+    function cycle() {
+      var nextSet = getNextSet();
+
+      // Phase 1 — fade all frames out simultaneously
+      frames.forEach(function (f) { f.style.opacity = '0'; });
+
+      // Phase 2 — after fade-out: swap all backgrounds and fade back in
+      setTimeout(function () {
+        nextSet.forEach(function (url, i) {
+          frames[i].style.backgroundImage = "url('" + url + "')";
+        });
+
+        currentSet = nextSet;
+
+        // Preload the set after this one while the current one is fading in
+        getNextSet().forEach(preload);
+
+        // Phase 3 — fade all frames back in simultaneously
+        frames.forEach(function (f) { f.style.opacity = '1'; });
+
+      }, FADE + 50); // 50 ms buffer so fade-out is fully complete before swap
+    }
+
+    // Start cycling; pause when the browser tab is hidden to save resources
+    var timer = setInterval(cycle, CYCLE);
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        clearInterval(timer);
+      } else {
+        timer = setInterval(cycle, CYCLE);
+      }
+    });
   }
 
   // ─────────────────────────────────────────────
