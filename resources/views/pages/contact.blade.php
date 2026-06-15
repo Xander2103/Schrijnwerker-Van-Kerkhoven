@@ -5,8 +5,8 @@
 
 @section('content')
 
-{{-- ─── Compact page header ─────────────────────────────────────────────── --}}
-<section class="contact-page-hero section-compact wood-bg-sand">
+{{-- ─── Minimal page header — no hero styling, just navigation + title ─── --}}
+<div class="contact-page-header">
     <div class="client-container">
         <a href="/" class="page-back-link" aria-label="Terug naar home">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -14,15 +14,15 @@
             </svg>
             Terug naar home
         </a>
-        <div class="hout-hero-content">
+        <div class="contact-intro-block">
             <span class="section-eyebrow">Contact</span>
-            <h1 class="section-title" style="margin-bottom:0.5rem;">Maak een afspraak</h1>
+            <h1 style="margin-top:0.25rem;margin-bottom:0.375rem;">Maak een afspraak</h1>
             <p class="section-intro" style="margin:0;">
                 Vul het formulier in en wij nemen zo snel mogelijk contact op om uw project te bespreken.
             </p>
         </div>
     </div>
-</section>
+</div>
 
 {{-- ─── Contact form section ────────────────────────────────────────────── --}}
 @include('sections.contact')
