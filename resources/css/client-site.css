@@ -1093,34 +1093,27 @@
 }
 
 /* ============================================================
-   Custom Wooden Cursor — cursor3.png (wooden arrow, top-left).
-   Hotspot (arrow tip) ~8 px from left, ~5 px from top of the
-   48×48 element.
+   Hammer Cursor — cursorhammer.png
+   Hotspot (hammer head) ~4 px from left, ~4 px from top of the
+   48×48 element. transform-origin matches so all rotations pivot
+   at the head — the handle swings while the click point stays put.
 
-   IMPORTANT — two-phase activation:
+   Two-phase activation:
    • body.custom-cursor-enabled  → JS feature is on (set by Blade)
    • body.custom-cursor-ready    → image confirmed loaded (set by JS)
    Only the READY class hides the native cursor, so it is never
    invisible while the image is still loading or if it fails.
+
+   Two click animations:
+   • is-clicking-strike  → ~40° hammer-swing (interactive targets)
+   • is-clicking-spin    → full 360° rotation (non-interactive areas)
    ============================================================ */
 
-/* Hide native cursor only after image load is confirmed */
+/* Hide native cursor everywhere once image is confirmed loaded.
+   No exceptions — the hammer replaces the cursor site-wide. */
 body.custom-cursor-ready,
 body.custom-cursor-ready * {
   cursor: none !important;
-}
-
-/* Restore text cursor for text-entry fields */
-body.custom-cursor-ready input:not([type='submit']):not([type='button']):not([type='image']):not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
-body.custom-cursor-ready textarea,
-body.custom-cursor-ready [contenteditable='true'],
-body.custom-cursor-ready [contenteditable=''] {
-  cursor: text !important;
-}
-
-/* Restore default arrow for <select> (browser-rendered dropdown UI) */
-body.custom-cursor-ready select {
-  cursor: default !important;
 }
 
 .custom-cursor {
@@ -1133,14 +1126,14 @@ body.custom-cursor-ready select {
   transition: opacity 0.2s ease;
 }
 
-/* 48×48 container; transform-origin at the arrow tip so animations
-   pivot at the click point rather than the element centre. */
+/* 48×48 container. transform-origin at hammer head so handle swings
+   while the click point (hotspot) stays anchored to the mouse. */
 .custom-cursor-inner {
   display: block;
   width: 48px;
   height: 48px;
-  transform-origin: 8px 5px;
-  transition: transform 0.15s ease;
+  transform-origin: 4px 4px;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .custom-cursor-inner img {
@@ -1152,29 +1145,46 @@ body.custom-cursor-ready select {
   -webkit-user-drag: none;
 }
 
-/* Hover feedback: grow slightly when over interactive elements */
+/* Hover: slightly larger + ready-to-strike tilt */
 .custom-cursor-inner.is-hovering {
-  transform: scale(1.22);
+  transform: scale(1.18) rotate(-14deg);
 }
 
-/* Click: press-and-spring around the arrow tip */
-.custom-cursor.is-clicking .custom-cursor-inner {
-  animation: cursor-click 0.32s ease forwards;
+/* Interactive click: hammer strike — back-swing then forward ~40° then settle */
+.custom-cursor.is-clicking-strike .custom-cursor-inner {
+  animation: cursor-strike 0.40s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   transition: none;
 }
 
-@keyframes cursor-click {
-  0%   { transform: scale(1)    rotate(0deg); }
-  25%  { transform: scale(0.78) rotate(-15deg); }
-  65%  { transform: scale(1.08) rotate(8deg); }
-  100% { transform: scale(1)    rotate(0deg); }
+/* Non-interactive click: full branded 360° spin */
+.custom-cursor.is-clicking-spin .custom-cursor-inner {
+  animation: cursor-spin 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transition: none;
+}
+
+/* Back-swing → forward strike → slight rebound → settle */
+@keyframes cursor-strike {
+  0%   { transform: rotate(0deg); }
+  18%  { transform: rotate(-22deg); }
+  52%  { transform: rotate(42deg); }
+  74%  { transform: rotate(-6deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Smooth full rotation with slight overshoot at the end */
+@keyframes cursor-spin {
+  0%   { transform: rotate(0deg); }
+  75%  { transform: rotate(280deg); }
+  90%  { transform: rotate(375deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .custom-cursor-inner {
     transition: none;
   }
-  .custom-cursor.is-clicking .custom-cursor-inner {
+  .custom-cursor.is-clicking-strike .custom-cursor-inner,
+  .custom-cursor.is-clicking-spin .custom-cursor-inner {
     animation: none;
   }
 }

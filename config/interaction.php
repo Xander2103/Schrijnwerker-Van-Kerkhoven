@@ -2,7 +2,7 @@
 
 return [
     'custom_cursor' => [
-        'enabled' => false,
+        'enabled' => true,
     ],
 
     'scroll_reveal' => [

@@ -138,11 +138,17 @@
   }
 
   // ─────────────────────────────────────────────
-  // Custom Wooden Cursor — cursor3.png
+  // Hammer Cursor — cursorhammer.png
   // Two-phase activation: build the cursor DOM immediately, but only
   // add body.custom-cursor-ready (which hides the native cursor via CSS)
   // after Image.onload confirms the image is available. On error the
   // native cursor is left untouched and the custom element is removed.
+  //
+  // Click behaviour:
+  //   • Interactive target (a, button, input, …) → is-clicking-strike
+  //     (40° hammer swing, returns smoothly — feels like hitting a nail)
+  //   • Non-interactive target                   → is-clicking-spin
+  //     (full 360° rotation — playful branded moment)
   // ─────────────────────────────────────────────
   function initCustomCursor() {
     if (!document.body.classList.contains('custom-cursor-enabled')) return;
@@ -161,17 +167,22 @@
     inner.appendChild(cursorImg);
 
     cursor.appendChild(inner);
-    // Keep invisible until image load confirmed — native cursor stays
-    // visible in the meantime
     cursor.style.opacity = '0';
     document.body.appendChild(cursor);
 
-    // Hotspot: arrow tip is ~8 px from left, ~5 px from top of the
-    // 48×48 element
-    var hotX = 8, hotY = 5;
+    // Hotspot: hammer head sits near the top-left corner of the 48×48 element.
+    // The transform-origin in CSS also pivots at this point so the handle
+    // swings while the head (and click point) stays in place.
+    var hotX = 4, hotY = 4;
     var mouseX = 0, mouseY = 0;
     var curX   = 0, curY   = 0;
     var ready  = false;
+
+    // Selector for elements that receive the "strike" animation
+    var INTERACTIVE_SEL = 'a, button, input, select, textarea, label, summary, ' +
+      '[role="button"], .btn, .wood-swatch, .realisatie-btn, ' +
+      '.review-nav-btn, .review-dot, .lightbox-nav-btn, .lightbox-close, ' +
+      '.nav-toggle, [tabindex]:not([tabindex="-1"])';
 
     function lerp(a, b, t) { return a + (b - a) * t; }
 
@@ -188,7 +199,6 @@
       if (prefersReduced) {
         cursor.style.transform = 'translate(' + (mouseX - hotX) + 'px,' + (mouseY - hotY) + 'px)';
       }
-      // Only reveal the custom cursor once the image is confirmed
       if (ready) cursor.style.opacity = '1';
     });
 
@@ -200,28 +210,30 @@
       animateSmooth();
     }
 
-    // Click: mousedown fires before mouseup so no native-cursor gap
-    document.addEventListener('mousedown', function () {
+    // Click differentiation — mousedown fires before mouseup so there is
+    // no frame where the native cursor would be visible.
+    document.addEventListener('mousedown', function (e) {
       if (!ready || prefersReduced) return;
-      cursor.classList.remove('is-clicking');
-      void cursor.offsetWidth; // force reflow so animation can restart
-      cursor.classList.add('is-clicking');
+
+      // Guard: cancel any in-progress animation cleanly before restarting
+      cursor.classList.remove('is-clicking-strike', 'is-clicking-spin');
+      void cursor.offsetWidth; // force reflow so new animation restarts
+
+      var isInteractive = !!e.target.closest(INTERACTIVE_SEL);
+      cursor.classList.add(isInteractive ? 'is-clicking-strike' : 'is-clicking-spin');
     });
 
     inner.addEventListener('animationend', function () {
-      cursor.classList.remove('is-clicking');
+      cursor.classList.remove('is-clicking-strike', 'is-clicking-spin');
     });
 
-    // Hover feedback: scale up over interactive elements
+    // Hover feedback: tilt and enlarge over interactive elements
     document.addEventListener('mouseover', function (e) {
-      var isInteractive = !!e.target.closest('a, button, label, [role="button"], .btn, summary');
+      var isInteractive = !!e.target.closest(INTERACTIVE_SEL);
       inner.classList.toggle('is-hovering', isInteractive);
     });
 
     // ── Image load gate ─────────────────────────────────────────────
-    // Use the actual cursor <img> as the load gate so we know the same
-    // element the browser will paint has loaded successfully. Only then
-    // hide the native cursor and reveal the custom one.
     cursorImg.onload = function () {
       ready = true;
       document.body.classList.add('custom-cursor-ready');
@@ -229,12 +241,10 @@
     };
 
     cursorImg.onerror = function () {
-      // Image unavailable — remove the invisible element and leave the
-      // native cursor fully intact.
       if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
     };
 
-    cursorImg.src = '/assets/client/images/cursor3.png';
+    cursorImg.src = '/assets/client/images/cursorhammer.png';
   }
 
   // ─────────────────────────────────────────────
