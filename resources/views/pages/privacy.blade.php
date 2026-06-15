@@ -59,8 +59,7 @@
 
             <div class="privacy-block">
                 <h2>5. Cookies, technische gegevens en externe diensten</h2>
-                <p>Deze website maakt gebruik van functionele sessiedata die nodig zijn voor de werking van het contactformulier (CSRF-beveiliging). Er worden geen tracking- of advertentiecookies geplaatst. Er wordt geen gebruik gemaakt van Google Analytics of andere analysediensten.</p>
-                <p><strong>Lettertypen (Google Fonts):</strong> De website laadt lettertypen van Google Fonts (fonts.googleapis.com). Hierdoor kan uw IP-adres worden doorgestuurd naar servers van Google. Google verwerkt deze gegevens conform hun eigen privacybeleid. Wij hebben geen toegang tot deze gegevens en gebruiken ze niet voor profilering.</p>
+                <p>Deze website maakt gebruik van functionele sessiedata die nodig zijn voor de werking van het contactformulier (CSRF-beveiliging). Er worden geen tracking- of advertentiecookies geplaatst. Er wordt geen gebruik gemaakt van Google Analytics of andere analysediensten. Lettertypen worden lokaal geladen — er worden geen externe lettertypeservers gecontacteerd.</p>
                 <p><strong>Google Maps:</strong> Op de pagina 'Locatie' wordt een kaart getoond via een ingebedde Google Maps-kaart (iframe). Wanneer u die pagina bezoekt, kan Google uw IP-adres en browserinformatie verwerken. Dit geschiedt conform het privacybeleid van Google. U kunt de kaart ook rechtstreeks raadplegen via de link 'Bekijk op Google Maps' zonder de ingebedde versie te laden.</p>
             </div>
 
