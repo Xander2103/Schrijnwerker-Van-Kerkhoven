@@ -105,4 +105,16 @@ class HomepageTest extends TestCase
         config(['site.sections.contact_cta' => false]);
         $this->get('/')->assertDontSee('id="contact-cta"', false);
     }
+
+    public function test_footer_contains_vanmalderstudio_credit(): void
+    {
+        $this->get('/')
+            ->assertSee('VanMalderStudio', false)
+            ->assertSee('vanmalderstudio.be', false);
+    }
+
+    public function test_footer_credit_has_noopener_noreferrer(): void
+    {
+        $this->get('/')->assertSee('rel="noopener noreferrer"', false);
+    }
 }

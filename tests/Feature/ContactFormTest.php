@@ -90,4 +90,14 @@ class ContactFormTest extends TestCase
         $this->post('/contact', $this->validPayload(['message' => str_repeat('a', 2001)]))
             ->assertSessionHasErrors('message');
     }
+
+    public function test_rate_limit_blocks_after_two_successful_submissions(): void
+    {
+        // First two valid submissions should succeed (cache count: 0→1, 1→2)
+        $this->post('/contact', $this->validPayload())->assertSessionHas('contact_success');
+        $this->post('/contact', $this->validPayload())->assertSessionHas('contact_success');
+
+        // Third submission: cache count is 2 (>= 2), should be rate-limited
+        $this->post('/contact', $this->validPayload())->assertSessionHas('contact_rate_error');
+    }
 }

@@ -39,6 +39,9 @@
             </div>
 
         </div>
-        <div class="footer-bottom">{{ config('site.footer_text') }}</div>
+        <div class="footer-bottom">
+            <span>{{ config('site.footer_text') }}</span>
+            <span class="footer-credit">Designed by <a href="https://vanmalderstudio.be/nl" target="_blank" rel="noopener noreferrer">VanMalderStudio</a></span>
+        </div>
     </div>
 </footer>

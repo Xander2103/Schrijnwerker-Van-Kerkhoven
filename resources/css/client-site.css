@@ -2288,3 +2288,39 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* ============================================================
+   Footer credit — subtle "Designed by VanMalderStudio" line
+   ============================================================ */
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  text-align: left; /* overrides text-center from @layer */
+}
+
+@media (max-width: 639px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.footer-credit {
+  font-size: 0.73rem;
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.footer-credit a {
+  color: rgba(255, 255, 255, 0.40);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-credit a:hover {
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: underline;
+}
+
