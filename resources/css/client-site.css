@@ -2225,7 +2225,7 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
 }
 
 /* ============================================================
-   Ons bedrijf — photo collage, right-anchored, open breathing room
+   Ons bedrijf — photo collage, clear readability + hover lift
    ============================================================ */
 .bedrijf-images {
   justify-content: flex-end;
@@ -2233,37 +2233,58 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
 }
 
 .bedrijf-photo-stack {
-  height: 460px;
+  height: 480px;
   overflow: visible;
 }
 
 @media (max-width: 767px) {
-  .bedrijf-photo-stack { height: 340px; }
+  .bedrijf-photo-stack { height: 360px; }
 }
 
-/* Photo 1: top-left, reduced size so photos 1 & 2 don't swamp each other */
+/* Photo 1: main card — top-left, 64% wide so right half of stack stays open */
 .bedrijf-photo--1 {
-  width: 68%;
-  height: 54%;
-}
-
-/* Photo 2: bottom-right, slightly narrower — visible below photo 1 */
-.bedrijf-photo--2 {
   width: 64%;
-  height: 54%;
+  height: 56%;
 }
 
-/* Photo 3: accent card, smaller, central-right — bridges the two large cards */
+/* Photo 2: secondary card — bottom-right, 60% wide, clearly offset below photo 1 */
+.bedrijf-photo--2 {
+  width: 60%;
+  height: 52%;
+}
+
+/* Photo 3: accent card — top-right edge; no longer sitting over the center of 1 & 2.
+   left:auto + right:0 positions it at the right wall of the stack. */
 .bedrijf-photo--3 {
-  width: 44%;
-  height: 38%;
-  top: 30%;
-  left: 26%;
+  width: 40%;
+  height: 34%;
+  top: 20%;
+  left: auto;
+  right: 0;
 }
 
-/* Full-set crossfade: JS fades all 3 frames out simultaneously,
-   swaps background-image on each, then fades back in. */
+/* Hover: subtle lift brings hidden details forward — scale preserves existing rotation */
+.bedrijf-photo--1:hover {
+  transform: rotate(-2.2deg) scale(1.03) translateY(-4px);
+  box-shadow: 0 20px 56px rgba(44, 26, 14, 0.42);
+  z-index: 10;
+}
+
+.bedrijf-photo--2:hover {
+  transform: rotate(1.8deg) scale(1.03) translateY(-4px);
+  box-shadow: 0 20px 56px rgba(44, 26, 14, 0.42);
+  z-index: 10;
+}
+
+.bedrijf-photo--3:hover {
+  transform: rotate(-0.6deg) scale(1.05) translateY(-5px);
+  box-shadow: 0 20px 56px rgba(44, 26, 14, 0.42);
+  z-index: 10;
+}
+
+/* Base transition for hover effects — JS extends this with opacity 0.65s for cycling */
 .bedrijf-photo {
-  overflow: hidden; /* keep background-image clipped to border-radius */
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 

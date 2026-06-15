@@ -264,7 +264,7 @@
     if (frames.length < 3) return;
 
     // Enable opacity fade on each photo frame (CSS class handles transition duration)
-    frames.forEach(function (f) { f.style.transition = 'opacity 0.65s ease'; });
+    frames.forEach(function (f) { f.style.transition = 'opacity 0.65s ease, transform 0.3s ease, box-shadow 0.3s ease'; });
 
     // Fisher-Yates shuffle — returns a NEW shuffled array, does not mutate input
     function shuffle(arr) {
