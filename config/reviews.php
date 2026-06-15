@@ -9,10 +9,12 @@ return [
     'handelsgids_rating' => 4.2,
     'handelsgids_count'  => 1,
 
-    // Optional: configure a URL to let visitors write a review.
-    // Leave null to hide the button.
+    // Add your Google review link here to show the
+    // "Schrijf een review op Google" button below the reviews carousel.
+    // Find it via: Google Maps → your business → "Get more reviews" → copy the link.
+    // Leave null to hide the button completely.
     'review_write_url'   => null,
-    'review_write_label' => 'Schrijf een review',
+    'review_write_label' => 'Schrijf een review op Google',
 
     /*
      * Reviews are manually configured. They are not automatically synced

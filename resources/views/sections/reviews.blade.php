@@ -42,18 +42,6 @@
             </div>
         @endif
 
-        {{-- Optional: write a review link --}}
-        @if(!empty(config('reviews.review_write_url')))
-            <div class="reviews-intro-row reveal" style="justify-content:flex-end;">
-                <a
-                    href="{{ config('reviews.review_write_url') }}"
-                    class="btn btn-secondary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >{{ config('reviews.review_write_label', 'Schrijf een review') }}</a>
-            </div>
-        @endif
-
         {{-- Carousel --}}
         <div
             class="review-carousel reveal"
@@ -142,6 +130,18 @@
                 </div>
             @endif
         </div>
+
+        {{-- Write a review CTA — shown below carousel when URL is configured --}}
+        @if(!empty(config('reviews.review_write_url')))
+            <div class="section-actions reveal" style="margin-top:2rem;justify-content:center;">
+                <a
+                    href="{{ config('reviews.review_write_url') }}"
+                    class="btn btn-secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >{{ config('reviews.review_write_label', 'Schrijf een review op Google') }}</a>
+            </div>
+        @endif
 
     </div>
 </section>

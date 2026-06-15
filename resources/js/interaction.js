@@ -185,8 +185,11 @@
     // the stacking context that <dialog> top-layer creates.
     document.documentElement.appendChild(cursor);
 
-    // Hotspot at hammer head — top-left of the 48×48 element.
-    var hotX = 4, hotY = 4;
+    // Hotspot at hammer head — upper-right of the 48×48 element.
+    // The hammer PNG is diagonal (head upper-right, handle lower-left).
+    // Setting hotX=34,hotY=4 aligns the mouse coordinate with the
+    // flat striking face of the hammer head (~70% from left, ~8% from top).
+    var hotX = 34, hotY = 4;
     var mouseX = 0, mouseY = 0;
     var curX   = 0, curY   = 0;
     var ready  = false;
