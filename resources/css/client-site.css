@@ -1094,40 +1094,61 @@
 
 /* ============================================================
    Hammer Cursor — cursorhammer.png
-   Hotspot (hammer head) ~4 px from left, ~4 px from top of the
-   48×48 element. transform-origin matches so all rotations pivot
-   at the head — the handle swings while the click point stays put.
+
+   Architecture:
+   • .custom-cursor (outer)  — JS owns only translate3d on this
+   • .custom-cursor-inner    — ALL visual transforms live here
+                               (scale, rotate, animation)
+   Keeping translate and rotate on separate elements eliminates
+   transform conflicts when animations run.
 
    Two-phase activation:
-   • body.custom-cursor-enabled  → JS feature is on (set by Blade)
-   • body.custom-cursor-ready    → image confirmed loaded (set by JS)
-   Only the READY class hides the native cursor, so it is never
-   invisible while the image is still loading or if it fails.
+   • body.custom-cursor-enabled  → set by Blade at render time;
+     hides native cursor immediately, before JS runs (no flash)
+   • body.custom-cursor-ready    → set by JS after image loads;
+     makes the hammer visible and confirms safe operation
 
-   Two click animations:
-   • is-clicking-strike  → ~40° hammer-swing (interactive targets)
-   • is-clicking-spin    → full 360° rotation (non-interactive areas)
+   Two click animations on .custom-cursor-inner:
+   • .is-clicking-strike  → ~40° swing around hammer head (4px,4px)
+   • .is-clicking-spin    → 360° spin around image centre (no drift)
+
+   No animation-fill-mode: forwards — removes forwards-fill →
+   transition conflict that caused the post-spin position jump.
    ============================================================ */
 
-/* Hide native cursor everywhere once image is confirmed loaded.
-   No exceptions — the hammer replaces the cursor site-wide. */
+/* ── Early native-cursor hide ────────────────────────────────
+   custom-cursor-enabled is rendered by Blade into the HTML, so
+   this fires as soon as the browser parses the CSS — no JS wait. */
+body.custom-cursor-enabled,
+body.custom-cursor-enabled * {
+  cursor: none !important;
+}
+
+/* ── Late confirm (redundant safety net) ─────────────────────
+   Also set by JS after image load succeeds. */
 body.custom-cursor-ready,
 body.custom-cursor-ready * {
   cursor: none !important;
 }
 
+/* ── Outer wrapper — translate only ─────────────────────────
+   z-index: 2147483647 = max 32-bit signed int.
+   <dialog> elements open in the browser's "top layer" which sits
+   above normal stacking contexts; appending the cursor to <html>
+   (not body) and using the maximum z-index keeps it on top. */
 .custom-cursor {
   position: fixed;
   top: 0;
   left: 0;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 2147483647;
   will-change: transform;
   transition: opacity 0.2s ease;
 }
 
-/* 48×48 container. transform-origin at hammer head so handle swings
-   while the click point (hotspot) stays anchored to the mouse. */
+/* ── Inner — all visual transforms ──────────────────────────
+   transform-origin: 4px 4px = hammer head, pivot for strike.
+   Overridden to center center for spin (per-class below). */
 .custom-cursor-inner {
   display: block;
   width: 48px;
@@ -1145,48 +1166,51 @@ body.custom-cursor-ready * {
   -webkit-user-drag: none;
 }
 
-/* Hover: slightly larger + ready-to-strike tilt */
+/* Hover: tilt back into a ready-to-strike pose */
 .custom-cursor-inner.is-hovering {
   transform: scale(1.18) rotate(-14deg);
 }
 
-/* Interactive click: hammer strike — back-swing then forward ~40° then settle */
-.custom-cursor.is-clicking-strike .custom-cursor-inner {
-  animation: cursor-strike 0.40s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+/* ── Strike (interactive click) ──────────────────────────────
+   Pivot stays at hammer head. Handle swings ~40° forward and
+   returns. No forwards fill — element snaps to CSS base state
+   the instant the animation ends, while transition:none is still
+   active, so there is no animated snap-back. */
+.custom-cursor-inner.is-clicking-strike {
+  animation: cursor-strike 0.40s cubic-bezier(0.22, 1, 0.36, 1);
   transition: none;
 }
 
-/* Non-interactive click: full branded 360° spin */
-.custom-cursor.is-clicking-spin .custom-cursor-inner {
-  animation: cursor-spin 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+/* ── Spin (non-interactive click) ────────────────────────────
+   Override pivot to image centre so hammer spins in place.
+   transform-origin:4px 4px would orbit the image around its
+   top-left corner — visually it would appear to "jump". */
+.custom-cursor-inner.is-clicking-spin {
+  transform-origin: center center;
+  animation: cursor-spin 0.55s ease-in-out;
   transition: none;
 }
 
-/* Back-swing → forward strike → slight rebound → settle */
 @keyframes cursor-strike {
-  0%   { transform: rotate(0deg); }
+  0%   { transform: rotate(0deg);  }
   18%  { transform: rotate(-22deg); }
-  52%  { transform: rotate(42deg); }
-  74%  { transform: rotate(-6deg); }
-  100% { transform: rotate(0deg); }
+  52%  { transform: rotate(42deg);  }
+  74%  { transform: rotate(-6deg);  }
+  100% { transform: rotate(0deg);  }
 }
 
-/* Smooth full rotation with slight overshoot at the end */
+/* Clean 360° — start and end at exactly the same visual angle.
+   Without forwards fill, the element snaps instantly to its
+   CSS state (transition:none still active) when done — no drift. */
 @keyframes cursor-spin {
-  0%   { transform: rotate(0deg); }
-  75%  { transform: rotate(280deg); }
-  90%  { transform: rotate(375deg); }
+  0%   { transform: rotate(0deg);   }
   100% { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .custom-cursor-inner {
-    transition: none;
-  }
-  .custom-cursor.is-clicking-strike .custom-cursor-inner,
-  .custom-cursor.is-clicking-spin .custom-cursor-inner {
-    animation: none;
-  }
+  .custom-cursor-inner { transition: none; }
+  .custom-cursor-inner.is-clicking-strike,
+  .custom-cursor-inner.is-clicking-spin { animation: none; }
 }
 
 /* ============================================================

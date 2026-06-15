@@ -139,16 +139,27 @@
 
   // ─────────────────────────────────────────────
   // Hammer Cursor — cursorhammer.png
-  // Two-phase activation: build the cursor DOM immediately, but only
-  // add body.custom-cursor-ready (which hides the native cursor via CSS)
-  // after Image.onload confirms the image is available. On error the
-  // native cursor is left untouched and the custom element is removed.
   //
-  // Click behaviour:
-  //   • Interactive target (a, button, input, …) → is-clicking-strike
-  //     (40° hammer swing, returns smoothly — feels like hitting a nail)
-  //   • Non-interactive target                   → is-clicking-spin
-  //     (full 360° rotation — playful branded moment)
+  // Architecture:
+  //   outer .custom-cursor  — JS writes translate3d only
+  //   inner .custom-cursor-inner — all visual state lives here
+  //     (hover scale/tilt, click animation classes)
+  //   Keeping translate and rotate on separate elements prevents
+  //   transform property conflicts during animations.
+  //
+  // Click classes (on inner, not outer):
+  //   is-clicking-strike  → interactive targets (links, buttons…)
+  //   is-clicking-spin    → non-interactive areas
+  //
+  // No animation-fill-mode:forwards — avoids the post-animation
+  // transition from the held final-frame back to the CSS base
+  // state, which caused the visible position shift.
+  //
+  // Early hide: CSS hides native cursor via body.custom-cursor-enabled
+  // (set by Blade at render time) so no flash before JS runs.
+  //
+  // Lightbox fix: cursor appended to <html> element, not <body>,
+  // so it sits outside the <dialog> top-layer stacking context.
   // ─────────────────────────────────────────────
   function initCustomCursor() {
     if (!document.body.classList.contains('custom-cursor-enabled')) return;
@@ -165,20 +176,22 @@
     cursorImg.alt = '';
     cursorImg.setAttribute('aria-hidden', 'true');
     inner.appendChild(cursorImg);
-
     cursor.appendChild(inner);
-    cursor.style.opacity = '0';
-    document.body.appendChild(cursor);
 
-    // Hotspot: hammer head sits near the top-left corner of the 48×48 element.
-    // The transform-origin in CSS also pivots at this point so the handle
-    // swings while the head (and click point) stays in place.
+    // Start invisible — shown after image load is confirmed
+    cursor.style.opacity = '0';
+
+    // Append to <html>, not <body>, so the cursor lives outside
+    // the stacking context that <dialog> top-layer creates.
+    document.documentElement.appendChild(cursor);
+
+    // Hotspot at hammer head — top-left of the 48×48 element.
     var hotX = 4, hotY = 4;
     var mouseX = 0, mouseY = 0;
     var curX   = 0, curY   = 0;
     var ready  = false;
+    var clicking = false; // guard against hover-state churn during animation
 
-    // Selector for elements that receive the "strike" animation
     var INTERACTIVE_SEL = 'a, button, input, select, textarea, label, summary, ' +
       '[role="button"], .btn, .wood-swatch, .realisatie-btn, ' +
       '.review-nav-btn, .review-dot, .lightbox-nav-btn, .lightbox-close, ' +
@@ -186,18 +199,19 @@
 
     function lerp(a, b, t) { return a + (b - a) * t; }
 
-    function animateSmooth() {
+    function tick() {
       curX = lerp(curX, mouseX, 0.18);
       curY = lerp(curY, mouseY, 0.18);
-      cursor.style.transform = 'translate(' + (curX - hotX) + 'px,' + (curY - hotY) + 'px)';
-      requestAnimationFrame(animateSmooth);
+      // translate3d promotes to GPU compositor layer — smooth 60fps
+      cursor.style.transform = 'translate3d(' + (curX - hotX) + 'px,' + (curY - hotY) + 'px,0)';
+      requestAnimationFrame(tick);
     }
 
     document.addEventListener('mousemove', function (e) {
       mouseX = e.clientX;
       mouseY = e.clientY;
       if (prefersReduced) {
-        cursor.style.transform = 'translate(' + (mouseX - hotX) + 'px,' + (mouseY - hotY) + 'px)';
+        cursor.style.transform = 'translate3d(' + (mouseX - hotX) + 'px,' + (mouseY - hotY) + 'px,0)';
       }
       if (ready) cursor.style.opacity = '1';
     });
@@ -206,34 +220,43 @@
       cursor.style.opacity = '0';
     });
 
-    if (!prefersReduced) {
-      animateSmooth();
-    }
+    if (!prefersReduced) tick();
 
-    // Click differentiation — mousedown fires before mouseup so there is
-    // no frame where the native cursor would be visible.
     document.addEventListener('mousedown', function (e) {
       if (!ready || prefersReduced) return;
 
-      // Guard: cancel any in-progress animation cleanly before restarting
-      cursor.classList.remove('is-clicking-strike', 'is-clicking-spin');
-      void cursor.offsetWidth; // force reflow so new animation restarts
+      clicking = true;
+
+      // Remove hover state + any in-progress animation — clean slate.
+      // Removing is-hovering before the animation prevents a 1-frame
+      // snap from the hover transform to the animation's 0% keyframe.
+      inner.classList.remove('is-hovering', 'is-clicking-strike', 'is-clicking-spin');
+      void inner.offsetWidth; // force reflow so the new animation restarts
 
       var isInteractive = !!e.target.closest(INTERACTIVE_SEL);
-      cursor.classList.add(isInteractive ? 'is-clicking-strike' : 'is-clicking-spin');
+      inner.classList.add(isInteractive ? 'is-clicking-strike' : 'is-clicking-spin');
     });
 
     inner.addEventListener('animationend', function () {
-      cursor.classList.remove('is-clicking-strike', 'is-clicking-spin');
+      clicking = false;
+      inner.classList.remove('is-clicking-strike', 'is-clicking-spin');
+
+      // Re-evaluate hover state immediately at the current pointer position
+      // rather than waiting for the next mouseover event.
+      var el = document.elementFromPoint(mouseX, mouseY);
+      inner.classList.toggle('is-hovering', !!(el && el.closest(INTERACTIVE_SEL)));
     });
 
-    // Hover feedback: tilt and enlarge over interactive elements
+    // Hover — skip state change while a click animation is running
     document.addEventListener('mouseover', function (e) {
+      if (clicking) return;
       var isInteractive = !!e.target.closest(INTERACTIVE_SEL);
       inner.classList.toggle('is-hovering', isInteractive);
     });
 
-    // ── Image load gate ─────────────────────────────────────────────
+    // ── Image load gate ──────────────────────────────────────────────
+    // body.custom-cursor-enabled (from Blade) already hides the native
+    // cursor. Here we make the hammer visible and add the secondary class.
     cursorImg.onload = function () {
       ready = true;
       document.body.classList.add('custom-cursor-ready');
@@ -241,6 +264,8 @@
     };
 
     cursorImg.onerror = function () {
+      // Image failed — restore native cursor everywhere and clean up
+      document.body.classList.remove('custom-cursor-enabled');
       if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
     };
 
