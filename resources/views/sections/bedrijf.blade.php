@@ -7,10 +7,11 @@
 @php
     $atelierAll    = array_values(array_filter($atelierImages ?? [], fn($p) => !empty($p)));
     $bedrijfPhotos = array_slice($atelierAll, 0, 3);
-    // All atelier URLs encoded for JS cycling — serialised into data attribute
-    $atelierJson   = htmlspecialchars(
-        json_encode(array_map(fn($p) => asset($p), $atelierAll), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-        ENT_QUOTES, 'UTF-8'
+    // json_encode produces "…" which Blade {{ }} encodes to &quot;…&quot; — one pass only.
+    // Do NOT wrap in htmlspecialchars() here; that would double-encode and break JSON.parse() in JS.
+    $atelierJson   = json_encode(
+        array_map(fn($p) => asset($p), $atelierAll),
+        JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
     );
 @endphp
 
