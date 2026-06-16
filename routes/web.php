@@ -1,13 +1,14 @@
 <?php
 
+use App\Support\GalleryScanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('pages.home', [
-        'galleryImages' => scanGallery(),
-        'atelierImages' => scanGallery('atelier'),
+        'galleryImages' => GalleryScanner::scan(),
+        'atelierImages' => GalleryScanner::scan('atelier'),
     ]);
 });
 
@@ -64,29 +65,9 @@ Route::post('/contact', function (Request $request) {
     );
 })->middleware('throttle:5,1')->name('contact.submit');
 
-// ── Helper: scan gallerij directory ─────────────────────────────────────────
-if (!function_exists('scanGallery')) {
-function scanGallery(string $folder = 'gallerij'): array {
-    $dir     = public_path('assets/client/images/' . $folder);
-    $allowed = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
-    $images  = [];
-    if (is_dir($dir)) {
-        $files = array_values(array_filter(scandir($dir), function ($f) use ($dir, $allowed) {
-            return is_file($dir . DIRECTORY_SEPARATOR . $f)
-                && in_array(strtolower(pathinfo($f, PATHINFO_EXTENSION)), $allowed, true);
-        }));
-        natsort($files);
-        foreach ($files as $file) {
-            $images[] = 'assets/client/images/' . $folder . '/' . $file;
-        }
-    }
-    return $images;
-}
-} // end if (!function_exists)
-
 Route::get('/ramen', function () {
     $galleryImages = array_values(array_filter(
-        scanGallery('ramen'),
+        GalleryScanner::scan('ramen'),
         fn($p) => !str_contains(basename($p), 'hero')
     ));
     return view('pages.ramen', compact('galleryImages'));
@@ -94,14 +75,14 @@ Route::get('/ramen', function () {
 
 Route::get('/deuren', function () {
     $galleryImages = array_values(array_filter(
-        scanGallery('deuren'),
+        GalleryScanner::scan('deuren'),
         fn($p) => !str_contains(basename($p), 'hero')
     ));
     return view('pages.deuren', compact('galleryImages'));
 })->name('deuren');
 
 Route::get('/trappen', function () {
-    $galleryImages = scanGallery('trap');
+    $galleryImages = GalleryScanner::scan('trap');
     return view('pages.trappen', compact('galleryImages'));
 })->name('trappen');
 
