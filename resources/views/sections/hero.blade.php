@@ -14,13 +14,6 @@
             {{-- Logo — left-aligned brand mark --}}
             <div class="hero-logo-wrap" aria-hidden="true">
                 @if(!empty(config('images.logo')))
-                    <img
-                        src="{{ asset(config('images.logo')) }}"
-                        alt="{{ config('site.name') }}"
-                        class="hero-logo-img"
-                        width="200"
-                        height="200"
-                    >
                 @else
                     <div class="hero-logo-fallback">
                         <span>VK</span>

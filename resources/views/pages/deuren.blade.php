@@ -25,16 +25,6 @@
     </div>
 </section>
 
-{{-- ─── Short intro + CTA ──────────────────────────────────────────── --}}
-<section class="client-section section-compact">
-    <div class="client-container">
-        <p style="color:var(--color-text-light); max-width:60ch; font-size:1rem; line-height:1.75; margin:0 0 1.5rem;">
-            Buitendeuren in weersbestendig massief hout, binnendeuren op maat van stijl en ruimte — klassieke of moderne profileringen, keuze uit meerdere houtsoorten. Plaatsing door eigen dienst.
-        </p>
-        <a href="/contact" class="btn btn-primary">Maak een afspraak</a>
-    </div>
-</section>
-
 {{-- ─── Photo gallery ───────────────────────────────────────────────── --}}
 @php $galleryTitle = 'Realisaties houten deuren'; @endphp
 @include('partials.realisaties-gallery')

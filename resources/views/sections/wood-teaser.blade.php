@@ -31,7 +31,7 @@
                         <span class="wood-swatch-label">Eerste keus</span>
                     </div>
                     <div class="wood-swatch" style="--swatch-color:#C04000;" role="img" aria-label="Meranti — roodachtig toegankelijk">
-                        <span class="wood-swatch-label">Meranti</span>
+                        <span class="wood-swatch-label">Meranti nemesu</span>
                     </div>
                 </div>
             </div>

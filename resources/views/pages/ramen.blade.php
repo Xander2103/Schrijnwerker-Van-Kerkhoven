@@ -25,15 +25,6 @@
     </div>
 </section>
 
-{{-- ─── Short intro + CTA ──────────────────────────────────────────── --}}
-<section class="client-section section-compact">
-    <div class="client-container">
-        <p style="color:var(--color-text-light); max-width:60ch; font-size:1rem; line-height:1.75; margin:0 0 1.5rem;">
-            Massief houten ramen volledig op maat — eik, meranti, afrormosia of afzelia — met isolerende beglazing naar keuze. Geschikt voor renovatie en nieuwbouw, geplaatst door onze eigen dienst.
-        </p>
-        <a href="/contact" class="btn btn-primary">Maak een afspraak</a>
-    </div>
-</section>
 
 {{-- ─── Photo gallery ───────────────────────────────────────────────── --}}
 @php $galleryTitle = 'Realisaties houten ramen'; @endphp

@@ -14,13 +14,6 @@
             </svg>
             Terug naar home
         </a>
-        <div class="contact-intro-block">
-            <span class="section-eyebrow">Contact</span>
-            <h1 style="margin-top:0.25rem;margin-bottom:0.375rem;">Maak een afspraak</h1>
-            <p class="section-intro" style="margin:0;">
-                Vul het formulier in en wij nemen zo snel mogelijk contact op om uw project te bespreken.
-            </p>
-        </div>
     </div>
 </div>
 

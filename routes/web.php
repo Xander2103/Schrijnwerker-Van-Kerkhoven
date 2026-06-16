@@ -145,8 +145,8 @@ Route::get('/houtsoorten', function () {
         ],
         [
             // TODO: Confirm exact Meranti variant/species used in production before updating this description.
-            'name'        => 'Meranti',
-            'description' => 'Ook is er Meranti, een veelzijdige en populaire houtsoort. Het is niet alleen geschikt voor diverse toepassingen, van meubels tot deurbekledingen, maar het is ook vaak voordeliger in vergelijking met andere hardhoutsoorten. Deze economische efficiëntie gaat niet ten koste van de kwaliteit, aangezien Meranti prachtig afgewerkt kan worden om zijn natuurlijke schoonheid te accentueren. Afhankelijk van zijn herkomst, biedt het ook een matige tot goede weerstand tegen schimmels en insecten.',
+            'name'        => 'Meranti nemesu',
+            'description' => 'Ook is er Meranti nemusu, een veelzijdige en populaire houtsoort. Het is niet alleen geschikt voor diverse toepassingen, van meubels tot deurbekledingen, maar het is ook vaak voordeliger in vergelijking met andere hardhoutsoorten. Deze economische efficiëntie gaat niet ten koste van de kwaliteit, aangezien Meranti prachtig afgewerkt kan worden om zijn natuurlijke schoonheid te accentueren. Afhankelijk van zijn herkomst, biedt het ook een matige tot goede weerstand tegen schimmels en insecten.',
             'best_for'    => ['Ramen', 'Binnendeuren', 'Buitendeuren'],
             'tone'        => 'Roodachtig bruin, licht en warm',
             'tone_color'  => '#C04000',

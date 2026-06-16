@@ -13,7 +13,7 @@ return [
     // "Schrijf een review op Google" button below the reviews carousel.
     // Find it via: Google Maps → your business → "Get more reviews" → copy the link.
     // Leave null to hide the button completely.
-    'review_write_url'   => null,
+    'review_write_url'   => 'https://www.google.com/search?sca_esv=c6c16ab1eb0a4421&sxsrf=ANbL-n5KcrFHiUw7Z8Yj9Ac48RlmFxqQkA:1781546024589&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOQMiSdllpPRXTBQNZgxx9WhV-qnvtzBPndfKXHazp9pddayqz8TWddGzkxlX-_OpI7sutTQ3jd5boDBjzRft5sk2baKcVuNNPh3hmJ_vhZLE9YaezqwQlz5cWKuSFeX-PLunut0%3D&q=Algemene+Schrijnwerkerij+bvba+Van+Kerkhoven+Reviews&sa=X&ved=2ahUKEwiQ-MiP6ImVAxVqhv0HHZ49M5UQ0bkNegQIKBAF&cshid=1781546032294276&biw=1706&bih=1140&dpr=0.75',
     'review_write_label' => 'Schrijf een review op Google',
 
     /*

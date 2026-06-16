@@ -29,7 +29,6 @@ return [
     'cta_primary'   => 'Maak een afspraak',
     'cta_secondary' => 'Bekijk ons werk',
 
-    'phone'       => '0474 31 90 79',
     'address'     => 'Hoekstraat 15–19B',
     'city'        => '3040 Huldenberg',
     'postal_code' => '3040',

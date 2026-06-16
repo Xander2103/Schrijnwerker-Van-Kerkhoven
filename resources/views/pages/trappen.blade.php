@@ -25,16 +25,6 @@
     </div>
 </section>
 
-{{-- ─── Short intro + CTA ──────────────────────────────────────────── --}}
-<section class="client-section section-compact">
-    <div class="client-container">
-        <p style="color:var(--color-text-light); max-width:60ch; font-size:1rem; line-height:1.75; margin:0 0 1.5rem;">
-            Rechte trappen, kwartslag en halfslag — volledig op maat in eigen werkhuis, in de houtsoort en afwerking van uw keuze. Veiligheid en kwaliteit gegarandeerd, plaatsing door eigen dienst.
-        </p>
-        <a href="/contact" class="btn btn-primary">Maak een afspraak</a>
-    </div>
-</section>
-
 {{-- ─── Photo gallery ───────────────────────────────────────────────── --}}
 @php $galleryTitle = 'Realisaties trappen'; @endphp
 @include('partials.realisaties-gallery')
