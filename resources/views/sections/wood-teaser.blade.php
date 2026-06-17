@@ -1,4 +1,4 @@
-<section id="houtsoorten-teaser" class="client-section wood-teaser-section wood-bg-sand">
+<section id="houtsoorten-teaser" class="client-section wood-teaser-section wood-bg-cream">
     <div class="client-container">
         <div class="wood-teaser-inner">
 

@@ -20,6 +20,10 @@
         @include('sections.wood-teaser')
     @endif
 
+    @if(config('site.sections.historisch', true))
+        @include('sections.historisch')
+    @endif
+
     @if(config('site.sections.reviews', true) && config('reviews.enabled', false))
         @include('sections.reviews')
     @endif

@@ -7,7 +7,7 @@ return [
     'color_accent'       => '#B8701C',
     'color_text'         => '#23160E',
     'color_text_light'   => '#6B5040',
-    'color_bg'           => '#F6EFE3',
-    'color_bg_alt'       => '#EAD9BD',
+    'color_bg'           => '#FAF8F2',
+    'color_bg_alt'       => '#F0E8D4',
     'color_border'       => '#D4BF9E',
 ];

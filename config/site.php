@@ -18,7 +18,7 @@ return [
         ['label' => 'Ramen',       'href' => '/ramen'],
         ['label' => 'Deuren',      'href' => '/deuren'],
         ['label' => 'Trappen',     'href' => '/trappen'],
-        ['label' => 'Onze werkplek', 'href' => '/werkhuis'],
+        ['label' => 'Onze werkplaats', 'href' => '/werkplaats'],
         ['label' => 'Ons bedrijf', 'href' => '/#bedrijf'],
         ['label' => 'Reviews',     'href' => '/#reviews'],
         ['label' => 'Contact',     'href' => '/contact'],
@@ -26,7 +26,7 @@ return [
 
     'footer_text'   => '© ' . date('Y') . ' Algemene Schrijnwerkerij bv Van Kerkhoven · Hoekstraat 15–19B · 3040 Huldenberg · BTW BE 0700.781.844',
     'whatsapp_url'  => null,
-    'cta_primary'   => 'Maak een afspraak',
+    'cta_primary'   => 'Neem contact op',
     'cta_secondary' => 'Bekijk ons werk',
 
     'address'     => 'Hoekstraat 15–19B',
@@ -62,6 +62,7 @@ return [
         'reviews'     => true,
         'gallery'     => false,
         'atelier'     => false, // merged into bedrijf section
+        'historisch'  => true,
         'contact_cta' => true,  // NEW: simple CTA linking to /contact
         'contact'     => false, // Contact moved to dedicated /contact page
         'location'    => true,

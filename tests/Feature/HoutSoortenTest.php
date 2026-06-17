@@ -12,9 +12,9 @@ class HoutSoortenTest extends TestCase
         $this->withoutVite();
     }
 
-    public function test_houtsoorten_redirects_to_werkhuis(): void
+    public function test_houtsoorten_redirects_to_werkplaats(): void
     {
-        $this->get('/houtsoorten')->assertRedirect('/werkhuis');
+        $this->get('/houtsoorten')->assertRedirect('/werkplaats');
     }
 
     public function test_houtsoorten_redirect_is_permanent(): void

@@ -172,8 +172,8 @@
 
   .btn-secondary {
     background-color: transparent;
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    border-color: #bb5613;
+    color: #af5010;
 
     &:hover {
       background-color: var(--color-primary);
@@ -2422,5 +2422,71 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
 .footer-credit a:hover {
   color: rgba(255, 255, 255, 0.65);
   text-decoration: underline;
+}
+
+/* ============================================================
+   Atelier section — light variant for /werkplaats page.
+   Overrides the default dark-walnut background so the gallery
+   works on a cream background with dark text.
+   ============================================================ */
+.atelier-section--light {
+  background-color: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.atelier-section--light .atelier-title {
+  color: var(--color-text);
+}
+
+.atelier-section--light .atelier-intro {
+  color: var(--color-text-light);
+}
+
+.atelier-section--light .atelier-frame {
+  border-color: var(--color-border);
+}
+
+/* ============================================================
+   Historisch schrijnwerk — two-column text + photo section.
+   ============================================================ */
+@layer components {
+  .historisch-section {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .historisch-inner {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .historisch-inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .historisch-title {
+    @apply text-3xl md:text-4xl font-bold mb-4;
+    color: var(--color-text);
+    line-height: 1.2;
+  }
+
+  .historisch-text {
+    @apply text-base leading-relaxed;
+    color: var(--color-text-light);
+    max-width: 52ch;
+  }
+
+  .historisch-photo {
+    aspect-ratio: 4 / 3;
+    border-radius: 1rem;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 24px rgba(44, 26, 14, 0.08);
+  }
 }
 

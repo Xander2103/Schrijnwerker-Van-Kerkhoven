@@ -16,7 +16,7 @@
             </div>
 
             <div class="contact-cta-actions">
-                <a href="/contact" class="btn btn-primary">Maak een afspraak</a>
+                <a href="/contact" class="btn btn-primary">{{ config('site.cta_primary', 'Neem contact op') }}</a>
                 @if(!empty(config('site.phone')))
                     <a href="tel:{{ config('site.phone') }}" class="btn btn-secondary">
                         {{ config('site.phone') }}

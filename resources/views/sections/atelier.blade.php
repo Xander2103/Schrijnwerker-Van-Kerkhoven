@@ -8,16 +8,14 @@
     $hasImages     = count($displayImages) >= 1;
 @endphp
 
-<section id="atelier" class="atelier-section">
+<section id="{{ $atelierId ?? 'atelier' }}" class="atelier-section {{ $atelierVariant ?? '' }}" aria-label="{{ $atelierEyebrow ?? 'Eigen werkhuis' }}">
     <div class="client-container">
 
         <div class="atelier-header reveal">
-            <span class="section-eyebrow" style="color:var(--color-accent);">Eigen werkhuis</span>
-            <h2 class="atelier-title">Vakmanschap begint in ons eigen atelier</h2>
+            <span class="section-eyebrow" style="color:var(--color-accent);">{{ $atelierEyebrow ?? 'Eigen werkhuis' }}</span>
+            <h2 class="atelier-title">{{ $atelierTitle ?? 'Vakmanschap begint in ons eigen atelier' }}</h2>
             <p class="atelier-intro">
-                In ons werkhuis in Huldenberg krijgt elk project vorm. Van de eerste voorbereiding tot de afwerking
-                werken we met eigen machines, ervaren handen en oog voor detail. Zo houden we controle over
-                kwaliteit, planning en afwerking.
+                {{ $atelierIntro ?? 'In ons werkhuis in Huldenberg krijgt elk project vorm. Van de eerste voorbereiding tot de afwerking werken we met eigen machines, ervaren handen en oog voor detail. Zo houden we controle over kwaliteit, planning en afwerking.' }}
             </p>
         </div>
 

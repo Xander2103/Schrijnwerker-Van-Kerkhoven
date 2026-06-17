@@ -12,28 +12,13 @@ class WerkhuisTest extends TestCase
         $this->withoutVite();
     }
 
-    public function test_werkhuis_page_loads_successfully(): void
+    public function test_werkhuis_redirects_to_werkplaats(): void
     {
-        $this->get('/werkhuis')->assertStatus(200);
+        $this->get('/werkhuis')->assertRedirect('/werkplaats');
     }
 
-    public function test_werkhuis_page_contains_heading(): void
+    public function test_werkhuis_redirect_is_permanent(): void
     {
-        $this->get('/werkhuis')->assertSee('Vakmanschap begint in ons eigen atelier');
-    }
-
-    public function test_werkhuis_page_contains_eyebrow(): void
-    {
-        $this->get('/werkhuis')->assertSee('Eigen werkhuis');
-    }
-
-    public function test_werkhuis_page_contains_cta(): void
-    {
-        $this->get('/werkhuis')->assertSee('href="/contact"', false);
-    }
-
-    public function test_werkhuis_page_contains_back_link(): void
-    {
-        $this->get('/werkhuis')->assertSee('href="/"', false);
+        $this->get('/werkhuis')->assertStatus(301);
     }
 }

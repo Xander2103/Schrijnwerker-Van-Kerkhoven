@@ -94,6 +94,18 @@ class HomepageTest extends TestCase
         $this->get('/')->assertDontSee('id="houtsoorten-teaser"', false);
     }
 
+    public function test_historisch_section_visible_when_enabled(): void
+    {
+        config(['site.sections.historisch' => true]);
+        $this->get('/')->assertSee('id="historisch"', false);
+    }
+
+    public function test_historisch_section_hidden_when_disabled(): void
+    {
+        config(['site.sections.historisch' => false]);
+        $this->get('/')->assertDontSee('id="historisch"', false);
+    }
+
     public function test_contact_cta_rendered_when_enabled(): void
     {
         config(['site.sections.contact_cta' => true]);

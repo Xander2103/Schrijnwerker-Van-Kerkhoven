@@ -86,10 +86,11 @@ Route::get('/trappen', function () {
     return view('pages.trappen', compact('galleryImages'));
 })->name('trappen');
 
-Route::redirect('/houtsoorten', '/werkhuis', 301);
+Route::redirect('/houtsoorten', '/werkplaats', 301);
+Route::redirect('/werkhuis',   '/werkplaats', 301);
 
-Route::get('/werkhuis', function () {
-    return view('pages.werkhuis', [
+Route::get('/werkplaats', function () {
+    return view('pages.werkplaats', [
         'atelierImages' => GalleryScanner::scan('atelier'),
     ]);
-})->name('werkhuis');
+})->name('werkplaats');
