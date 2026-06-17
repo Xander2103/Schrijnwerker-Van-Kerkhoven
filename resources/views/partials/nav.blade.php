@@ -22,12 +22,6 @@
         @endforeach
     </ul>
 
-    @if(!empty(config('site.cta_primary')))
-        <a href="/contact" class="btn btn-primary nav-cta-btn">
-            {{ config('site.cta_primary') }}
-        </a>
-    @endif
-
     <button
         class="nav-toggle"
         id="nav-toggle"
@@ -53,10 +47,6 @@
     @foreach(config('site.nav_items', []) as $item)
         <a href="{{ $item['href'] }}" class="nav-mobile-link">{{ $item['label'] }}</a>
     @endforeach
-
-    @if(!empty(config('site.cta_primary')))
-        <a href="/contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
-    @endif
 </div>
 
 @push('scripts')

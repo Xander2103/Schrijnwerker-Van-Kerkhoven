@@ -15,14 +15,14 @@
     );
 @endphp
 
-<section id="bedrijf" class="client-section bedrijf-section bedrijf-section--dark wood-bg-dark">
+<section id="bedrijf" class="client-section bedrijf-section wood-bg-cream">
     <div class="client-container">
         <div class="bedrijf-inner">
 
             {{-- ─── Text content ─────────────────────────────── --}}
             <div class="bedrijf-content reveal">
                 <span class="section-eyebrow">Ons bedrijf</span>
-                <h2 class="bedrijf-heading">45 jaar vakmanschap — van ruwe plank tot afgewerkt schrijnwerk</h2>
+                <h2 class="bedrijf-heading">45 jaar vakmanschap —<br>van ruwe plank tot afgewerkt schrijnwerk</h2>
 
                 <blockquote class="bedrijf-quote">
                     Elke opdracht begint in ons eigen atelier in Huldenberg. Van ruwe planken tot afgewerkt schrijnwerk: elk stuk verlaat het werkhuis met de zorg en precisie van 45 jaar vakmanschap.
@@ -44,7 +44,7 @@
                     @if(!empty(config('site.cta_primary')))
                         <a href="/contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
                     @endif
-                    <a href="/werkhuis" class="btn btn-secondary">Bekijk ons werkhuis</a>
+                    <a href="/werkplaats" class="btn btn-secondary">Bekijk onze werkplaats</a>
                 </div>
             </div>
 

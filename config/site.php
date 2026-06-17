@@ -58,7 +58,7 @@ return [
         'hero'        => true,
         'bedrijf'     => true,
         'trust'       => false,
-        'wood_teaser' => true,  // Geschreven in hout — moved above reviews
+        'wood_teaser' => false, // Massief hout removed per client feedback
         'reviews'     => true,
         'gallery'     => false,
         'atelier'     => false, // merged into bedrijf section

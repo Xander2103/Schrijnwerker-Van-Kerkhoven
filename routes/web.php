@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('pages.home', [
-        'galleryImages' => GalleryScanner::scan(),
-        'atelierImages' => GalleryScanner::scan('atelier'),
+        'galleryImages'   => GalleryScanner::scan(),
+        'atelierImages'   => GalleryScanner::scan('atelier'),
+        'historischImages' => GalleryScanner::scan('historisch'),
     ]);
 });
 

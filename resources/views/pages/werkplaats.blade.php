@@ -5,19 +5,22 @@
 
 @section('content')
 
-    @include('sections.atelier', [
-        'atelierId'    => 'werkplaats',
-        'atelierVariant' => 'atelier-section--light',
-        'atelierEyebrow' => 'Eigen werkplaats',
-        'atelierTitle'   => 'Waar vakmanschap vorm krijgt',
-        'atelierIntro'   => 'In onze werkplaats in Huldenberg krijgt elk project vorm. Van voorbereiding tot afwerking werken we met eigen machines, ervaren handen en oog voor detail. Zo houden we controle over kwaliteit, planning en afwerking.',
-    ])
-
-    <div class="client-container">
-        <div class="section-actions" style="padding-bottom:3rem;">
-            <a href="/contact" class="btn btn-primary">Neem contact op</a>
-            <a href="/" class="btn btn-secondary">Terug naar home</a>
+    {{-- Intro header --}}
+    <section class="werkplaats-intro-section client-section wood-bg-ivory">
+        <div class="client-container">
+            <div class="werkplaats-intro reveal">
+                <span class="section-eyebrow">Eigen werkplaats</span>
+                <h1 class="werkplaats-intro-title">Waar vakmanschap vorm krijgt</h1>
+                <p class="werkplaats-intro-text">In onze werkplaats in Huldenberg krijgt elk project vorm. Van voorbereiding tot afwerking werken we met eigen machines, ervaren handen en oog voor detail. Zo houden we controle over kwaliteit, planning en afwerking.</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    {{-- Full atelier photo gallery --}}
+    @php
+        $galleryImages = $atelierImages;
+        $galleryTitle  = 'Onze werkplaats';
+    @endphp
+    @include('partials.realisaties-gallery')
 
 @endsection

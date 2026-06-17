@@ -1702,16 +1702,20 @@ body.custom-cursor-ready * {
   .bedrijf-section--dark .bedrijf-kenmerken li     { color: rgba(255, 255, 255, 0.82); }
   .bedrijf-section--dark .bedrijf-kenmerken li::before { background-color: var(--color-accent); }
 
-  .bedrijf-section--dark .bedrijf-quote {
+  .bedrijf-quote {
     display: block;
     font-style: italic;
-    color: rgba(255, 220, 160, 0.90);
+    color: var(--color-text-light);
     border-left: 3px solid var(--color-accent);
     padding-left: 1.25rem;
     margin: 1.5rem 0;
     font-size: 1.05rem;
     line-height: 1.65;
     font-family: var(--font-serif, serif);
+  }
+
+  .bedrijf-section--dark .bedrijf-quote {
+    color: rgba(255, 220, 160, 0.90);
   }
 
   .bedrijf-section--dark .bedrijf-photo {
@@ -2451,6 +2455,23 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
    Historisch schrijnwerk — two-column text + photo section.
    ============================================================ */
 @layer components {
+  /* ── Werkplaats intro ───────────────────────────────── */
+  .werkplaats-intro {
+    max-width: 680px;
+  }
+
+  .werkplaats-intro-title {
+    @apply text-3xl md:text-5xl font-bold mb-4;
+    color: var(--color-text);
+  }
+
+  .werkplaats-intro-text {
+    @apply text-base md:text-lg leading-relaxed;
+    color: var(--color-text-light);
+    max-width: 60ch;
+  }
+
+  /* ── Historisch schrijnwerk collage ─────────────────── */
   .historisch-section {
     border-top: 1px solid var(--color-border);
   }
@@ -2487,6 +2508,62 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
     background-color: var(--color-bg-alt);
     border: 1px solid var(--color-border);
     box-shadow: 0 4px 24px rgba(44, 26, 14, 0.08);
+  }
+
+  /* ── Collage layout ─── */
+  .historisch-collage {
+    width: 100%;
+  }
+
+  .historisch-collage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 540px) {
+    .historisch-collage-grid {
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto;
+    }
+
+    .historisch-main-photo {
+      grid-row: 1 / 3;
+    }
+  }
+
+  .historisch-main-photo {
+    aspect-ratio: 3 / 4;
+    border-radius: 0.875rem;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 6px 32px rgba(44, 26, 14, 0.10);
+  }
+
+  .historisch-secondary-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .historisch-secondary-photo {
+    aspect-ratio: 4 / 3;
+    border-radius: 0.75rem;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 20px rgba(44, 26, 14, 0.07);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  .historisch-secondary-photo--empty {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
   }
 }
 
