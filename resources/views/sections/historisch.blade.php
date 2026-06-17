@@ -1,11 +1,12 @@
 {{-- ============================================================
-     Historisch schrijnwerk — title left, photo collage right.
-     Main image: historisch-werk.webp (always large).
-     Secondary images from the same folder cycle in smaller slots.
+     Historisch schrijnwerk — premium redesign.
+     Left col:  italic caramel title + ornament + main image (full).
+     Right col: overlapping polaroid-style card collage.
+     Desktop: absolutely stacked, rotated cards with hover lift.
+     Mobile:  clean 2×2 grid for cards, no overflow risk.
      ============================================================ --}}
 @php
-    $historischAll = $historischImages ?? [];
-    // Separate the main anchor image from the cycling secondary pool
+    $historischAll  = $historischImages ?? [];
     $historischMain = null;
     $historischPool = [];
     foreach ($historischAll as $img) {
@@ -15,64 +16,58 @@
             $historischPool[] = $img;
         }
     }
-    // Fallback: if the named file is absent, use the first available image
+    // Fallback: if named anchor absent, use first available
     if (!$historischMain && count($historischAll) > 0) {
         $historischMain = $historischAll[0];
         $historischPool = array_slice($historischAll, 1);
     }
-    $historischInitial  = array_slice($historischPool, 0, 2);
-    $historischPoolJson = json_encode(
-        array_map(fn($p) => asset($p), $historischPool),
-        JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-    );
-    $hasCycling = count($historischPool) > 2;
+    // Show up to 4 cards in the collage
+    $collageCards = array_slice($historischPool, 0, 4);
+    // Staggered rotations for artisanal scattered feel
+    $rotations = ['-4deg', '3.5deg', '-2.5deg', '5deg'];
 @endphp
 
 <section id="historisch" class="client-section historisch-section wood-bg-ivory">
     <div class="client-container">
-        <div class="historisch-inner">
+        <div class="historisch-layout">
 
-            {{-- ─── Title only — no eyebrow, no body copy ───────── --}}
-            <div class="historisch-content reveal">
-                <h2 class="historisch-title">Historisch schrijnwerk</h2>
+            {{-- ─── Left: title + ornament + main image ──── --}}
+            <div class="historisch-left">
+
+                <div class="historisch-heading reveal">
+                    <h2 class="historisch-title">Historisch schrijnwerk</h2>
+                    <div class="historisch-ornament" aria-hidden="true">◆</div>
+                </div>
+
+                @if($historischMain)
+                    <div class="historisch-main-frame reveal" data-reveal-delay="80">
+                        <img
+                            src="{{ asset($historischMain) }}"
+                            alt="Historisch schrijnwerk — Van Kerkhoven"
+                            class="historisch-main-img"
+                            loading="lazy"
+                        >
+                    </div>
+                @endif
+
             </div>
 
-            {{-- ─── Photo collage ─────────────────────────────────── --}}
-            @if($historischMain)
-                <div class="historisch-collage reveal" data-reveal-delay="100">
-                    <div class="historisch-collage-grid">
-
-                        {{-- Main image — always visible, always large --}}
-                        <div
-                            class="historisch-main-photo"
-                            style="background-image:url('{{ asset($historischMain) }}')"
-                            role="img"
-                            aria-label="Historisch schrijnwerk — Van Kerkhoven"
-                        ></div>
-
-                        {{-- Secondary images — cycling pool --}}
-                        @if(count($historischInitial) > 0)
-                            @if($hasCycling)
-                                <script id="historisch-pool" type="application/json">
-                                    {!! $historischPoolJson !!}
-                                </script>
-                            @endif
-                            <div class="historisch-secondary-grid">
-                                @foreach($historischInitial as $j => $img)
-                                    <div
-                                        class="historisch-secondary-photo"
-                                        style="background-image:url('{{ asset($img) }}')"
-                                        role="img"
-                                        aria-label="Historisch schrijnwerk foto {{ $j + 2 }}"
-                                    ></div>
-                                @endforeach
-                                {{-- Empty slot if only 1 secondary image --}}
-                                @if(count($historischInitial) < 2)
-                                    <div class="historisch-secondary-photo historisch-secondary-photo--empty"></div>
-                                @endif
+            {{-- ─── Right: overlapping card collage ───────── --}}
+            @if(count($collageCards) > 0)
+                <div class="historisch-collage-wrap reveal" data-reveal-delay="160">
+                    <div class="historisch-card-stack">
+                        @foreach($collageCards as $k => $img)
+                            <div
+                                class="historisch-card historisch-card--{{ $k + 1 }}"
+                                style="--rot: {{ $rotations[$k] ?? '0deg' }}"
+                            >
+                                <img
+                                    src="{{ asset($img) }}"
+                                    alt="Historisch schrijnwerk — detail {{ $k + 2 }}"
+                                    loading="lazy"
+                                >
                             </div>
-                        @endif
-
+                        @endforeach
                     </div>
                 </div>
             @endif
@@ -80,38 +75,3 @@
         </div>
     </div>
 </section>
-
-@if($hasCycling)
-@push('scripts')
-<script>
-(function () {
-    'use strict';
-    var poolEl = document.getElementById('historisch-pool');
-    if (!poolEl) return;
-    var pool;
-    try { pool = JSON.parse(poolEl.textContent); } catch (e) { return; }
-    if (!pool || pool.length <= 2) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var panels = Array.from(document.querySelectorAll('.historisch-secondary-photo'));
-    if (!panels.length) return;
-
-    var nextPtr = 2; // pool[0] and pool[1] already shown initially
-
-    setInterval(function () {
-        var slot   = Math.floor(Math.random() * panels.length);
-        var panel  = panels[slot];
-        var newSrc = pool[nextPtr % pool.length];
-        nextPtr++;
-
-        panel.style.transition = 'opacity 0.5s ease';
-        panel.style.opacity    = '0';
-        setTimeout(function () {
-            panel.style.backgroundImage = 'url("' + newSrc + '")';
-            panel.style.opacity         = '1';
-        }, 500);
-    }, 5000);
-}());
-</script>
-@endpush
-@endif

@@ -2316,14 +2316,9 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
 }
 
 /* ============================================================
-   Hero — content left-anchored for premium editorial feel.
-   Container starts from the left edge on wide screens.
-   hero-inner max-width keeps text tight, not stretched.
+   Hero — content aligned with site container (same as nav).
+   hero-inner max-width keeps text tight within the container.
    ============================================================ */
-.hero > .client-container {
-  margin-left: 0;
-}
-
 .hero-inner {
   max-width: 920px;
 }
@@ -2487,100 +2482,168 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
     max-width: 60ch;
   }
 
-  /* ── Historisch schrijnwerk collage ─────────────────── */
+  /* ── Historisch schrijnwerk — premium redesign ──────── */
   .historisch-section {
     border-top: 1px solid var(--color-border);
+    overflow: visible;
   }
 
-  .historisch-inner {
+  /* Two-column: left = title + main image, right = card collage */
+  .historisch-layout {
     display: grid;
-    gap: 3rem;
-    align-items: center;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
   }
 
-  @media (min-width: 768px) {
-    .historisch-inner {
+  @media (min-width: 900px) {
+    .historisch-layout {
       grid-template-columns: 1fr 1fr;
+      gap: 4rem;
     }
+  }
+
+  /* ── Title: italic, warm caramel ─────────────────── */
+  .historisch-heading {
+    margin-bottom: 2rem;
   }
 
   .historisch-title {
-    @apply text-3xl md:text-4xl font-bold mb-4;
-    color: var(--color-text);
-    line-height: 1.2;
+    font-family: var(--font-serif, serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1.12;
+    color: #8B5021;
+    margin: 0 0 0.875rem;
+    letter-spacing: -0.01em;
   }
 
-  .historisch-text {
-    @apply text-base leading-relaxed;
-    color: var(--color-text-light);
-    max-width: 52ch;
+  /* ── Decorative ornament: ─── ◆ ─── ─────────────── */
+  .historisch-ornament {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--color-accent);
+    font-size: 0.5rem;
+    line-height: 1;
   }
 
-  .historisch-photo {
-    aspect-ratio: 4 / 3;
-    border-radius: 1rem;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 24px rgba(44, 26, 14, 0.08);
+  .historisch-ornament::before {
+    content: '';
+    display: block;
+    width: 2.75rem;
+    height: 1px;
+    background: var(--color-accent);
+    opacity: 0.55;
   }
 
-  /* ── Collage layout ─── */
-  .historisch-collage {
-    width: 100%;
+  .historisch-ornament::after {
+    content: '';
+    display: block;
+    width: 1.5rem;
+    height: 1px;
+    background: var(--color-accent);
+    opacity: 0.28;
   }
 
-  .historisch-collage-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  @media (min-width: 540px) {
-    .historisch-collage-grid {
-      grid-template-columns: 2fr 1fr;
-      grid-template-rows: auto;
-    }
-
-    .historisch-main-photo {
-      grid-row: 1 / 3;
-    }
-  }
-
-  .historisch-main-photo {
-    aspect-ratio: 3 / 4;
+  /* ── Main image — full photo, no aggressive crop ─── */
+  .historisch-main-frame {
     border-radius: 0.875rem;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 6px 32px rgba(44, 26, 14, 0.10);
+    overflow: hidden;
+    border: 1px solid rgba(184, 112, 28, 0.18);
+    box-shadow:
+      0 2px 0 rgba(200, 148, 74, 0.14),
+      0 8px 40px rgba(44, 26, 14, 0.13);
+    background-color: #F3EAD8;
   }
 
-  .historisch-secondary-grid {
+  .historisch-main-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: contain;
+    object-position: center;
+    background-color: #F3EAD8;
+  }
+
+  /* ── Card stack — mobile: 2×2 clean grid ─────────── */
+  .historisch-card-stack {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
   }
 
-  .historisch-secondary-photo {
-    aspect-ratio: 4 / 3;
-    border-radius: 0.75rem;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 20px rgba(44, 26, 14, 0.07);
-    opacity: 1;
-    transition: opacity 0.5s ease;
+  .historisch-card {
+    border-radius: 0.625rem;
+    overflow: hidden;
+    border: 3px solid #ffffff;
+    box-shadow:
+      0 4px 20px rgba(44, 26, 14, 0.14),
+      0 1px 4px rgba(44, 26, 14, 0.08);
+    transform: rotate(var(--rot, 0deg));
+    transition:
+      transform 0.35s cubic-bezier(0.22, 0.68, 0, 1.2),
+      box-shadow 0.35s ease;
   }
 
-  .historisch-secondary-photo--empty {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
+  .historisch-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
   }
+
+  /* ── Desktop: overlapping scattered card stack ────── */
+  @media (min-width: 900px) {
+    .historisch-collage-wrap {
+      padding-top: 3.5rem;
+    }
+
+    .historisch-card-stack {
+      display: block;
+      position: relative;
+      height: 440px;
+    }
+
+    .historisch-card {
+      position: absolute;
+    }
+
+    .historisch-card:hover {
+      transform: rotate(0deg) scale(1.04);
+      translate: 0 -5px;
+      box-shadow:
+        0 18px 52px rgba(44, 26, 14, 0.22),
+        0 2px 8px rgba(44, 26, 14, 0.10);
+      z-index: 10;
+    }
+
+    .historisch-card img {
+      aspect-ratio: unset;
+      height: 100%;
+    }
+
+    .historisch-card--1 { top:   0px; left:  0%;  width: 68%; height: 195px; z-index: 2; }
+    .historisch-card--2 { top:  32px; right: 0%;  width: 62%; height: 178px; z-index: 3; }
+    .historisch-card--3 { top: 188px; left:  6%;  width: 65%; height: 182px; z-index: 4; }
+    .historisch-card--4 { top: 232px; right: 3%;  width: 60%; height: 172px; z-index: 5; }
+  }
+
+  /* ── Card entrance animation ──────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .historisch-card--1 { animation: hCardReveal 0.6s ease 0.10s both; }
+    .historisch-card--2 { animation: hCardReveal 0.6s ease 0.20s both; }
+    .historisch-card--3 { animation: hCardReveal 0.6s ease 0.30s both; }
+    .historisch-card--4 { animation: hCardReveal 0.6s ease 0.42s both; }
+  }
+}
+
+@keyframes hCardReveal {
+  from { opacity: 0; translate: 0 18px; }
+  to   { opacity: 1; translate: 0 0; }
 }
 
 /* ============================================================
