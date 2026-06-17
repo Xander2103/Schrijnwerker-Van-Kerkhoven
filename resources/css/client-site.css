@@ -490,20 +490,18 @@
       0 6px 28px rgba(44, 26, 14, 0.12);
   }
 
-  /* Inner wrapper: aligns nav content with site's max-w-6xl container */
+  /* Inner wrapper: full-width, logo sits naturally at left viewport edge */
   .nav-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 100%;
     width: 100%;
-    max-width: 72rem;
-    margin: 0 auto;
     padding: 0 1rem;
   }
 
   @media (min-width: 640px)  { .nav-inner { padding: 0 1.5rem; } }
-  @media (min-width: 1024px) { .nav-inner { padding: 0 2rem; } }
+  @media (min-width: 1024px) { .nav-inner { padding: 0 2.5rem; } }
 
   .nav-logo {
     @apply font-bold text-lg no-underline flex items-center;
@@ -2316,9 +2314,15 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
 }
 
 /* ============================================================
-   Hero — content aligned with site container (same as nav).
-   hero-inner max-width keeps text tight within the container.
+   Hero — content left-anchored to match the nav logo position.
+   margin-left: 0 lets the container hug the left viewport edge
+   (same as nav which also starts from the left edge).
+   hero-inner max-width keeps text tight without stretching.
    ============================================================ */
+.hero > .client-container {
+  margin-left: 0;
+}
+
 .hero-inner {
   max-width: 920px;
 }
@@ -2753,7 +2757,14 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
     position: relative;
     border-radius: 0.25rem;
     transition: transform 0.3s cubic-bezier(0.22, 0.68, 0, 1.2),
-                box-shadow 0.3s ease;
+                box-shadow 0.3s ease,
+                opacity 0.45s ease;
+  }
+
+  /* Crossfade state during photo cycling */
+  .atelier-frame.is-fading {
+    opacity: 0.05;
+    transform: scale(0.98);
   }
 
   .atelier-frame::after {
@@ -2788,16 +2799,21 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
     .atelier-preview-grid .atelier-frame:nth-child(6) { animation-delay: 0.45s; }
   }
 
+  /* Entrance animation: scale+fade only — no Y-translate that
+     would visually overlap the button below the grid */
   @keyframes atelierReveal {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
   }
 
   /* ── "Zie meer" button area ───────────────────────────── */
   .atelier-show-more-wrap {
     display: flex;
     justify-content: center;
-    padding: 2rem 0 1rem;
+    padding: 0;
+    margin-top: 2.5rem;
+    position: relative;
+    z-index: 2; /* above any frame overflow/stacking context */
   }
 
   .atelier-show-more-btn {

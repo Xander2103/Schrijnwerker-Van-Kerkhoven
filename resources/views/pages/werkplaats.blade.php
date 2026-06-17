@@ -196,6 +196,74 @@
       }, 80);
     });
   }
+
+  /* ── Animated cycling of the 6-photo preview ──────────── */
+  (function () {
+    // Respect prefers-reduced-motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Only cycle when there are more than 6 photos to draw from
+    if (!allImages || allImages.length <= 6) return;
+
+    var previewFrames = Array.from(
+      document.querySelectorAll('.atelier-preview-grid .atelier-frame')
+    );
+    if (!previewFrames.length) return;
+
+    // Track which allImages index each preview slot is currently showing
+    var frameIndices = previewFrames.map(function (_, i) { return i; });
+    var poolPtr      = 6;  // start pulling from index 6 (after the initial set)
+    var slotPtr      = 0;  // rotate through slots so all 6 cycle evenly
+    var cycleTimer   = null;
+
+    function isShown(idx) {
+      for (var i = 0; i < frameIndices.length; i++) {
+        if (frameIndices[i] === idx) return true;
+      }
+      return false;
+    }
+
+    function pickNextImage() {
+      var total = allImages.length;
+      var tries = 0;
+      while (tries < total) {
+        var candidate = poolPtr % total;
+        poolPtr = (poolPtr + 1) % total;
+        if (!isShown(candidate)) return candidate;
+        tries++;
+      }
+      return -1; // all images already visible — unlikely with 42 photos
+    }
+
+    function cycleOne() {
+      var slot  = slotPtr % previewFrames.length;
+      slotPtr   = (slotPtr + 1) % previewFrames.length;
+      var newIdx = pickNextImage();
+      if (newIdx === -1) return;
+
+      var frame = previewFrames[slot];
+
+      // Fade out
+      frame.classList.add('is-fading');
+
+      setTimeout(function () {
+        // Swap content while invisible
+        frame.style.backgroundImage = 'url(' + allImages[newIdx] + ')';
+        frame.dataset.lightboxIndex  = String(newIdx);
+        frameIndices[slot]           = newIdx;
+        // Fade back in
+        frame.classList.remove('is-fading');
+      }, 480); // slightly longer than opacity transition (0.45s)
+    }
+
+    cycleTimer = setInterval(cycleOne, 3800);
+
+    // Stop cycling once "Zie meer" is clicked
+    if (showMoreBtn) {
+      showMoreBtn.addEventListener('click', function () {
+        if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }
+      }, true);
+    }
+  }());
 }());
 </script>
 @endpush
