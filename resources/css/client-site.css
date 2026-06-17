@@ -501,7 +501,7 @@
   }
 
   @media (min-width: 640px)  { .nav-inner { padding: 0 1.5rem; } }
-  @media (min-width: 1024px) { .nav-inner { padding: 0 2.5rem; } }
+  @media (min-width: 1024px) { .nav-inner { padding: 0 2.5rem; padding-right: 650px; } }
 
   .nav-logo {
     @apply font-bold text-lg no-underline flex items-center;
