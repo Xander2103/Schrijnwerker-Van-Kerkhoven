@@ -55,7 +55,7 @@
             {{-- ─── Right: overlapping card collage ───────── --}}
             @if(count($collageCards) > 0)
                 <div class="historisch-collage-wrap reveal" data-reveal-delay="160">
-                    <div class="historisch-card-stack">
+                    <div class="historisch-card-stack" id="historisch-card-stack">
                         @foreach($collageCards as $k => $img)
                             <div
                                 class="historisch-card historisch-card--{{ $k + 1 }}"
@@ -70,8 +70,93 @@
                         @endforeach
                     </div>
                 </div>
+
+                {{-- Pool JSON for cycling JS --}}
+                <script id="historisch-pool-data" type="application/json">
+                {!! json_encode(
+                    array_values(array_map(fn($p) => asset($p), $historischPool)),
+                    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+                ) !!}
+                </script>
             @endif
 
         </div>
     </div>
 </section>
+
+@push('scripts')
+<script>
+(function () {
+  'use strict';
+
+  // Respect prefers-reduced-motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var poolEl = document.getElementById('historisch-pool-data');
+  var stack  = document.getElementById('historisch-card-stack');
+  if (!poolEl || !stack) return;
+
+  var pool;
+  try { pool = JSON.parse(poolEl.textContent); } catch (e) { return; }
+  if (!pool || pool.length < 2) return;
+
+  var cards = Array.from(stack.querySelectorAll('.historisch-card img'));
+  if (!cards.length) return;
+
+  // Track which pool index is visible in each card slot
+  var shownIndices = cards.map(function (_, i) { return i % pool.length; });
+  // Next pool slot to pull from (beyond what's initially shown)
+  var poolPtr = cards.length % pool.length;
+  // Which card slot to cycle next
+  var slotPtr = 0;
+
+  function isShown(idx) {
+    return shownIndices.indexOf(idx) !== -1;
+  }
+
+  function pickNext() {
+    var tries = 0;
+    while (tries < pool.length) {
+      var candidate = poolPtr % pool.length;
+      poolPtr = (poolPtr + 1) % pool.length;
+      if (!isShown(candidate)) return candidate;
+      tries++;
+    }
+    return -1; // all images visible — pool too small, skip this cycle
+  }
+
+  function cycleOne() {
+    var slot   = slotPtr % cards.length;
+    slotPtr    = (slotPtr + 1) % cards.length;
+    var newIdx = pickNext();
+    if (newIdx === -1) return;
+
+    var img = cards[slot];
+
+    // Fade out
+    img.classList.add('is-fading');
+
+    setTimeout(function () {
+      // Swap while invisible
+      img.src              = pool[newIdx];
+      img.alt              = 'Historisch schrijnwerk — detail';
+      shownIndices[slot]   = newIdx;
+      // Fade in
+      img.classList.remove('is-fading');
+    }, 460);
+  }
+
+  // Stagger first cycle so not all timers fire together
+  function scheduleNext() {
+    var jitter = 2500 + Math.random() * 600 - 300; // 2200–2800ms
+    setTimeout(function () {
+      cycleOne();
+      scheduleNext();
+    }, jitter);
+  }
+
+  // Small initial delay so entrance animation finishes first
+  setTimeout(scheduleNext, 1800);
+}());
+</script>
+@endpush
