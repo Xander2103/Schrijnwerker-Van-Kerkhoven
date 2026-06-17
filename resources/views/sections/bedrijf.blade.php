@@ -29,20 +29,23 @@
                 </blockquote>
 
                 <div class="bedrijf-text">
-                    <p>Wij begeleiden elk project van het eerste adviesgesprek tot de vakkundige plaatsing — volledig in eigen handen. Maatwerk in massief hout voor particulieren, renovatieprojecten en samenwerking met architecten.</p>
+                    <p>Met massief hout creëren we maatwerk voor particulieren, zelfstandigen en ondernemers, van renovatie tot nieuwbouw.</p>
                 </div>
 
                 <ul class="bedrijf-kenmerken" aria-label="Kenmerken">
                     <li>45 jaar expertise in massief hout</li>
                     <li>Eigen werkhuis en plaatsingsdienst</li>
                     <li>Van grondstof tot afwerking</li>
-                    <li>Maatwerk voor particulieren en architecten</li>
+                    <li>Maatwerk voor woningen, zelfstandige zaken en ondernemingen</li>
                     <li>Klantgericht van ontwerp tot oplevering</li>
                 </ul>
 
-                @if(!empty(config('site.cta_primary')))
-                    <a href="/contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
-                @endif
+                <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
+                    @if(!empty(config('site.cta_primary')))
+                        <a href="/contact" class="btn btn-primary">{{ config('site.cta_primary') }}</a>
+                    @endif
+                    <a href="/werkhuis" class="btn btn-secondary">Bekijk ons werkhuis</a>
+                </div>
             </div>
 
             {{-- ─── Atelier photo collage — images cycle via JS ──────── --}}

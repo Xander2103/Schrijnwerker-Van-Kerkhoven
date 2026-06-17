@@ -1,7 +1,7 @@
 @extends('layouts.client')
 
 @section('page_title', 'Massief hout — Houtsoorten bij Van Kerkhoven Schrijnwerkerij Huldenberg')
-@section('page_description', 'Van Kerkhoven werkt uitsluitend met massief hout. Ontdek onze houtsoorten: Afzelia, Afrormosia, Beukenhout, Eerste keus (Franse eik) en Meranti voor ramen, deuren en trappen op maat.')
+@section('page_description', 'Van Kerkhoven werkt uitsluitend met massief hout. Ontdek onze houtsoorten: Afzelia doussie, Afrormosia, Beuk, Eerste keus (Franse eik), Meranti nemesu en Moabi voor ramen, deuren en trappen op maat.')
 
 @section('content')
 

@@ -12,32 +12,13 @@ class HoutSoortenTest extends TestCase
         $this->withoutVite();
     }
 
-    public function test_houtsoorten_page_loads_successfully(): void
+    public function test_houtsoorten_redirects_to_werkhuis(): void
     {
-        $this->get('/houtsoorten')->assertStatus(200);
+        $this->get('/houtsoorten')->assertRedirect('/werkhuis');
     }
 
-    public function test_houtsoorten_page_contains_page_title(): void
+    public function test_houtsoorten_redirect_is_permanent(): void
     {
-        $this->get('/houtsoorten')->assertSee('Onze houtsoorten');
-    }
-
-    public function test_houtsoorten_page_contains_wood_types(): void
-    {
-        $this->get('/houtsoorten')
-            ->assertSee('Massief hout')
-            ->assertSee('Afzelia')
-            ->assertSee('Franse eik')
-            ->assertSee('Meranti');
-    }
-
-    public function test_houtsoorten_page_contains_cta_link(): void
-    {
-        $this->get('/houtsoorten')->assertSee('href="/contact"', false);
-    }
-
-    public function test_houtsoorten_page_contains_back_link(): void
-    {
-        $this->get('/houtsoorten')->assertSee('href="/"', false);
+        $this->get('/houtsoorten')->assertStatus(301);
     }
 }

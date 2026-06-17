@@ -18,7 +18,7 @@ class ContactFormTest extends TestCase
             'name'         => 'Jan Janssen',
             'phone'        => '0474 12 34 56',
             'email'        => 'jan@example.be',
-            'request_type' => 'Ramen en deuren',
+            'request_type' => 'Ramen op maat',
             'message'      => 'Ik wil graag een offerte voor nieuwe ramen.',
             'privacy'      => '1',
             'website_url'  => '',

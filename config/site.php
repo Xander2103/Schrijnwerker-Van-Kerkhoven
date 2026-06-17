@@ -18,7 +18,7 @@ return [
         ['label' => 'Ramen',       'href' => '/ramen'],
         ['label' => 'Deuren',      'href' => '/deuren'],
         ['label' => 'Trappen',     'href' => '/trappen'],
-        ['label' => 'Houtsoorten', 'href' => '/houtsoorten'],
+        ['label' => 'Onze werkplek', 'href' => '/werkhuis'],
         ['label' => 'Ons bedrijf', 'href' => '/#bedrijf'],
         ['label' => 'Reviews',     'href' => '/#reviews'],
         ['label' => 'Contact',     'href' => '/contact'],

@@ -13,10 +13,11 @@
 
         <div class="atelier-header reveal">
             <span class="section-eyebrow" style="color:var(--color-accent);">Eigen werkhuis</span>
-            <h2 class="atelier-title">Van grondstof tot afwerking</h2>
+            <h2 class="atelier-title">Vakmanschap begint in ons eigen atelier</h2>
             <p class="atelier-intro">
-                Elke opdracht begint in ons eigen atelier in Huldenberg. Van ruwe planken tot afgewerkt schrijnwerk
-                — elk stuk verlaat het werkhuis met de zorg en precisie van 45 jaar vakmanschap.
+                In ons werkhuis in Huldenberg krijgt elk project vorm. Van de eerste voorbereiding tot de afwerking
+                werken we met eigen machines, ervaren handen en oog voor detail. Zo houden we controle over
+                kwaliteit, planning en afwerking.
             </p>
         </div>
 

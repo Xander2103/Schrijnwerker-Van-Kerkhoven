@@ -5,14 +5,11 @@ return [
     'privacy_link' => '/privacy',
 
     'form_request_types' => [
-        'Ramen en deuren',
-        'Binnendeuren',
-        'Buitendeuren',
+        'Buitenschrijnwerk',
+        'Ramen op maat',
         'Trappen op maat',
         'Maatwerk',
-        'Garagepoort',
-        'Gevelbekleding',
-        'Renovatie',
+        'Poorten',
         'Andere vraag',
     ],
 ];

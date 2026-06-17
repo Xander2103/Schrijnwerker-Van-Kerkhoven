@@ -895,12 +895,21 @@
     @apply grid md:grid-cols-2 gap-12 items-center;
   }
 
+  /* Flex-wrap + centered, not a fixed-column grid: with 7 swatches a strict
+     3-column grid leaves the last tile alone on its own row (3+3+1). Centering
+     the wrapped row makes any remainder look intentional instead of orphaned,
+     at any item count and at any breakpoint. */
   .wood-swatch-grid {
-    @apply grid grid-cols-3 gap-3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
   }
 
   .wood-swatch {
     @apply flex flex-col items-center gap-2 p-4 rounded-xl cursor-pointer;
+    flex: 1 1 7rem;
+    max-width: 8.5rem;
     border: 1px solid var(--color-border);
     background-color: var(--color-bg-alt);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
