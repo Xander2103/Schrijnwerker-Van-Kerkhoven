@@ -1,4 +1,5 @@
 <nav class="nav-bar" aria-label="Hoofdnavigatie">
+    <div class="nav-inner">
 
     <a href="/" class="nav-logo" aria-label="{{ config('site.name') }}">
         @if(config('images.logo_header'))
@@ -34,6 +35,7 @@
         <span></span>
     </button>
 
+    </div>{{-- /nav-inner --}}
 </nav>
 
 <div
