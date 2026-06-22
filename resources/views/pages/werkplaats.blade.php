@@ -1,39 +1,38 @@
 @extends('layouts.client')
 
-@section('page_title', 'Onze werkplaats — Van Kerkhoven Schrijnwerkerij Huldenberg')
-@section('page_description', 'Bekijk de werkplaats van Algemene Schrijnwerkerij Van Kerkhoven in Huldenberg. Eigen machines, ervaren handen en productie van ramen, deuren en trappen op maat.')
+@section('page_title', __('pages.werkplaats_title'))
+@section('page_description', __('pages.werkplaats_desc'))
 
 @section('content')
 
 @php
+    $locale  ??= 'nl';
     $allUrls     = array_values(array_map(fn($p) => asset($p), $atelierImages ?? []));
     $previewUrls = array_slice($allUrls, 0, 6);
     $moreUrls    = array_slice($allUrls, 6);
     $hasMore     = count($moreUrls) > 0;
 @endphp
 
-{{-- Compact page header: back link + title strip --}}
 <header class="werkplaats-page-header">
     <div class="client-container">
-        <a href="/" class="werkplaats-back">
+        <a href="/{{ $locale }}" class="werkplaats-back">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M10 12L6 8l4-4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            Terug naar homepage
+            {{ __('pages.werkplaats_back') }}
         </a>
         <div class="werkplaats-page-title">
-            <span class="section-eyebrow">Eigen werkplaats</span>
-            <h1 class="werkplaats-title-compact">Waar vakmanschap vorm krijgt</h1>
+            <span class="section-eyebrow">{{ __('pages.werkplaats_eyebrow') }}</span>
+            <h1 class="werkplaats-title-compact">{{ __('pages.werkplaats_heading') }}</h1>
         </div>
     </div>
 </header>
 
-{{-- Featured 6-photo gallery --}}
 <section class="werkplaats-gallery-section">
     <div class="client-container">
 
         @if(count($previewUrls) > 0)
-            <div class="atelier-preview-grid" role="list" aria-label="Werkplaats — preview foto's">
+            <div class="atelier-preview-grid" role="list" aria-label="{{ __('pages.werkplaats_aria') }}">
                 @foreach($previewUrls as $i => $url)
                     <button
                         class="atelier-frame"
@@ -41,7 +40,7 @@
                         role="listitem"
                         data-lightbox-index="{{ $i }}"
                         style="background-image:url('{{ $url }}')"
-                        aria-label="Werkplaatsfoto {{ $i + 1 }} — klik om te vergroten"
+                        aria-label="{{ __('site.photo_label', ['n' => $i + 1, 'm' => count($allUrls)]) }}"
                     ></button>
                 @endforeach
             </div>
@@ -50,11 +49,11 @@
         @if($hasMore)
             <div class="atelier-show-more-wrap" id="atelier-show-more-wrap">
                 <button class="btn btn-secondary atelier-show-more-btn" type="button" id="atelier-show-more-btn">
-                    Zie meer foto's
+                    {{ __('pages.werkplaats_more') }}
                 </button>
             </div>
 
-            <div class="atelier-more-grid" id="atelier-more" hidden role="list" aria-label="Meer werkplaatsfotos">
+            <div class="atelier-more-grid" id="atelier-more" hidden role="list" aria-label="{{ __('pages.werkplaats_more_aria') }}">
                 @foreach($moreUrls as $j => $url)
                     <button
                         class="atelier-frame"
@@ -62,7 +61,7 @@
                         role="listitem"
                         data-lightbox-index="{{ 6 + $j }}"
                         style="background-image:url('{{ $url }}')"
-                        aria-label="Werkplaatsfoto {{ 6 + $j + 1 }} — klik om te vergroten"
+                        aria-label="{{ __('site.photo_label', ['n' => 6 + $j + 1, 'm' => count($allUrls)]) }}"
                     ></button>
                 @endforeach
             </div>
@@ -71,14 +70,13 @@
     </div>
 </section>
 
-{{-- Lightbox --}}
 <dialog
     class="realisaties-lightbox"
     id="realisaties-lightbox"
-    aria-label="Foto vergroot"
+    aria-label="{{ __('site.lightbox_label') }}"
     aria-modal="true"
 >
-    <button class="lightbox-close" type="button" aria-label="Sluiten">
+    <button class="lightbox-close" type="button" aria-label="{{ __('site.close') }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/>
         </svg>
@@ -86,14 +84,14 @@
     <div class="lightbox-inner">
         <img class="lightbox-img" src="" alt="" loading="eager">
     </div>
-    <div class="lightbox-nav" aria-label="Navigatie">
-        <button class="lightbox-nav-btn lightbox-prev" type="button" aria-label="Vorige foto">
+    <div class="lightbox-nav" aria-label="{{ __('site.nav_label') }}">
+        <button class="lightbox-nav-btn lightbox-prev" type="button" aria-label="{{ __('site.prev_photo') }}">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M10 12L6 8l4-4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
         <span class="lightbox-counter" aria-live="polite"></span>
-        <button class="lightbox-nav-btn lightbox-next" type="button" aria-label="Volgende foto">
+        <button class="lightbox-nav-btn lightbox-next" type="button" aria-label="{{ __('site.next_photo') }}">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M6 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -111,7 +109,6 @@
 (function () {
   'use strict';
 
-  /* ── Lightbox ─────────────────────────────────────────────── */
   var dataEl = document.getElementById('curated-gallery-data');
   var dialog = document.getElementById('realisaties-lightbox');
   if (!dataEl || !dialog) return;
@@ -130,20 +127,12 @@
   function lbShow(idx) {
     lbCurrent = ((idx % allImages.length) + allImages.length) % allImages.length;
     lbImg.src = allImages[lbCurrent];
-    lbImg.alt = 'Werkplaatsfoto ' + (lbCurrent + 1) + ' van ' + allImages.length;
+    lbImg.alt = (lbCurrent + 1) + ' / ' + allImages.length;
     if (counter) counter.textContent = (lbCurrent + 1) + ' / ' + allImages.length;
   }
 
-  function lbOpen(idx) {
-    lbShow(idx);
-    dialog.showModal();
-    document.body.style.overflow = 'hidden';
-  }
-
-  function lbClose() {
-    dialog.close();
-    document.body.style.overflow = '';
-  }
+  function lbOpen(idx) { lbShow(idx); dialog.showModal(); document.body.style.overflow = 'hidden'; }
+  function lbClose()   { dialog.close(); document.body.style.overflow = ''; }
 
   function bindFrames() {
     document.querySelectorAll('.atelier-frame').forEach(function (btn) {
@@ -157,8 +146,8 @@
   bindFrames();
 
   if (closeBtn) closeBtn.addEventListener('click', lbClose);
-  if (prevBtn)  prevBtn.addEventListener('click', function () { lbShow(lbCurrent - 1); });
-  if (nextBtn)  nextBtn.addEventListener('click', function () { lbShow(lbCurrent + 1); });
+  if (prevBtn)  prevBtn.addEventListener('click',  function () { lbShow(lbCurrent - 1); });
+  if (nextBtn)  nextBtn.addEventListener('click',  function () { lbShow(lbCurrent + 1); });
 
   dialog.addEventListener('click', function (e) { if (e.target === dialog) lbClose(); });
 
@@ -178,7 +167,7 @@
     touchX = null;
   }, { passive: true });
 
-  /* ── "Zie meer foto's" reveal ─────────────────────────── */
+  /* ── "Zie meer / voir plus / see more" reveal ── */
   var showMoreBtn  = document.getElementById('atelier-show-more-btn');
   var showMoreWrap = document.getElementById('atelier-show-more-wrap');
   var moreGrid     = document.getElementById('atelier-more');
@@ -186,78 +175,54 @@
   if (showMoreBtn && moreGrid) {
     showMoreBtn.addEventListener('click', function () {
       moreGrid.hidden = false;
-      requestAnimationFrame(function () {
-        moreGrid.classList.add('is-visible');
-      });
+      requestAnimationFrame(function () { moreGrid.classList.add('is-visible'); });
       showMoreWrap.hidden = true;
       bindFrames();
-      setTimeout(function () {
-        moreGrid.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 80);
+      setTimeout(function () { moreGrid.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 80);
     });
   }
 
-  /* ── Animated cycling of the 6-photo preview ──────────── */
+  /* ── Animated preview cycling ── */
   (function () {
-    // Respect prefers-reduced-motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    // Only cycle when there are more than 6 photos to draw from
     if (!allImages || allImages.length <= 6) return;
 
-    var previewFrames = Array.from(
-      document.querySelectorAll('.atelier-preview-grid .atelier-frame')
-    );
+    var previewFrames = Array.from(document.querySelectorAll('.atelier-preview-grid .atelier-frame'));
     if (!previewFrames.length) return;
 
-    // Track which allImages index each preview slot is currently showing
     var frameIndices = previewFrames.map(function (_, i) { return i; });
-    var poolPtr      = 6;  // start pulling from index 6 (after the initial set)
-    var slotPtr      = 0;  // rotate through slots so all 6 cycle evenly
-    var cycleTimer   = null;
+    var poolPtr = 6, slotPtr = 0, cycleTimer = null;
 
-    function isShown(idx) {
-      for (var i = 0; i < frameIndices.length; i++) {
-        if (frameIndices[i] === idx) return true;
-      }
-      return false;
-    }
+    function isShown(idx) { return frameIndices.indexOf(idx) !== -1; }
 
     function pickNextImage() {
-      var total = allImages.length;
-      var tries = 0;
+      var total = allImages.length, tries = 0;
       while (tries < total) {
         var candidate = poolPtr % total;
         poolPtr = (poolPtr + 1) % total;
         if (!isShown(candidate)) return candidate;
         tries++;
       }
-      return -1; // all images already visible — unlikely with 42 photos
+      return -1;
     }
 
     function cycleOne() {
-      var slot  = slotPtr % previewFrames.length;
-      slotPtr   = (slotPtr + 1) % previewFrames.length;
+      var slot   = slotPtr % previewFrames.length;
+      slotPtr    = (slotPtr + 1) % previewFrames.length;
       var newIdx = pickNextImage();
       if (newIdx === -1) return;
-
-      var frame = previewFrames[slot];
-
-      // Fade out
+      var frame  = previewFrames[slot];
       frame.classList.add('is-fading');
-
       setTimeout(function () {
-        // Swap content while invisible
         frame.style.backgroundImage = 'url(' + allImages[newIdx] + ')';
         frame.dataset.lightboxIndex  = String(newIdx);
         frameIndices[slot]           = newIdx;
-        // Fade back in
         frame.classList.remove('is-fading');
-      }, 480); // slightly longer than opacity transition (0.45s)
+      }, 480);
     }
 
     cycleTimer = setInterval(cycleOne, 3800);
 
-    // Stop cycling once "Zie meer" is clicked
     if (showMoreBtn) {
       showMoreBtn.addEventListener('click', function () {
         if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }

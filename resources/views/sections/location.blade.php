@@ -1,9 +1,11 @@
+@php $locale ??= 'nl'; @endphp
+
 <section id="location" class="client-section-alt wood-bg-oak">
     <div class="client-container">
 
         <div class="section-header">
-            <span class="section-eyebrow">Locatie</span>
-            <h2 class="section-title">Hoe ons vinden</h2>
+            <span class="section-eyebrow">{{ __('site.location_eyebrow') }}</span>
+            <h2 class="section-title">{{ __('site.location_heading') }}</h2>
         </div>
 
         <div class="two-column-grid">
@@ -33,12 +35,12 @@
                     </p>
                 @endif
                 <p style="font-size:.9rem;color:var(--color-text-light);margin-bottom:1.5rem;">
-                    {{ config('site.appointment_message', 'Wij werken op afspraak.') }}
+                    {{ __('contact.appointment') }}
                 </p>
                 @if(!empty(config('site.maps_link')))
                     <a href="{{ config('site.maps_link') }}" target="_blank" rel="noopener noreferrer"
                        class="btn btn-secondary">
-                        Bekijk op Google Maps
+                        {{ __('site.location_gmaps') }}
                     </a>
                 @endif
             </div>
@@ -51,7 +53,7 @@
                             allowfullscreen=""
                             loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"
-                            title="Locatie {{ config('site.name') }} op Google Maps"
+                            title="{{ __('site.location_title', ['name' => config('site.name')]) }}"
                         ></iframe>
                     </div>
                 @else

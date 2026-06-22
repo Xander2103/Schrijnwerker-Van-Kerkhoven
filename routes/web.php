@@ -1,97 +1,157 @@
 <?php
 
+use App\Http\Middleware\SetLocale;
+use App\Mail\ContactInquiry;
 use App\Support\GalleryScanner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pages.home', [
-        'galleryImages'   => GalleryScanner::scan(),
-        'atelierImages'   => GalleryScanner::scan('atelier'),
-        'historischImages' => GalleryScanner::scan('historisch'),
-    ]);
-});
+/*
+|--------------------------------------------------------------------------
+| Root → default locale redirect
+|--------------------------------------------------------------------------
+*/
+Route::redirect('/', '/nl', 302);
 
-Route::get('/privacy', function () {
-    return view('pages.privacy');
-})->name('privacy');
+/*
+|--------------------------------------------------------------------------
+| Legacy non-locale paths → permanent redirect to /nl/...
+|--------------------------------------------------------------------------
+*/
+Route::redirect('/contact',     '/nl/contact',         301);
+Route::redirect('/privacy',     '/nl/privacy-policy',  301);
+Route::redirect('/ramen',       '/nl/ramen',           301);
+Route::redirect('/deuren',      '/nl/deuren',          301);
+Route::redirect('/trappen',     '/nl/trappen',         301);
+Route::redirect('/werkplaats',  '/nl/werkplaats',      301);
+Route::redirect('/houtsoorten', '/nl/werkplaats',      301);
+Route::redirect('/werkhuis',    '/nl/werkplaats',      301);
 
-Route::get('/contact', function () {
-    return view('pages.contact');
-})->name('contact');
+/*
+|--------------------------------------------------------------------------
+| Localized routes  /{locale}/...
+|--------------------------------------------------------------------------
+*/
+Route::prefix('{locale}')
+    ->where(['locale' => 'nl|fr|en'])
+    ->middleware(SetLocale::class)
+    ->group(function (): void {
 
-Route::post('/contact', function (Request $request) {
-    // Honeypot: bots fill hidden fields, humans don't
-    if (!empty($request->input('website_url'))) {
-        return redirect()->back();
-    }
+        // ── Homepage ────────────────────────────────────────────────────────
+        Route::get('/', function (string $locale): mixed {
+            return view('pages.home', [
+                'galleryImages'    => GalleryScanner::scan(),
+                'atelierImages'    => GalleryScanner::scan('atelier'),
+                'historischImages' => GalleryScanner::scan('historisch'),
+            ]);
+        })->name('home');
 
-    // Daily rate limit: max 2 successful submissions per IP per day
-    $ip      = $request->ip();
-    $cacheKey = 'contact:daily:' . sha1($ip . ':' . today()->toDateString());
-    $count   = (int) Cache::get($cacheKey, 0);
+        // ── Ramen ───────────────────────────────────────────────────────────
+        Route::get('/ramen', function (string $locale): mixed {
+            $galleryImages = array_values(array_filter(
+                GalleryScanner::scan('ramen'),
+                fn($p) => !str_contains(basename($p), 'hero')
+            ));
+            return view('pages.ramen', compact('galleryImages'));
+        })->name('ramen');
 
-    if ($count >= 2) {
-        return redirect()->route('contact')
-            ->withInput()
-            ->with('contact_rate_error',
-                'U heeft vandaag al het maximale aantal berichten verstuurd. ' .
-                'Probeer morgen opnieuw of bel ons direct op ' . config('site.phone') . '.');
-    }
+        // ── Deuren ──────────────────────────────────────────────────────────
+        Route::get('/deuren', function (string $locale): mixed {
+            $galleryImages = array_values(array_filter(
+                GalleryScanner::scan('deuren'),
+                fn($p) => !str_contains(basename($p), 'hero')
+            ));
+            return view('pages.deuren', compact('galleryImages'));
+        })->name('deuren');
 
-    $request->validate([
-        'name'         => ['required', 'string', 'max:100'],
-        'phone'        => ['required', 'string', 'max:30'],
-        'email'        => ['nullable', 'email', 'max:150'],
-        'request_type' => ['required', 'string', 'max:100'],
-        'message'      => ['required', 'string', 'max:2000'],
-        'privacy'      => ['accepted'],
-    ], [
-        'name.required'         => 'Vul uw naam in.',
-        'phone.required'        => 'Vul uw telefoonnummer in.',
-        'email.email'           => 'Vul een geldig e-mailadres in.',
-        'request_type.required' => 'Kies een type aanvraag.',
-        'message.required'      => 'Vul een bericht in.',
-        'message.max'           => 'Uw bericht mag maximaal 2000 tekens bevatten.',
-        'privacy.accepted'      => 'U moet akkoord gaan met het privacybeleid.',
-    ]);
+        // ── Trappen ─────────────────────────────────────────────────────────
+        Route::get('/trappen', function (string $locale): mixed {
+            $galleryImages = GalleryScanner::scan('trap');
+            return view('pages.trappen', compact('galleryImages'));
+        })->name('trappen');
 
-    // Increment daily counter after successful validation
-    Cache::put($cacheKey, $count + 1, now()->endOfDay());
+        // ── Werkplaats ──────────────────────────────────────────────────────
+        Route::get('/werkplaats', function (string $locale): mixed {
+            return view('pages.werkplaats', [
+                'atelierImages' => GalleryScanner::scan('atelier'),
+            ]);
+        })->name('werkplaats');
 
-    return redirect()->route('contact')->with(
-        'contact_success',
-        'Bedankt, uw aanvraag werd ontvangen. We nemen zo snel mogelijk contact op.'
-    );
-})->middleware('throttle:5,1')->name('contact.submit');
+        // ── Privacy policy ──────────────────────────────────────────────────
+        Route::get('/privacy-policy', function (string $locale): mixed {
+            return view('pages.privacy');
+        })->name('privacy');
 
-Route::get('/ramen', function () {
-    $galleryImages = array_values(array_filter(
-        GalleryScanner::scan('ramen'),
-        fn($p) => !str_contains(basename($p), 'hero')
-    ));
-    return view('pages.ramen', compact('galleryImages'));
-})->name('ramen');
+        // ── Contact GET ─────────────────────────────────────────────────────
+        Route::get('/contact', function (string $locale): mixed {
+            return view('pages.contact');
+        })->name('contact');
 
-Route::get('/deuren', function () {
-    $galleryImages = array_values(array_filter(
-        GalleryScanner::scan('deuren'),
-        fn($p) => !str_contains(basename($p), 'hero')
-    ));
-    return view('pages.deuren', compact('galleryImages'));
-})->name('deuren');
+        // ── Contact POST ────────────────────────────────────────────────────
+        Route::post('/contact', function (string $locale, Request $request): mixed {
 
-Route::get('/trappen', function () {
-    $galleryImages = GalleryScanner::scan('trap');
-    return view('pages.trappen', compact('galleryImages'));
-})->name('trappen');
+            // Honeypot
+            if (!empty($request->input('website_url'))) {
+                return redirect()->back();
+            }
 
-Route::redirect('/houtsoorten', '/werkplaats', 301);
-Route::redirect('/werkhuis',   '/werkplaats', 301);
+            // Daily rate limit: 2 submissions per IP per day
+            $ip       = $request->ip();
+            $cacheKey = 'contact:daily:' . sha1($ip . ':' . today()->toDateString());
+            $count    = (int) Cache::get($cacheKey, 0);
 
-Route::get('/werkplaats', function () {
-    return view('pages.werkplaats', [
-        'atelierImages' => GalleryScanner::scan('atelier'),
-    ]);
-})->name('werkplaats');
+            if ($count >= 2) {
+                return redirect()->route('contact', ['locale' => $locale])
+                    ->withInput()
+                    ->with('contact_rate_error',
+                        trans('contact.rate_error', ['phone' => config('site.phone')]));
+            }
+
+            $allowedTypes = config('contact.form_request_types', []);
+
+            $request->validate([
+                'name'         => ['required', 'string', 'max:100'],
+                'phone'        => ['required', 'string', 'max:30'],
+                'email'        => ['nullable', 'email', 'max:150'],
+                'request_type' => ['required', 'string', 'in:' . implode(',', $allowedTypes)],
+                'message'      => ['required', 'string', 'max:2000'],
+                'privacy'      => ['accepted'],
+            ], [
+                'name.required'         => trans('contact.validation.name_required'),
+                'phone.required'        => trans('contact.validation.phone_required'),
+                'email.email'           => trans('contact.validation.email_invalid'),
+                'request_type.required' => trans('contact.validation.type_required'),
+                'request_type.in'       => trans('contact.validation.type_invalid'),
+                'message.required'      => trans('contact.validation.message_required'),
+                'message.max'           => trans('contact.validation.message_max'),
+                'privacy.accepted'      => trans('contact.validation.privacy_accepted'),
+            ]);
+
+            // Increment rate-limit counter after successful validation
+            Cache::put($cacheKey, $count + 1, now()->endOfDay());
+
+            // Send notification email to site owner
+            try {
+                Mail::to(config('contact.email'))->send(new ContactInquiry(
+                    data: [
+                        'name'         => $request->input('name'),
+                        'email'        => $request->input('email'),
+                        'phone'        => $request->input('phone'),
+                        'request_type' => $request->input('request_type'),
+                        'message'      => $request->input('message'),
+                        'submitted_at' => now()->format('d/m/Y H:i'),
+                        'source_url'   => $request->headers->get('referer', ''),
+                    ],
+                    submissionLocale: $locale,
+                ));
+            } catch (\Throwable) {
+                // Mail failure must not block the user confirmation
+            }
+
+            return redirect()->route('contact', ['locale' => $locale])
+                ->with('contact_success', trans('contact.success'));
+        })->middleware('throttle:5,1')->name('contact.submit');
+    });

@@ -1,10 +1,15 @@
+@php
+    $locale      ??= 'nl';
+    $privacyLink = '/' . $locale . config('contact.privacy_link', '/privacy-policy');
+@endphp
+
 <section id="contact" class="client-section wood-bg-beige">
     <div class="client-container">
 
         <div class="section-header reveal">
-            <span class="section-eyebrow">Contact</span>
-            <h2 class="section-title">Wij helpen u graag</h2>
-            <p class="section-intro">Van eerste vraag tot oplevering — wij begeleiden elk project persoonlijk.</p>
+            <span class="section-eyebrow">{{ __('contact.eyebrow') }}</span>
+            <h2 class="section-title">{{ __('contact.heading') }}</h2>
+            <p class="section-intro">{{ __('contact.intro') }}</p>
         </div>
 
         <div class="two-column-grid">
@@ -12,21 +17,21 @@
             <div class="reveal">
                 <div class="contact-card">
                     @if(!empty(config('contact.email')))
-                        <p><strong>E-mail</strong><br>
+                        <p><strong>{{ __('site.label_email') }}</strong><br>
                         <a href="mailto:{{ config('contact.email') }}">{{ config('contact.email') }}</a></p>
                     @endif
                     @if(!empty(config('site.phone')))
-                        <p><strong>Telefoon</strong><br>
+                        <p><strong>{{ __('site.label_phone') }}</strong><br>
                         <a href="tel:{{ config('site.phone') }}">{{ config('site.phone') }}</a></p>
                     @endif
                     @if(!empty(config('site.whatsapp_url')))
-                        <p><a href="{{ config('site.whatsapp_url') }}" target="_blank" rel="noopener noreferrer">WhatsApp ons</a></p>
+                        <p><a href="{{ config('site.whatsapp_url') }}" target="_blank" rel="noopener noreferrer">{{ __('site.label_whatsapp') }}</a></p>
                     @endif
-                    <p><strong>Adres</strong><br>
+                    <p><strong>{{ __('site.label_address') }}</strong><br>
                     {{ config('site.address') }}, {{ config('site.city') }}</p>
                     <p style="margin:0;">
-                        <strong>Afspraken</strong><br>
-                        {{ config('site.appointment_message', 'Wij werken op afspraak.') }}
+                        <strong>{{ __('contact.label_appt') }}</strong><br>
+                        {{ __('contact.appointment') }}
                     </p>
                 </div>
             </div>
@@ -53,20 +58,19 @@
                     </div>
                 @endif
 
-                <form class="contact-form" action="{{ route('contact.submit') }}" method="POST" novalidate>
+                <form class="contact-form" action="{{ route('contact.submit', ['locale' => $locale]) }}" method="POST" novalidate>
                     @csrf
 
-                    {{-- Honeypot: hidden from humans, bots fill it --}}
                     <div style="display:none;" aria-hidden="true">
                         <label for="website_url">Laat dit veld leeg</label>
                         <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off">
                     </div>
 
                     <div class="form-field">
-                        <label for="contact-name">Naam *</label>
+                        <label for="contact-name">{{ __('contact.name_label') }} {{ __('contact.required_suffix') }}</label>
                         <input type="text" id="contact-name" name="name"
                                class="form-input{{ $errors->has('name') ? ' form-input-error' : '' }}"
-                               placeholder="Uw naam" autocomplete="name"
+                               placeholder="{{ __('contact.name_placeholder') }}" autocomplete="name"
                                value="{{ old('name') }}">
                         @error('name')
                             <span class="form-error" role="alert">{{ $message }}</span>
@@ -74,10 +78,10 @@
                     </div>
 
                     <div class="form-field">
-                        <label for="contact-phone">Telefoonnummer *</label>
+                        <label for="contact-phone">{{ __('contact.phone_label') }} {{ __('contact.required_suffix') }}</label>
                         <input type="tel" id="contact-phone" name="phone"
                                class="form-input{{ $errors->has('phone') ? ' form-input-error' : '' }}"
-                               placeholder="Uw telefoonnummer" autocomplete="tel"
+                               placeholder="{{ __('contact.phone_placeholder') }}" autocomplete="tel"
                                value="{{ old('phone') }}">
                         @error('phone')
                             <span class="form-error" role="alert">{{ $message }}</span>
@@ -86,11 +90,11 @@
 
                     <div class="form-field">
                         <label for="contact-email">
-                            E-mailadres <span style="color:var(--color-text-light);font-weight:400;">(optioneel)</span>
+                            {{ __('contact.email_label') }} <span style="color:var(--color-text-light);font-weight:400;">{{ __('contact.email_optional') }}</span>
                         </label>
                         <input type="email" id="contact-email" name="email"
                                class="form-input{{ $errors->has('email') ? ' form-input-error' : '' }}"
-                               placeholder="uw@email.be" autocomplete="email"
+                               placeholder="{{ __('contact.email_placeholder') }}" autocomplete="email"
                                value="{{ old('email') }}">
                         @error('email')
                             <span class="form-error" role="alert">{{ $message }}</span>
@@ -99,12 +103,14 @@
 
                     @if(!empty(config('contact.form_request_types')))
                         <div class="form-field">
-                            <label for="contact-type">Type aanvraag *</label>
+                            <label for="contact-type">{{ __('contact.type_label') }} {{ __('contact.required_suffix') }}</label>
                             <select id="contact-type" name="request_type"
                                     class="form-input{{ $errors->has('request_type') ? ' form-input-error' : '' }}">
-                                <option value="" disabled {{ old('request_type') ? '' : 'selected' }}>Kies een optie</option>
-                                @foreach(config('contact.form_request_types') as $type)
-                                    <option value="{{ $type }}" {{ old('request_type') === $type ? 'selected' : '' }}>{{ $type }}</option>
+                                <option value="" disabled {{ old('request_type') ? '' : 'selected' }}>{{ __('contact.type_placeholder') }}</option>
+                                @foreach(config('contact.form_request_types') as $key)
+                                    <option value="{{ $key }}" {{ old('request_type') === $key ? 'selected' : '' }}>
+                                        {{ __('contact.request_types.' . $key) }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('request_type')
@@ -114,10 +120,10 @@
                     @endif
 
                     <div class="form-field">
-                        <label for="contact-message">Bericht *</label>
+                        <label for="contact-message">{{ __('contact.message_label') }} {{ __('contact.required_suffix') }}</label>
                         <textarea id="contact-message" name="message"
                                   class="form-input{{ $errors->has('message') ? ' form-input-error' : '' }}"
-                                  rows="4" placeholder="Beschrijf uw aanvraag...">{{ old('message') }}</textarea>
+                                  rows="4" placeholder="{{ __('contact.msg_placeholder') }}">{{ old('message') }}</textarea>
                         @error('message')
                             <span class="form-error" role="alert">{{ $message }}</span>
                         @enderror
@@ -127,9 +133,9 @@
                         <input type="checkbox" id="contact-privacy" name="privacy" value="1"
                                {{ old('privacy') ? 'checked' : '' }}>
                         <label for="contact-privacy">
-                            Ik ga akkoord dat mijn gegevens gebruikt worden om mijn aanvraag te beantwoorden.
+                            {{ __('contact.privacy_text') }}
                             @if(!empty(config('contact.privacy_link')))
-                                <a href="{{ config('contact.privacy_link') }}" target="_blank">Meer info</a>.
+                                <a href="{{ $privacyLink }}" target="_blank">{{ __('contact.privacy_more') }}</a>.
                             @endif
                         </label>
                     </div>
@@ -138,7 +144,7 @@
                     @enderror
 
                     <div class="form-submit-row">
-                        <button type="submit" class="btn btn-primary">Verstuur aanvraag</button>
+                        <button type="submit" class="btn btn-primary">{{ __('contact.submit') }}</button>
                     </div>
 
                 </form>

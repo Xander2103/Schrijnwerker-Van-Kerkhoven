@@ -1,3 +1,8 @@
+@php
+    $locale     ??= 'nl';
+    $navItems   = __('pages.nav_items');
+@endphp
+
 <footer class="footer-bar">
     <div class="client-container">
         <div class="footer-grid">
@@ -18,22 +23,27 @@
             </div>
 
             <div>
-                <p class="footer-heading">Navigatie</p>
+                <p class="footer-heading">{{ __('site.footer_nav') }}</p>
                 <ul class="footer-nav-list" role="list">
-                    @foreach(config('site.nav_items', []) as $item)
-                        <li><a href="{{ $item['href'] }}">{{ $item['label'] }}</a></li>
+                    @foreach($navItems as $item)
+                        @php
+                            $href = isset($item['anchor'])
+                                ? '/' . $locale . '#' . $item['anchor']
+                                : '/' . $locale . '/' . $item['path'];
+                        @endphp
+                        <li><a href="{{ $href }}">{{ $item['label'] }}</a></li>
                     @endforeach
                 </ul>
             </div>
 
             <div>
-                <p class="footer-heading">Bereikbaarheid</p>
+                <p class="footer-heading">{{ __('site.footer_access') }}</p>
                 <p style="font-size:.875rem;color:rgba(255,255,255,.7);margin:0 0 .5rem;">
-                    {{ config('site.appointment_message', 'Wij werken op afspraak.') }}
+                    {{ __('contact.appointment') }}
                 </p>
                 @if(!empty(config('contact.privacy_link')))
                     <p style="margin-top:1rem;font-size:.875rem;">
-                        <a href="{{ config('contact.privacy_link') }}">Privacybeleid</a>
+                        <a href="/{{ $locale }}{{ config('contact.privacy_link') }}">{{ __('site.footer_privacy') }}</a>
                     </p>
                 @endif
             </div>

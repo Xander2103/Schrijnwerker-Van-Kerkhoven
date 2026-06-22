@@ -2,12 +2,9 @@
      Category gallery: wooden-framed static grid.
      Requires: $galleryImages (array of relative public paths)
      Optional: $galleryTitle (string)
-
-     Shows all available images. Lightbox opens on click.
-     Respects prefers-reduced-motion.
      ============================================================ --}}
 @php
-    $galleryTitle = $galleryTitle ?? 'Onze realisaties';
+    $galleryTitle = $galleryTitle ?? __('site.gallery_eyebrow');
     $allUrls      = array_values(array_map(fn($p) => asset($p), $galleryImages ?? []));
     $hasImages    = count($allUrls) > 0;
     $manyImages   = count($allUrls) > 9;
@@ -17,7 +14,7 @@
     <div class="client-container">
 
         <div class="section-header reveal">
-            <span class="section-eyebrow">Realisaties</span>
+            <span class="section-eyebrow">{{ __('site.gallery_eyebrow') }}</span>
             <h2 class="section-title">{{ $galleryTitle }}</h2>
         </div>
 
@@ -33,7 +30,7 @@
                         class="curated-frame"
                         type="button"
                         role="listitem"
-                        aria-label="Foto {{ $i + 1 }} van {{ count($allUrls) }} — klik om te vergroten"
+                        aria-label="{{ __('site.photo_label', ['n' => $i + 1, 'm' => count($allUrls)]) }}"
                         data-lightbox-index="{{ $i }}"
                         style="background-image:url('{{ $url }}')"
                     ></button>
@@ -41,21 +38,20 @@
             </div>
         @else
             <p class="section-intro" style="text-align:center;padding:3rem 0;">
-                Foto's worden hier geplaatst.
+                {{ __('site.gallery_empty') }}
             </p>
         @endif
 
     </div>
 </section>
 
-{{-- ─── Lightbox ──────────────────────────────────────────────────── --}}
 <dialog
     class="realisaties-lightbox"
     id="realisaties-lightbox"
-    aria-label="Foto vergroot"
+    aria-label="{{ __('site.lightbox_label') }}"
     aria-modal="true"
 >
-    <button class="lightbox-close" type="button" aria-label="Sluiten">
+    <button class="lightbox-close" type="button" aria-label="{{ __('site.close') }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/>
         </svg>
@@ -63,14 +59,14 @@
     <div class="lightbox-inner">
         <img class="lightbox-img" src="" alt="" loading="eager">
     </div>
-    <div class="lightbox-nav" aria-label="Navigatie">
-        <button class="lightbox-nav-btn lightbox-prev" type="button" aria-label="Vorige foto">
+    <div class="lightbox-nav" aria-label="{{ __('site.nav_label') }}">
+        <button class="lightbox-nav-btn lightbox-prev" type="button" aria-label="{{ __('site.prev_photo') }}">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M10 12L6 8l4-4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
         <span class="lightbox-counter" aria-live="polite"></span>
-        <button class="lightbox-nav-btn lightbox-next" type="button" aria-label="Volgende foto">
+        <button class="lightbox-nav-btn lightbox-next" type="button" aria-label="{{ __('site.next_photo') }}">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M6 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -105,7 +101,7 @@
   function lbShow(idx) {
     lbCurrent = ((idx % allImages.length) + allImages.length) % allImages.length;
     lbImg.src = allImages[lbCurrent];
-    lbImg.alt = 'Realisatie ' + (lbCurrent + 1) + ' van ' + allImages.length;
+    lbImg.alt = (lbCurrent + 1) + ' / ' + allImages.length;
     if (counter) counter.textContent = (lbCurrent + 1) + ' / ' + allImages.length;
   }
 

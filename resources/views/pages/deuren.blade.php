@@ -1,32 +1,32 @@
 @extends('layouts.client')
 
-@section('page_title', 'Houten deuren op maat — Van Kerkhoven Schrijnwerkerij Huldenberg')
-@section('page_description', 'Massief houten deuren op maat — buitendeuren en binnendeuren in elke stijl en afwerking. Van Kerkhoven — 45 jaar vakmanschap in Huldenberg.')
+@section('page_title', __('pages.deuren_title'))
+@section('page_description', __('pages.deuren_desc'))
 
 @section('content')
 
-{{-- ─── Page hero with background image ──────────────────────────── --}}
+@php $locale ??= 'nl'; @endphp
+
 <section
     class="page-hero page-hero--image"
     style="--page-hero-image: url('{{ asset('assets/client/images/deuren/hero-deuren.webp') }}')"
 >
     <div class="client-container">
         <div class="page-hero-content">
-            <a href="/" class="page-back-link" aria-label="Terug naar home">
+            <a href="/{{ $locale }}" class="page-back-link" aria-label="{{ __('site.back_home') }}">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path d="M10 12L6 8l4-4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                Terug
+                {{ __('site.back') }}
             </a>
-            <span class="section-eyebrow">Specialisatie</span>
-            <h1 class="page-hero-title">Houten deuren met karakter</h1>
-            <p class="page-hero-intro">Van een solide voordeur tot stijlvolle binnendeuren — elk op maat, in massief hout.</p>
+            <span class="section-eyebrow">{{ __('pages.deuren_eyebrow') }}</span>
+            <h1 class="page-hero-title">{{ __('pages.deuren_heading') }}</h1>
+            <p class="page-hero-intro">{{ __('pages.deuren_intro') }}</p>
         </div>
     </div>
 </section>
 
-{{-- ─── Photo gallery ───────────────────────────────────────────────── --}}
-@php $galleryTitle = 'Realisaties houten deuren'; @endphp
+@php $galleryTitle = __('pages.deuren_gallery'); @endphp
 @include('partials.realisaties-gallery')
 
 @endsection

@@ -12,9 +12,9 @@ class WerkhuisTest extends TestCase
         $this->withoutVite();
     }
 
-    public function test_werkhuis_redirects_to_werkplaats(): void
+    public function test_werkhuis_redirects_to_nl_werkplaats(): void
     {
-        $this->get('/werkhuis')->assertRedirect('/werkplaats');
+        $this->get('/werkhuis')->assertRedirect('/nl/werkplaats');
     }
 
     public function test_werkhuis_redirect_is_permanent(): void

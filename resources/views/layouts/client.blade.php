@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="{{ $locale ?? 'nl' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('page_title', config('seo.title'))</title>
-    <meta name="description" content="@yield('page_description', config('seo.description'))">
+    <title>@yield('page_title', __('site.meta_title_home'))</title>
+    <meta name="description" content="@yield('page_description', __('site.meta_desc_home'))">
 
     @if(!empty(config('seo.keywords')))
         <meta name="keywords" content="{{ implode(', ', config('seo.keywords', [])) }}">
@@ -15,12 +15,31 @@
         <meta name="robots" content="noindex">
     @endif
 
-    @if(!empty(config('seo.canonical_url')))
-        <link rel="canonical" href="{{ config('seo.canonical_url') }}">
+    {{-- Canonical: locale-aware --}}
+    @php
+        $canonicalBase = rtrim(config('seo.canonical_url', ''), '/');
+        $currentPath   = request()->path();
+    @endphp
+    @if(!empty($canonicalBase))
+        <link rel="canonical" href="{{ $canonicalBase }}/{{ $currentPath }}">
     @endif
 
-    <meta property="og:title"       content="{{ config('seo.og_title') }}">
-    <meta property="og:description" content="{{ config('seo.og_description') }}">
+    {{-- hreflang alternate links --}}
+    @php
+        $localeUrls ??= [];
+        $hreflangMap = ['nl' => 'nl-BE', 'fr' => 'fr-BE', 'en' => 'en'];
+    @endphp
+    @foreach($hreflangMap as $loc => $hreflang)
+        @if(isset($localeUrls[$loc]))
+            <link rel="alternate" hreflang="{{ $hreflang }}" href="{{ url($localeUrls[$loc]) }}">
+        @endif
+    @endforeach
+    @if(isset($localeUrls['nl']))
+        <link rel="alternate" hreflang="x-default" href="{{ url($localeUrls['nl']) }}">
+    @endif
+
+    <meta property="og:title"       content="{{ __('site.meta_title_home') }}">
+    <meta property="og:description" content="{{ __('site.meta_desc_home') }}">
     <meta property="og:image"       content="{{ config('seo.og_image') }}">
     <meta property="og:type"        content="{{ config('seo.og_type', 'website') }}">
 
@@ -30,7 +49,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- Theme colors injected as CSS custom properties --}}
+    {{-- Theme colors --}}
     <style>
         :root {
             --color-primary:      {{ config('theme.color_primary') }};
@@ -45,7 +64,7 @@
         }
     </style>
 
-    {{-- Schema.org LocalBusiness structured data --}}
+    {{-- Schema.org LocalBusiness --}}
     <script type="application/ld+json">
     @php
     echo json_encode([

@@ -1,32 +1,32 @@
 @extends('layouts.client')
 
-@section('page_title', 'Trappen op maat — Van Kerkhoven Schrijnwerkerij Huldenberg')
-@section('page_description', 'Massief houten trappen op maat — rechte trappen, kwartslag en halfslag in elke gewenste houtsoort en afwerking. Van Kerkhoven — 45 jaar vakmanschap in Huldenberg.')
+@section('page_title', __('pages.trappen_title'))
+@section('page_description', __('pages.trappen_desc'))
 
 @section('content')
 
-{{-- ─── Page hero with background image ──────────────────────────── --}}
+@php $locale ??= 'nl'; @endphp
+
 <section
     class="page-hero page-hero--image"
     style="--page-hero-image: url('{{ asset('assets/client/images/trappen-hero.webp') }}')"
 >
     <div class="client-container">
         <div class="page-hero-content">
-            <a href="/" class="page-back-link" aria-label="Terug naar home">
+            <a href="/{{ $locale }}" class="page-back-link" aria-label="{{ __('site.back_home') }}">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path d="M10 12L6 8l4-4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                Terug
+                {{ __('site.back') }}
             </a>
-            <span class="section-eyebrow">Specialisatie</span>
-            <h1 class="page-hero-title">Trappen op maat in massief hout</h1>
-            <p class="page-hero-intro">Functioneel en elegant — een houten trap die aansluit bij uw woning, stijl en interieur.</p>
+            <span class="section-eyebrow">{{ __('pages.trappen_eyebrow') }}</span>
+            <h1 class="page-hero-title">{{ __('pages.trappen_heading') }}</h1>
+            <p class="page-hero-intro">{{ __('pages.trappen_intro') }}</p>
         </div>
     </div>
 </section>
 
-{{-- ─── Photo gallery ───────────────────────────────────────────────── --}}
-@php $galleryTitle = 'Realisaties trappen'; @endphp
+@php $galleryTitle = __('pages.trappen_gallery'); @endphp
 @include('partials.realisaties-gallery')
 
 @endsection
