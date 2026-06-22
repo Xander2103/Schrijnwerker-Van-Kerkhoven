@@ -607,6 +607,11 @@
         align-items: center;
         gap: 2rem;
     }
+
+    /* Push lang switcher to the far right of the third column */
+    .nav-lang-switcher {
+        justify-self: end;
+    }
 }
 
   .nav-logo {
@@ -684,18 +689,11 @@
 
   /* --- Language Switcher --- */
 
-  /* Desktop: hidden on mobile, shown on md+ */
   .nav-lang-switcher {
-    display: none;
+    display: flex;
     align-items: center;
     gap: 0;
     flex-shrink: 0;
-  }
-
-  @media (min-width: 768px) {
-    .nav-lang-switcher {
-      display: flex;
-    }
   }
 
   .nav-lang-switcher .nav-lang-active,
@@ -791,6 +789,21 @@
     font-weight: 400;
     color: var(--color-border);
     pointer-events: none;
+  }
+
+  /* Mobile header: lang switcher left of hamburger */
+  @media (max-width: 767px) {
+    .nav-inner {
+      justify-content: flex-start;
+    }
+
+    .nav-logo {
+      margin-right: auto;
+    }
+
+    .nav-lang-switcher {
+      margin-right: 0.625rem;
+    }
   }
 
   /* --- Footer --- */
