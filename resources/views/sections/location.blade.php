@@ -47,14 +47,19 @@
 
             <div>
                 @if(!empty(config('site.maps_embed_url')))
-                    <div class="map-embed-container">
-                        <iframe
-                            src="{{ config('site.maps_embed_url') }}"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
-                            title="{{ __('site.location_title', ['name' => config('site.name')]) }}"
-                        ></iframe>
+                    <div class="map-embed-container" id="map-consent-wrap">
+                        {{-- Click-to-load: iframe not loaded until user consents --}}
+                        <div class="map-consent-placeholder" id="map-consent-placeholder">
+                            <p class="map-consent-text">{{ __('site.maps_consent_text') }}</p>
+                            <button
+                                type="button"
+                                class="btn btn-secondary map-consent-btn"
+                                id="map-consent-btn"
+                                aria-label="{{ __('site.maps_consent_aria') }}"
+                            >
+                                {{ __('site.maps_consent_btn') }}
+                            </button>
+                        </div>
                     </div>
                 @else
                     <div class="image-fallback" style="min-height:360px;">
@@ -62,6 +67,29 @@
                     </div>
                 @endif
             </div>
+
+@push('scripts')
+<script>
+(function () {
+    var btn = document.getElementById('map-consent-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+        var wrap = document.getElementById('map-consent-wrap');
+        var placeholder = document.getElementById('map-consent-placeholder');
+        if (!wrap) return;
+        var iframe = document.createElement('iframe');
+        iframe.src = {!! Js::from(config('site.maps_embed_url')) !!};
+        iframe.allowFullscreen = true;
+        iframe.loading = 'lazy';
+        iframe.referrerPolicy = 'no-referrer-when-downgrade';
+        iframe.title = {!! Js::from(__('site.location_title', ['name' => config('site.name')])) !!};
+        iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;';
+        if (placeholder) placeholder.remove();
+        wrap.appendChild(iframe);
+    });
+}());
+</script>
+@endpush
 
         </div>
     </div>

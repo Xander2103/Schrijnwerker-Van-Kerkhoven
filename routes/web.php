@@ -93,9 +93,10 @@ Route::prefix('{locale}')
         // ── Contact POST ────────────────────────────────────────────────────
         Route::post('/contact', function (string $locale, Request $request): mixed {
 
-            // Honeypot
+            // Honeypot — fake success so bots cannot distinguish from a real submission
             if (!empty($request->input('website_url'))) {
-                return redirect()->back();
+                return redirect()->route('contact', ['locale' => $locale])
+                    ->with('contact_success', trans('contact.success'));
             }
 
             // Daily rate limit: 2 submissions per IP per day
@@ -117,7 +118,7 @@ Route::prefix('{locale}')
                 'phone'        => ['required', 'string', 'max:30'],
                 'email'        => ['nullable', 'email', 'max:150'],
                 'request_type' => ['required', 'string', 'in:' . implode(',', $allowedTypes)],
-                'message'      => ['required', 'string', 'max:2000'],
+                'message'      => ['required', 'string', 'min:5', 'max:2000'],
                 'privacy'      => ['accepted'],
             ], [
                 'name.required'         => trans('contact.validation.name_required'),
@@ -126,6 +127,7 @@ Route::prefix('{locale}')
                 'request_type.required' => trans('contact.validation.type_required'),
                 'request_type.in'       => trans('contact.validation.type_invalid'),
                 'message.required'      => trans('contact.validation.message_required'),
+                'message.min'           => trans('contact.validation.message_min', ['min' => 5]),
                 'message.max'           => trans('contact.validation.message_max'),
                 'privacy.accepted'      => trans('contact.validation.privacy_accepted'),
             ]);

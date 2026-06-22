@@ -50,10 +50,13 @@ return [
     'reviews_stars_label' => ':rating van 5 sterren',
 
     // Location section
-    'location_eyebrow' => 'Locatie',
-    'location_heading' => 'Hoe ons vinden',
-    'location_gmaps'   => 'Bekijk op Google Maps',
-    'location_title'   => 'Locatie :name op Google Maps',
+    'location_eyebrow'   => 'Locatie',
+    'location_heading'   => 'Hoe ons vinden',
+    'location_gmaps'     => 'Bekijk op Google Maps',
+    'location_title'     => 'Locatie :name op Google Maps',
+    'maps_consent_text'  => 'Klik om de kaart te laden. Google verwerkt uw IP-adres wanneer de kaart wordt geladen.',
+    'maps_consent_btn'   => 'Kaart laden',
+    'maps_consent_aria'  => 'Laad de Google Maps kaart',
 
     // Contact card labels (in contact section and footer)
     'label_email'    => 'E-mail',

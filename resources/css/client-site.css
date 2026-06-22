@@ -524,6 +524,28 @@
     border: 0;
   }
 
+  /* Maps click-to-load consent placeholder */
+  .map-consent-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--color-secondary);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .map-consent-text {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    max-width: 28ch;
+    margin: 0;
+  }
+
   /* --- Navigation --- */
 
   .nav-bar {
@@ -658,6 +680,117 @@
     &:hover {
       color: var(--color-accent);
     }
+  }
+
+  /* --- Language Switcher --- */
+
+  /* Desktop: hidden on mobile, shown on md+ */
+  .nav-lang-switcher {
+    display: none;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 768px) {
+    .nav-lang-switcher {
+      display: flex;
+    }
+  }
+
+  .nav-lang-switcher .nav-lang-active,
+  .nav-lang-switcher .nav-lang-link {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.45rem;
+    line-height: 1;
+  }
+
+  .nav-lang-switcher .nav-lang-active {
+    font-weight: 700;
+    color: var(--color-primary);
+    border-bottom: 1.5px solid var(--color-accent);
+    cursor: default;
+  }
+
+  .nav-lang-switcher .nav-lang-link {
+    color: var(--color-text-light);
+    text-decoration: none;
+    border-bottom: 1.5px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  /* Separator: NL | FR | EN */
+  .nav-lang-switcher .nav-lang-active:not(:last-child)::after,
+  .nav-lang-switcher .nav-lang-link:not(:last-child)::after {
+    content: '|';
+    margin-left: 0.45rem;
+    font-weight: 400;
+    color: var(--color-border);
+    pointer-events: none;
+  }
+
+  /* Mobile language switcher */
+  .nav-mobile-lang {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 1rem;
+  }
+
+  .nav-mobile-lang .nav-lang-active,
+  .nav-mobile-lang .nav-lang-link {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    line-height: 1;
+  }
+
+  .nav-mobile-lang .nav-lang-active {
+    font-weight: 700;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-accent);
+    cursor: default;
+  }
+
+  .nav-mobile-lang .nav-lang-link {
+    color: var(--color-text-light);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  .nav-mobile-lang .nav-lang-active:not(:last-child)::after,
+  .nav-mobile-lang .nav-lang-link:not(:last-child)::after {
+    content: '|';
+    margin-left: 0.6rem;
+    font-weight: 400;
+    color: var(--color-border);
+    pointer-events: none;
   }
 
   /* --- Footer --- */
@@ -2608,6 +2741,25 @@ body.page-home:not(.nav-scrolled) .nav-links a:hover {
 
 body.page-home:not(.nav-scrolled) .nav-toggle span {
   background-color: rgba(255, 255, 255, 0.88);
+}
+
+/* Lang switcher — transparent hero state */
+body.page-home:not(.nav-scrolled) .nav-lang-switcher .nav-lang-active {
+  color: #ffffff;
+  border-bottom-color: rgba(255, 255, 255, 0.55);
+}
+
+body.page-home:not(.nav-scrolled) .nav-lang-switcher .nav-lang-link {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+body.page-home:not(.nav-scrolled) .nav-lang-switcher .nav-lang-link:hover {
+  color: #ffffff;
+}
+
+body.page-home:not(.nav-scrolled) .nav-lang-switcher .nav-lang-active::after,
+body.page-home:not(.nav-scrolled) .nav-lang-switcher .nav-lang-link::after {
+  color: rgba(255, 255, 255, 0.25);
 }
 
 /* ============================================================

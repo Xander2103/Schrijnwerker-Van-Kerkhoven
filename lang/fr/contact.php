@@ -51,6 +51,7 @@ return [
         'type_required'    => 'Veuillez choisir un type de demande.',
         'type_invalid'     => 'Veuillez choisir un type de demande valide.',
         'message_required' => 'Veuillez indiquer un message.',
+        'message_min'      => 'Votre message doit contenir au moins :min caractères.',
         'message_max'      => 'Votre message ne peut pas dépasser 2000 caractères.',
         'privacy_accepted' => 'Vous devez accepter la politique de confidentialité.',
     ],

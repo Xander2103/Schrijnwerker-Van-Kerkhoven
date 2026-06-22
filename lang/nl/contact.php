@@ -51,6 +51,7 @@ return [
         'type_required'    => 'Kies een type aanvraag.',
         'type_invalid'     => 'Kies een geldig type aanvraag.',
         'message_required' => 'Vul een bericht in.',
+        'message_min'      => 'Uw bericht moet minstens :min tekens bevatten.',
         'message_max'      => 'Uw bericht mag maximaal 2000 tekens bevatten.',
         'privacy_accepted' => 'U moet akkoord gaan met het privacybeleid.',
     ],

@@ -175,8 +175,9 @@ class ContactFormTest extends TestCase
     {
         $response = $this->post('/nl/contact', $this->validPayload(['website_url' => 'http://spam.example.com']));
         $response->assertRedirect();
-        $this->assertNull(session('contact_success'));
-        $this->assertEmpty(session('errors'));
+        Mail::assertNotSent(ContactInquiry::class);
+        $response->assertSessionHas('contact_success'); // fakes success so bots cannot detect the trap
+        $response->assertSessionHasNoErrors();
     }
 
     public function test_contact_form_rejects_message_over_2000_chars(): void
@@ -196,5 +197,42 @@ class ContactFormTest extends TestCase
     public function test_legacy_contact_redirects_to_nl(): void
     {
         $this->get('/contact')->assertRedirect('/nl/contact');
+    }
+
+    // ── Message minimum length ────────────────────────────────────────────
+    public function test_contact_form_rejects_too_short_message(): void
+    {
+        $this->post('/nl/contact', $this->validPayload(['message' => 'Hi']))
+            ->assertSessionHasErrors('message');
+    }
+
+    // ── Locale-specific validation error messages ─────────────────────────
+    public function test_fr_form_returns_french_validation_error_message(): void
+    {
+        $response = $this->post('/fr/contact', $this->validPayload(['name' => '']));
+        $response->assertSessionHasErrors('name');
+        $this->assertStringContainsString(
+            'Veuillez indiquer votre nom',
+            session('errors')->first('name')
+        );
+    }
+
+    public function test_en_form_returns_english_validation_error_message(): void
+    {
+        $response = $this->post('/en/contact', $this->validPayload(['name' => '']));
+        $response->assertSessionHasErrors('name');
+        $this->assertStringContainsString(
+            'Please enter your name',
+            session('errors')->first('name')
+        );
+    }
+
+    // ── Email subject reflects submission locale ───────────────────────────
+    public function test_email_subject_uses_submission_locale(): void
+    {
+        $this->post('/en/contact', $this->validPayload());
+        Mail::assertSent(ContactInquiry::class, function (ContactInquiry $mail) {
+            return $mail->envelope()->subject === 'New enquiry via the website';
+        });
     }
 }

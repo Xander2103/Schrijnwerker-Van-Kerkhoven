@@ -50,10 +50,13 @@ return [
     'reviews_stars_label' => ':rating sur 5 étoiles',
 
     // Location section
-    'location_eyebrow' => 'Localisation',
-    'location_heading' => 'Comment nous trouver',
-    'location_gmaps'   => 'Voir sur Google Maps',
-    'location_title'   => 'Localisation :name sur Google Maps',
+    'location_eyebrow'   => 'Localisation',
+    'location_heading'   => 'Comment nous trouver',
+    'location_gmaps'     => 'Voir sur Google Maps',
+    'location_title'     => 'Localisation :name sur Google Maps',
+    'maps_consent_text'  => 'Cliquez pour charger la carte. Google traitera votre adresse IP lors du chargement.',
+    'maps_consent_btn'   => 'Charger la carte',
+    'maps_consent_aria'  => 'Charger la carte Google Maps',
 
     // Contact card labels
     'label_email'    => 'E-mail',

@@ -51,6 +51,7 @@ return [
         'type_required'    => 'Please choose a type of request.',
         'type_invalid'     => 'Please choose a valid type of request.',
         'message_required' => 'Please enter a message.',
+        'message_min'      => 'Your message must be at least :min characters.',
         'message_max'      => 'Your message may not exceed 2000 characters.',
         'privacy_accepted' => 'You must agree to the privacy policy.',
     ],
