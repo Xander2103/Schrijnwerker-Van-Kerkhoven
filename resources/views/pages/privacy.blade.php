@@ -55,6 +55,7 @@
                 <h2>{{ __('privacy.h3') }}</h2>
                 <p>{{ __('privacy.h3_body') }}</p>
                 <p>{!! __('privacy.h3_body2') !!}</p>
+                <p>{{ __('privacy.h3_body3') }}</p>
             </div>
 
             {{-- 4. How long? --}}
@@ -68,6 +69,7 @@
                 <h2>{{ __('privacy.h5') }}</h2>
                 <p>{{ __('privacy.h5_body') }}</p>
                 <p>{!! __('privacy.h5_body2') !!}</p>
+                <p>{{ __('privacy.h5_body3') }}</p>
             </div>
 
             {{-- 6. Your rights --}}

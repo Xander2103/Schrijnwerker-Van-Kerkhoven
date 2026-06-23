@@ -692,7 +692,7 @@
   .nav-lang-switcher {
     display: flex;
     align-items: center;
-    gap: 0;
+    gap: 1rem;
     flex-shrink: 0;
   }
 
@@ -702,22 +702,36 @@
     font-weight: 500;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    padding: 0.2rem 0.45rem;
+    padding: 0.2rem 0;
     line-height: 1;
+    position: relative;
+    display: inline-block;
+    min-width: 2rem;
+    text-align: center;
   }
 
   .nav-lang-switcher .nav-lang-active {
     font-weight: 700;
     color: var(--color-primary);
-    border-bottom: 1.5px solid var(--color-accent);
     cursor: default;
+  }
+
+  /* Centered fixed-width underline — independent of text width */
+  .nav-lang-switcher .nav-lang-active::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5rem;
+    height: 1.5px;
+    background-color: var(--color-accent);
   }
 
   .nav-lang-switcher .nav-lang-link {
     color: var(--color-text-light);
     text-decoration: none;
-    border-bottom: 1.5px solid transparent;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    transition: color 0.15s ease;
 
     &:hover {
       color: var(--color-primary);
@@ -730,11 +744,14 @@
     }
   }
 
-  /* Separator: NL | FR | EN */
+  /* Separator: NL | FR | EN — absolutely positioned so it does not extend the element box */
   .nav-lang-switcher .nav-lang-active:not(:last-child)::after,
   .nav-lang-switcher .nav-lang-link:not(:last-child)::after {
     content: '|';
-    margin-left: 0.45rem;
+    position: absolute;
+    left: calc(100% + 0.5rem);
+    top: 50%;
+    transform: translate(-50%, -50%);
     font-weight: 400;
     color: var(--color-border);
     pointer-events: none;
@@ -744,7 +761,7 @@
   .nav-mobile-lang {
     display: flex;
     align-items: center;
-    gap: 0;
+    gap: 1.25rem;
     margin-top: 1rem;
   }
 
@@ -754,21 +771,35 @@
     font-weight: 500;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    padding: 0.3rem 0.6rem;
+    padding: 0.3rem 0;
     line-height: 1;
+    position: relative;
+    display: inline-block;
+    min-width: 2.25rem;
+    text-align: center;
   }
 
   .nav-mobile-lang .nav-lang-active {
     font-weight: 700;
     color: var(--color-primary);
-    border-bottom: 2px solid var(--color-accent);
     cursor: default;
+  }
+
+  /* Centered fixed-width underline for mobile */
+  .nav-mobile-lang .nav-lang-active::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.6rem;
+    height: 2px;
+    background-color: var(--color-accent);
   }
 
   .nav-mobile-lang .nav-lang-link {
     color: var(--color-text-light);
     text-decoration: none;
-    border-bottom: 2px solid transparent;
     transition: color 0.15s ease;
 
     &:hover {
@@ -785,7 +816,10 @@
   .nav-mobile-lang .nav-lang-active:not(:last-child)::after,
   .nav-mobile-lang .nav-lang-link:not(:last-child)::after {
     content: '|';
-    margin-left: 0.6rem;
+    position: absolute;
+    left: calc(100% + 0.625rem);
+    top: 50%;
+    transform: translate(-50%, -50%);
     font-weight: 400;
     color: var(--color-border);
     pointer-events: none;
@@ -2759,7 +2793,10 @@ body.page-home:not(.nav-scrolled) .nav-toggle span {
 /* Lang switcher — transparent hero state */
 body.page-home:not(.nav-scrolled) .nav-lang-switcher .nav-lang-active {
   color: #ffffff;
-  border-bottom-color: rgba(255, 255, 255, 0.55);
+}
+
+body.page-home:not(.nav-scrolled) .nav-lang-switcher .nav-lang-active::before {
+  background-color: rgba(255, 255, 255, 0.55);
 }
 
 body.page-home:not(.nav-scrolled) .nav-lang-switcher .nav-lang-link {
