@@ -4,7 +4,7 @@
     $localeUrls ??= ['nl' => '/nl', 'fr' => '/fr', 'en' => '/en'];
 @endphp
 
-<nav class="nav-bar" aria-label="{{ __('pages.nav_aria') }}">
+<nav class="nav-bar" id="nav-bar" aria-label="{{ __('pages.nav_aria') }}">
     <div class="nav-inner">
 
         <a href="/{{ $locale }}" class="nav-logo" aria-label="{{ config('site.name') }}">
@@ -45,27 +45,47 @@
             @endforeach
         </div>
 
-        {{-- Mobile/tablet language dropdown (< 1100px) --}}
-        <div class="nav-lang-dropdown-wrap" aria-label="{{ __('pages.lang_switcher_aria') }}">
-            <select class="nav-lang-dropdown" id="nav-lang-dropdown" aria-label="{{ __('pages.lang_switcher_aria') }}">
-                @foreach(['nl', 'fr', 'en'] as $l)
-                    <option value="{{ $localeUrls[$l] }}"{{ $l === $locale ? ' selected' : '' }}>{{ strtoupper($l) }}</option>
-                @endforeach
-            </select>
-            <span class="nav-lang-dropdown-caret" aria-hidden="true"></span>
-        </div>
+        {{-- Mobile/tablet right group: lang picker + hamburger (< 1100px) --}}
+        <div class="nav-mobile-actions">
 
-        <button
-            class="nav-toggle"
-            id="nav-toggle"
-            aria-label="{{ __('pages.nav_open') }}"
-            aria-expanded="false"
-            aria-controls="nav-mobile-panel"
-        >
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+            {{-- Custom language picker (replaces native <select> for full style control) --}}
+            <div class="nav-lang-picker" id="nav-lang-picker">
+                <button
+                    class="nav-lang-picker-btn"
+                    id="nav-lang-picker-btn"
+                    type="button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    aria-label="{{ __('pages.lang_switcher_aria') }}"
+                >
+                    <span class="nav-lang-picker-label">{{ strtoupper($locale) }}</span>
+                    <span class="nav-lang-picker-caret" aria-hidden="true"></span>
+                </button>
+                <ul class="nav-lang-picker-menu" role="list" aria-label="{{ __('pages.lang_switcher_aria') }}">
+                    @foreach(['nl', 'fr', 'en'] as $l)
+                        <li>
+                            @if($l === $locale)
+                                <span class="nav-lang-picker-item is-current" aria-current="true">{{ strtoupper($l) }}</span>
+                            @else
+                                <a href="{{ $localeUrls[$l] }}" class="nav-lang-picker-item" hreflang="{{ $l }}">{{ strtoupper($l) }}</a>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <button
+                class="nav-toggle"
+                id="nav-toggle"
+                aria-label="{{ __('pages.nav_open') }}"
+                aria-expanded="false"
+                aria-controls="nav-mobile-panel"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
 
     </div>{{-- /nav-inner --}}
 </nav>
@@ -87,27 +107,52 @@
         <a href="{{ $href }}" class="nav-mobile-link">{{ $item['label'] }}</a>
     @endforeach
 
-    {{-- Mobile language switcher --}}
-    <div class="nav-mobile-lang" aria-label="{{ __('pages.lang_switcher_aria') }}">
-        @foreach(['nl', 'fr', 'en'] as $l)
-            @if($l === $locale)
-                <span class="nav-lang-active" aria-current="true">{{ strtoupper($l) }}</span>
-            @else
-                <a href="{{ $localeUrls[$l] }}" class="nav-lang-link" hreflang="{{ $l }}">{{ strtoupper($l) }}</a>
-            @endif
-        @endforeach
-    </div>
+    {{-- Language switching: use the picker in the header (nav-bar is z:50, always above this panel) --}}
 </div>
 
 @push('scripts')
 <script>
 (function () {
-    var toggle = document.getElementById('nav-toggle');
-    var panel  = document.getElementById('nav-mobile-panel');
+    var navBar    = document.getElementById('nav-bar');
+    var toggle    = document.getElementById('nav-toggle');
+    var panel     = document.getElementById('nav-mobile-panel');
+    var picker    = document.getElementById('nav-lang-picker');
+    var pickerBtn = document.getElementById('nav-lang-picker-btn');
+
+    // ── Custom language picker ────────────────────────────────────────────
+    function openPicker() {
+        if (!picker) return;
+        picker.classList.add('is-open');
+        if (pickerBtn) pickerBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closePicker() {
+        if (!picker) return;
+        picker.classList.remove('is-open');
+        if (pickerBtn) pickerBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    if (pickerBtn && picker) {
+        pickerBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            picker.classList.contains('is-open') ? closePicker() : openPicker();
+        });
+        picker.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+        document.addEventListener('click', closePicker);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closePicker();
+        });
+    }
+
+    // ── Hamburger menu ────────────────────────────────────────────────────
     if (!toggle || !panel) return;
 
     function openMenu() {
         panel.classList.add('is-open');
+        toggle.classList.add('is-open');
+        if (navBar) navBar.classList.add('nav-open');
         toggle.setAttribute('aria-expanded', 'true');
         panel.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -115,6 +160,8 @@
 
     function closeMenu() {
         panel.classList.remove('is-open');
+        toggle.classList.remove('is-open');
+        if (navBar) navBar.classList.remove('nav-open');
         toggle.setAttribute('aria-expanded', 'false');
         panel.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
@@ -129,15 +176,8 @@
     });
 
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeMenu();
+        if (e.key === 'Escape') { closeMenu(); closePicker(); }
     });
-
-    var langSel = document.getElementById('nav-lang-dropdown');
-    if (langSel) {
-        langSel.addEventListener('change', function () {
-            window.location.href = this.value;
-        });
-    }
 }());
 </script>
 @endpush
