@@ -15,7 +15,8 @@
     <div class="client-container">
         <div class="bedrijf-inner">
 
-            <div class="bedrijf-content reveal">
+            {{-- Top: eyebrow, heading, quote, paragraph --}}
+            <div class="bedrijf-content-top reveal">
                 <span class="section-eyebrow">{{ __('site.bedrijf_eyebrow') }}</span>
                 <h2 class="bedrijf-heading">{{ __('site.bedrijf_heading') }}</h2>
 
@@ -26,19 +27,9 @@
                 <div class="bedrijf-text">
                     <p>{{ __('site.bedrijf_text') }}</p>
                 </div>
-
-                <ul class="bedrijf-kenmerken" aria-label="{{ __('site.bedrijf_aria_kenmerken') }}">
-                    @foreach(__('site.bedrijf_features') as $feature)
-                        <li>{{ $feature }}</li>
-                    @endforeach
-                </ul>
-
-                <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
-                    <a href="/{{ $locale }}/contact" class="btn btn-primary">{{ __('site.cta_primary') }}</a>
-                    <a href="/{{ $locale }}/werkplaats" class="btn btn-secondary">{{ __('site.bedrijf_cta_werkplaats') }}</a>
-                </div>
             </div>
 
+            {{-- Photo collage (between text and bullets on mobile) --}}
             <div class="bedrijf-images reveal" data-reveal-delay="100" aria-hidden="true">
                 @if(count($bedrijfPhotos) >= 2)
                     <div class="bedrijf-photo-stack" data-atelier-images="{{ $atelierJson }}">
@@ -63,6 +54,20 @@
                         <span style="color:rgba(255,255,255,0.45);">Atelier foto wordt geplaatst</span>
                     </div>
                 @endif
+            </div>
+
+            {{-- Bottom: bullet list and CTAs --}}
+            <div class="bedrijf-content-bottom reveal">
+                <ul class="bedrijf-kenmerken" aria-label="{{ __('site.bedrijf_aria_kenmerken') }}">
+                    @foreach(__('site.bedrijf_features') as $feature)
+                        <li>{{ $feature }}</li>
+                    @endforeach
+                </ul>
+
+                <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
+                    <a href="/{{ $locale }}/contact" class="btn btn-primary">{{ __('site.cta_primary') }}</a>
+                    <a href="/{{ $locale }}/werkplaats" class="btn btn-secondary">{{ __('site.bedrijf_cta_werkplaats') }}</a>
+                </div>
             </div>
 
         </div>
