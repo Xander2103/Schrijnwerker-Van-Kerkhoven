@@ -34,7 +34,7 @@
             @endforeach
         </ul>
 
-        {{-- Language switcher --}}
+        {{-- Desktop language switcher (≥ 1100px) --}}
         <div class="nav-lang-switcher" aria-label="{{ __('pages.lang_switcher_aria') }}">
             @foreach(['nl', 'fr', 'en'] as $l)
                 @if($l === $locale)
@@ -43,6 +43,16 @@
                     <a href="{{ $localeUrls[$l] }}" class="nav-lang-link" hreflang="{{ $l }}">{{ strtoupper($l) }}</a>
                 @endif
             @endforeach
+        </div>
+
+        {{-- Mobile/tablet language dropdown (< 1100px) --}}
+        <div class="nav-lang-dropdown-wrap" aria-label="{{ __('pages.lang_switcher_aria') }}">
+            <select class="nav-lang-dropdown" id="nav-lang-dropdown" aria-label="{{ __('pages.lang_switcher_aria') }}">
+                @foreach(['nl', 'fr', 'en'] as $l)
+                    <option value="{{ $localeUrls[$l] }}"{{ $l === $locale ? ' selected' : '' }}>{{ strtoupper($l) }}</option>
+                @endforeach
+            </select>
+            <span class="nav-lang-dropdown-caret" aria-hidden="true"></span>
         </div>
 
         <button
@@ -121,6 +131,13 @@
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') closeMenu();
     });
+
+    var langSel = document.getElementById('nav-lang-dropdown');
+    if (langSel) {
+        langSel.addEventListener('change', function () {
+            window.location.href = this.value;
+        });
+    }
 }());
 </script>
 @endpush
