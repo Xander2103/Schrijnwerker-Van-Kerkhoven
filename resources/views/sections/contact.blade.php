@@ -35,6 +35,10 @@
                             @van.kerkhoven
                         </a>
                     </p>
+                    @if(!empty(config('site.vat')))
+                        <p><strong>{{ __('site.label_vat') }}</strong><br>
+                        {{ config('site.vat') }}</p>
+                    @endif
                     @if(!empty(config('site.phone')))
                         <p><strong>{{ __('site.label_phone') }}</strong><br>
                         <a href="tel:{{ config('site.phone') }}">{{ config('site.phone') }}</a></p>

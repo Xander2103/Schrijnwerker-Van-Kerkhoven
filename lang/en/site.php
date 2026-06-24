@@ -65,6 +65,7 @@ return [
     'label_whatsapp'  => 'WhatsApp us',
     'label_instagram' => 'Instagram',
     'instagram_aria'  => 'Instagram Van Kerkhoven',
+    'label_vat'       => 'VAT',
 
     // Gallery
     'gallery_eyebrow'  => 'Projects',

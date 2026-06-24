@@ -65,6 +65,7 @@ return [
     'label_whatsapp'  => 'WhatsApp ons',
     'label_instagram' => 'Instagram',
     'instagram_aria'  => 'Instagram Van Kerkhoven',
+    'label_vat'       => 'BTW',
 
     // Gallery (partials/realisaties-gallery)
     'gallery_eyebrow'  => 'Realisaties',
