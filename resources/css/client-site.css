@@ -668,14 +668,23 @@
   }
 
   .nav-mobile-panel {
-    @apply fixed inset-0 z-40 flex-col items-center justify-center gap-6;
-    /* Consistent warm background on mobile overlay */
+    @apply fixed inset-0 z-40 flex-col items-center;
     background-color: var(--color-bg-alt);
     display: none;
+    justify-content: flex-start;
+    padding-top: 5.5rem;
+    padding-bottom: 2.5rem;
 
     &.is-open {
       display: flex;
     }
+  }
+
+  .nav-mobile-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   .nav-mobile-link {
@@ -684,6 +693,38 @@
 
     &:hover {
       color: var(--color-accent);
+    }
+  }
+
+  .nav-mobile-instagram {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    opacity: 0.55;
+    transition: opacity 0.2s ease, color 0.2s ease;
+
+    svg {
+      width: 1.125rem;
+      height: 1.125rem;
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      opacity: 1;
+      color: var(--color-accent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+      opacity: 1;
     }
   }
 

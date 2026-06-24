@@ -98,14 +98,31 @@
     aria-label="{{ __('pages.mobile_menu_aria') }}"
     aria-hidden="true"
 >
-    @foreach($navItems as $item)
-        @php
-            $href = isset($item['anchor'])
-                ? '/' . $locale . '#' . $item['anchor']
-                : '/' . $locale . '/' . $item['path'];
-        @endphp
-        <a href="{{ $href }}" class="nav-mobile-link">{{ $item['label'] }}</a>
-    @endforeach
+    <div class="nav-mobile-links">
+        @foreach($navItems as $item)
+            @php
+                $href = isset($item['anchor'])
+                    ? '/' . $locale . '#' . $item['anchor']
+                    : '/' . $locale . '/' . $item['path'];
+            @endphp
+            <a href="{{ $href }}" class="nav-mobile-link">{{ $item['label'] }}</a>
+        @endforeach
+    </div>
+
+    <a
+        href="https://www.instagram.com/van.kerkhoven/"
+        class="nav-mobile-instagram"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram Van Kerkhoven"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4.5"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        Instagram
+    </a>
 
     {{-- Language switching: use the picker in the header (nav-bar is z:50, always above this panel) --}}
 </div>
