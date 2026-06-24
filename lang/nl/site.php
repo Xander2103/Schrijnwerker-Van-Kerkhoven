@@ -59,10 +59,12 @@ return [
     'maps_consent_aria'  => 'Laad de Google Maps kaart',
 
     // Contact card labels (in contact section and footer)
-    'label_email'    => 'E-mail',
-    'label_phone'    => 'Telefoon',
-    'label_address'  => 'Adres',
-    'label_whatsapp' => 'WhatsApp ons',
+    'label_email'     => 'E-mail',
+    'label_phone'     => 'Telefoon',
+    'label_address'   => 'Adres',
+    'label_whatsapp'  => 'WhatsApp ons',
+    'label_instagram' => 'Instagram',
+    'instagram_aria'  => 'Instagram Van Kerkhoven',
 
     // Gallery (partials/realisaties-gallery)
     'gallery_eyebrow'  => 'Realisaties',

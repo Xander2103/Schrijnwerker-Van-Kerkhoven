@@ -26,6 +26,20 @@
                         </a>
                     </p>
                 @endif
+                <p style="margin-bottom:.5rem;font-size:.9rem;">
+                    <a href="https://www.instagram.com/van.kerkhoven/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="{{ __('site.instagram_aria') }}"
+                       style="color:var(--color-primary);text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <circle cx="12" cy="12" r="4.5"/>
+                            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+                        </svg>
+                        {{ __('site.label_instagram') }}
+                    </a>
+                </p>
                 @if(!empty(config('site.phone')))
                     <p style="margin-bottom:1rem;font-size:.9rem;">
                         <a href="tel:{{ config('site.phone') }}"
