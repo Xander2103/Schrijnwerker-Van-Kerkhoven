@@ -22,7 +22,7 @@ return [
         '45 years of expertise in solid wood',
         'Own workshop and installation team',
         'From raw material to finished product',
-        'Custom work for homes, businesses and enterprises',
+        'Custom-made work for renovations, new builds, private clients and self-employed professionals.',
         'Client-focused from design to delivery',
     ],
     'bedrijf_cta_werkplaats' => 'View our workshop',

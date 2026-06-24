@@ -22,7 +22,7 @@ return [
         '45 jaar expertise in massief hout',
         'Eigen werkhuis en plaatsingsdienst',
         'Van grondstof tot afwerking',
-        'Maatwerk voor woningen, zelfstandige zaken en ondernemingen',
+        'Maatwerk voor renovaties, nieuwbouw, particulieren en zelfstandigen.',
         'Klantgericht van ontwerp tot oplevering',
     ],
     'bedrijf_cta_werkplaats'  => 'Bekijk onze werkplaats',

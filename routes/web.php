@@ -73,6 +73,102 @@ Route::prefix('{locale}')
             return view('pages.trappen', compact('galleryImages'));
         })->name('trappen');
 
+        // ── Poorten (NL slug) ───────────────────────────────────────────────
+        Route::get('/poorten', function (string $locale): mixed {
+            $galleryImages = array_values(array_filter(
+                GalleryScanner::scan('poorten'),
+                fn($p) => !str_contains(basename($p), 'hero')
+            ));
+            return view('pages.poorten', [
+                'galleryImages' => $galleryImages,
+                'localeUrls'    => [
+                    'nl' => '/' . $locale . '/poorten',
+                    'fr' => '/fr/portails',
+                    'en' => '/en/gates',
+                ],
+            ]);
+        })->name('poorten');
+
+        // ── Portails (FR slug) ──────────────────────────────────────────────
+        Route::get('/portails', function (string $locale): mixed {
+            $galleryImages = array_values(array_filter(
+                GalleryScanner::scan('poorten'),
+                fn($p) => !str_contains(basename($p), 'hero')
+            ));
+            return view('pages.poorten', [
+                'galleryImages' => $galleryImages,
+                'localeUrls'    => [
+                    'nl' => '/nl/poorten',
+                    'fr' => '/' . $locale . '/portails',
+                    'en' => '/en/gates',
+                ],
+            ]);
+        })->name('portails');
+
+        // ── Gates (EN slug) ─────────────────────────────────────────────────
+        Route::get('/gates', function (string $locale): mixed {
+            $galleryImages = array_values(array_filter(
+                GalleryScanner::scan('poorten'),
+                fn($p) => !str_contains(basename($p), 'hero')
+            ));
+            return view('pages.poorten', [
+                'galleryImages' => $galleryImages,
+                'localeUrls'    => [
+                    'nl' => '/nl/poorten',
+                    'fr' => '/fr/portails',
+                    'en' => '/' . $locale . '/gates',
+                ],
+            ]);
+        })->name('gates');
+
+        // ── Schuiframen (NL slug) ───────────────────────────────────────────
+        Route::get('/schuiframen', function (string $locale): mixed {
+            $galleryImages = array_values(array_filter(
+                GalleryScanner::scan('schuiframen'),
+                fn($p) => !str_contains(basename($p), 'hero')
+            ));
+            return view('pages.schuiframen', [
+                'galleryImages' => $galleryImages,
+                'localeUrls'    => [
+                    'nl' => '/' . $locale . '/schuiframen',
+                    'fr' => '/fr/coulissants',
+                    'en' => '/en/sliding-windows',
+                ],
+            ]);
+        })->name('schuiframen');
+
+        // ── Coulissants (FR slug) ───────────────────────────────────────────
+        Route::get('/coulissants', function (string $locale): mixed {
+            $galleryImages = array_values(array_filter(
+                GalleryScanner::scan('schuiframen'),
+                fn($p) => !str_contains(basename($p), 'hero')
+            ));
+            return view('pages.schuiframen', [
+                'galleryImages' => $galleryImages,
+                'localeUrls'    => [
+                    'nl' => '/nl/schuiframen',
+                    'fr' => '/' . $locale . '/coulissants',
+                    'en' => '/en/sliding-windows',
+                ],
+            ]);
+        })->name('coulissants');
+
+        // ── Sliding windows (EN slug) ───────────────────────────────────────
+        Route::get('/sliding-windows', function (string $locale): mixed {
+            $galleryImages = array_values(array_filter(
+                GalleryScanner::scan('schuiframen'),
+                fn($p) => !str_contains(basename($p), 'hero')
+            ));
+            return view('pages.schuiframen', [
+                'galleryImages' => $galleryImages,
+                'localeUrls'    => [
+                    'nl' => '/nl/schuiframen',
+                    'fr' => '/fr/coulissants',
+                    'en' => '/' . $locale . '/sliding-windows',
+                ],
+            ]);
+        })->name('sliding-windows');
+
         // ── Werkplaats ──────────────────────────────────────────────────────
         Route::get('/werkplaats', function (string $locale): mixed {
             return view('pages.werkplaats', [

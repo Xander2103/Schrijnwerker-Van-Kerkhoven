@@ -22,7 +22,7 @@ return [
         '45 ans d\'expertise en bois massif',
         'Atelier et service de pose propres',
         'De la matière première à la finition',
-        'Sur-mesure pour maisons, commerces et entreprises',
+        'Travail sur mesure pour rénovations, nouvelles constructions, particuliers et indépendants.',
         'À l\'écoute du client, du concept à la livraison',
     ],
     'bedrijf_cta_werkplaats' => 'Voir notre atelier',

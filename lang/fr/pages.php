@@ -3,13 +3,14 @@
 return [
     // Navigation items
     'nav_items' => [
-        ['label' => 'Fenêtres',        'path' => 'ramen'],
-        ['label' => 'Portes',          'path' => 'deuren'],
-        ['label' => 'Escaliers',       'path' => 'trappen'],
-        ['label' => 'Notre atelier',   'path' => 'werkplaats'],
-        ['label' => 'Notre entreprise','anchor' => 'bedrijf'],
-        ['label' => 'Avis',            'anchor' => 'reviews'],
-        ['label' => 'Contact',         'path' => 'contact'],
+        ['label' => 'Fenêtres',          'path' => 'ramen'],
+        ['label' => 'Portes',            'path' => 'deuren'],
+        ['label' => 'Escaliers',         'path' => 'trappen'],
+        ['label' => 'Portails',          'path' => 'portails'],
+        ['label' => 'Coulissants',       'path' => 'coulissants'],
+        ['label' => 'Notre entreprise',  'anchor' => 'bedrijf'],
+        ['label' => 'Avis',              'anchor' => 'reviews'],
+        ['label' => 'Contact',           'path' => 'contact'],
     ],
     'nav_aria'           => 'Navigation principale',
     'nav_open'           => 'Ouvrir le menu',
@@ -43,6 +44,22 @@ return [
     'trappen_heading' => 'Escaliers sur mesure en bois massif',
     'trappen_intro'   => 'Fonctionnel et élégant — un escalier en bois adapté à votre maison, votre style et votre intérieur.',
     'trappen_gallery' => 'Réalisations escaliers',
+
+    // Poorten page
+    'poorten_title'   => 'Portails en bois sur mesure — Van Kerkhoven Menuiserie Huldenberg',
+    'poorten_desc'    => 'Portails en bois sur mesure pour votre habitation ou entreprise. Construction solide, matériaux durables et finition soignée. Van Kerkhoven — 45 ans de savoir-faire à Huldenberg.',
+    'poorten_eyebrow' => 'Spécialité',
+    'poorten_heading' => 'Portails sur mesure',
+    'poorten_intro'   => 'Nous réalisons des portails en bois sur mesure, adaptés au style de l\'habitation et au caractère du bâtiment. Avec une attention particulière à la solidité, aux matériaux durables et à une finition soignée, nous créons des portails à la fois fonctionnels et élégants.',
+    'poorten_gallery' => 'Réalisations portails en bois',
+
+    // Schuiframen page
+    'schuiframen_title'   => 'Coulissants sur mesure — Van Kerkhoven Menuiserie Huldenberg',
+    'schuiframen_desc'    => 'Coulissants en bois sur mesure — avec attention à la lumière, au confort d\'utilisation et à la qualité de finition. Van Kerkhoven — 45 ans de savoir-faire à Huldenberg.',
+    'schuiframen_eyebrow' => 'Spécialité',
+    'schuiframen_heading' => 'Coulissants sur mesure',
+    'schuiframen_intro'   => 'Nos coulissants sont réalisés sur mesure avec une attention particulière à la lumière, au confort d\'utilisation et à la qualité de finition. Ils s\'intègrent harmonieusement à l\'habitation et créent un lien élégant entre l\'intérieur et l\'extérieur.',
+    'schuiframen_gallery' => 'Réalisations coulissants',
 
     // Werkplaats page
     'werkplaats_title'   => 'Notre atelier — Van Kerkhoven Menuiserie Huldenberg',

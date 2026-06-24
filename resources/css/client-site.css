@@ -2983,6 +2983,43 @@ body.page-home:not(.nav-scrolled) .nav-lang-picker-btn:hover {
 }
 
 /* ============================================================
+   Footer Instagram link
+   ============================================================ */
+.footer-bottom-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.footer-instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-instagram svg {
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.footer-instagram:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 639px) {
+  .footer-bottom-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+}
+
+/* ============================================================
    Atelier section — light variant for /werkplaats page.
    Overrides the default dark-walnut background so the gallery
    works on a cream background with dark text.

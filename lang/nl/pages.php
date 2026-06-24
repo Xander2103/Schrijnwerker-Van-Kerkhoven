@@ -3,13 +3,14 @@
 return [
     // Navigation items — label + path/anchor used by nav.blade.php
     'nav_items' => [
-        ['label' => 'Ramen',           'path' => 'ramen'],
-        ['label' => 'Deuren',          'path' => 'deuren'],
-        ['label' => 'Trappen',         'path' => 'trappen'],
-        ['label' => 'Onze werkplaats', 'path' => 'werkplaats'],
-        ['label' => 'Ons bedrijf',     'anchor' => 'bedrijf'],
-        ['label' => 'Reviews',         'anchor' => 'reviews'],
-        ['label' => 'Contact',         'path' => 'contact'],
+        ['label' => 'Ramen',        'path' => 'ramen'],
+        ['label' => 'Deuren',       'path' => 'deuren'],
+        ['label' => 'Trappen',      'path' => 'trappen'],
+        ['label' => 'Poorten',      'path' => 'poorten'],
+        ['label' => 'Schuiframen',  'path' => 'schuiframen'],
+        ['label' => 'Ons bedrijf',  'anchor' => 'bedrijf'],
+        ['label' => 'Reviews',      'anchor' => 'reviews'],
+        ['label' => 'Contact',      'path' => 'contact'],
     ],
     'nav_aria'        => 'Hoofdnavigatie',
     'nav_open'        => 'Menu openen',
@@ -43,6 +44,22 @@ return [
     'trappen_heading' => 'Trappen op maat in massief hout',
     'trappen_intro'   => 'Functioneel en elegant — een houten trap die aansluit bij uw woning, stijl en interieur.',
     'trappen_gallery' => 'Realisaties trappen',
+
+    // Poorten page
+    'poorten_title'   => 'Houten poorten op maat — Van Kerkhoven Schrijnwerkerij Huldenberg',
+    'poorten_desc'    => 'Houten poorten op maat voor uw woning of bedrijf. Stevige constructie, duurzame materialen en verzorgde afwerking. Van Kerkhoven — 45 jaar vakmanschap in Huldenberg.',
+    'poorten_eyebrow' => 'Specialisatie',
+    'poorten_heading' => 'Poorten op maat',
+    'poorten_intro'   => 'Wij realiseren houten poorten op maat die passen bij de stijl van de woning en het karakter van het gebouw. Met aandacht voor stevige constructie, duurzame materialen en een verzorgde afwerking zorgen we voor poorten die functioneel én stijlvol zijn.',
+    'poorten_gallery' => 'Realisaties houten poorten',
+
+    // Schuiframen page
+    'schuiframen_title'   => 'Schuiframen op maat — Van Kerkhoven Schrijnwerkerij Huldenberg',
+    'schuiframen_desc'    => 'Houten schuiframen op maat — met oog voor licht, gebruiksgemak en verzorgde afwerking. Van Kerkhoven — 45 jaar vakmanschap in Huldenberg.',
+    'schuiframen_eyebrow' => 'Specialisatie',
+    'schuiframen_heading' => 'Schuiframen op maat',
+    'schuiframen_intro'   => 'Onze schuiframen worden op maat uitgewerkt met oog voor licht, gebruiksgemak en een verzorgde afwerking. Zo sluiten ze mooi aan bij de woning en zorgen ze voor een sterke verbinding tussen binnen en buiten.',
+    'schuiframen_gallery' => 'Realisaties schuiframen',
 
     // Werkplaats page
     'werkplaats_title'   => 'Onze werkplaats — Van Kerkhoven Schrijnwerkerij Huldenberg',
