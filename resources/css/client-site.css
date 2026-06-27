@@ -622,7 +622,7 @@
 
   .nav-logo img {
     display: block;
-    height: 42px;
+    height: 48px;
     width: auto;
     max-width: 180px;
     object-fit: contain;
@@ -2519,7 +2519,7 @@ body.custom-cursor-ready * {
     gap: 0.05rem;
 
     >span:first-child {
-      font-size: 0.625rem;
+      font-size: 0.6875rem;
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -2527,7 +2527,7 @@ body.custom-cursor-ready * {
     }
 
     >span:last-child {
-      font-size: 1rem;
+      font-size: 1.0625rem;
       font-weight: 700;
       font-family: var(--font-serif, serif);
       color: var(--color-text);
@@ -3756,4 +3756,20 @@ span.nav-lang-picker-item.is-current {
 .nav-mobile-panel.is-open {
   background-image: radial-gradient(ellipse 110% 48% at 50% -5%, rgba(184, 112, 28, 0.10) 0%, transparent 65%);
   box-shadow: inset 0 -1px 0 rgba(184, 112, 28, 0.10);
+}
+
+/* ============================================================
+   Mobile hero — lower vertical positioning (< 768px)
+   Anchors the content block near the lower third of the hero
+   so title and CTA buttons feel grounded, not floating mid-screen.
+   ============================================================ */
+@media (max-width: 767px) {
+  .hero {
+    align-items: flex-end;
+  }
+
+  .hero-content {
+    padding-top: 2rem;
+    padding-bottom: 4.5rem;
+  }
 }
