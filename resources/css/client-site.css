@@ -630,8 +630,8 @@
 
   @media (min-width: 768px) {
     .nav-logo img {
-      height: 56px;
-      max-width: 220px;
+      height: 62px;
+      max-width: 240px;
     }
   }
 
@@ -2512,6 +2512,12 @@ body.custom-cursor-ready * {
     flex-shrink: 0;
   }
 
+  @media (min-width: 1100px) {
+    .nav-logo-img {
+      height: 62px;
+    }
+  }
+
   .nav-brand-name {
     display: flex;
     flex-direction: column;
@@ -2532,6 +2538,16 @@ body.custom-cursor-ready * {
       font-family: var(--font-serif, serif);
       color: var(--color-text);
       letter-spacing: -0.01em;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .nav-brand-name > span:first-child {
+      font-size: 0.75rem;
+    }
+
+    .nav-brand-name > span:last-child {
+      font-size: 1.1875rem;
     }
   }
 }
@@ -3759,17 +3775,15 @@ span.nav-lang-picker-item.is-current {
 }
 
 /* ============================================================
-   Mobile hero — lower vertical positioning (< 768px)
-   Anchors the content block near the lower third of the hero
-   so title and CTA buttons feel grounded, not floating mid-screen.
+   Desktop hero — content anchored to bottom-left (≥ 768px).
+   Mobile keeps the default centered alignment from .hero { items-center }.
    ============================================================ */
-@media (max-width: 767px) {
+@media (min-width: 768px) {
   .hero {
     align-items: flex-end;
   }
 
   .hero-content {
-    padding-top: 2rem;
-    padding-bottom: 4.5rem;
+    padding-bottom: 6rem;
   }
 }
