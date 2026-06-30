@@ -34,7 +34,7 @@ return [
     'deuren_desc'    => 'Massief houten deuren op maat — buitendeuren en binnendeuren in elke stijl en afwerking. Van Kerkhoven — 45 jaar vakmanschap in Huldenberg.',
     'deuren_eyebrow' => 'Specialisatie',
     'deuren_heading' => 'Houten deuren met karakter',
-    'deuren_intro'   => 'Van een solide voordeur tot stijlvolle binnendeuren — elk op maat, in massief hout.',
+    'deuren_intro'   => 'Van een solide voordeur tot moderne en klassieke buitendeuren — elk op maat, in massief hout.',
     'deuren_gallery' => 'Realisaties houten deuren',
 
     // Trappen page
