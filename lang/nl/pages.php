@@ -42,7 +42,7 @@ return [
     'trappen_desc'    => 'Massief houten trappen op maat — rechte trappen, kwartslag en halfslag in elke gewenste houtsoort en afwerking. Van Kerkhoven — 45 jaar vakmanschap in Huldenberg.',
     'trappen_eyebrow' => 'Specialisatie',
     'trappen_heading' => 'Trappen op maat in massief hout',
-    'trappen_intro'   => 'Functioneel en elegant — een houten trap die aansluit bij uw woning, stijl en interieur.',
+    'trappen_intro'   => '',
     'trappen_gallery' => 'Realisaties trappen',
 
     // Poorten page
