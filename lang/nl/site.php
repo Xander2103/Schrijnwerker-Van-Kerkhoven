@@ -17,7 +17,7 @@ return [
     'bedrijf_eyebrow'         => 'Ons bedrijf',
     'bedrijf_heading'         => '45 jaar vakmanschap — van ruwe plank tot afgewerkt schrijnwerk',
     'bedrijf_quote'           => 'Elke opdracht begint in ons eigen atelier in Huldenberg. Van ruwe planken tot afgewerkt schrijnwerk: elk stuk verlaat het werkhuis met de zorg en precisie van 45 jaar vakmanschap.',
-    'bedrijf_text'            => 'Met massief hout creëren we maatwerk voor renovaties, nieuwbouw, particuliere en zelfstandigen.',
+    'bedrijf_text'            => 'Met massief hout creëren we maatwerk voor renovaties, nieuwbouw, particulieren en zelfstandigen.',
     'bedrijf_features'        => [
         '45 jaar expertise in massief hout',
         'Eigen werkhuis en plaatsingsdienst',
