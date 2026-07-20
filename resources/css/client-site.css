@@ -2054,7 +2054,7 @@ body.custom-cursor-ready * {
 }
 
 /* ============================================================
-   Curated category gallery — wooden frames, 6-up, auto-swap
+   Curated category gallery — wooden frames, stable masonry grid
    ============================================================ */
 @layer components {
 
@@ -2062,25 +2062,43 @@ body.custom-cursor-ready * {
     border-top: 1px solid var(--color-border);
   }
 
+  /* Column-based (masonry) layout: photos keep their natural aspect
+     ratio, so portrait and landscape shots are never cropped or
+     stretched to fit a fixed cell. */
   .curated-gallery {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    columns: 1;
+    column-gap: 1.25rem;
     max-width: 900px;
     margin: 0 auto;
   }
 
-  @media (min-width: 560px) {
+  @media (min-width: 640px) {
     .curated-gallery {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
+      columns: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .curated-gallery {
+      max-width: 1040px;
+      columns: 3;
+      column-gap: 1.5rem;
+    }
+  }
+
+  /* ── Curated gallery: extra column for 9+ photos on very wide screens ── */
+  @media (min-width: 1440px) {
+    .curated-gallery--many {
+      max-width: 1320px;
+      columns: 4;
     }
   }
 
   .curated-frame {
-    aspect-ratio: 4 / 3;
-    background-size: cover;
-    background-position: center;
+    display: block;
+    width: 100%;
+    break-inside: avoid;
+    margin: 0 0 1.25rem;
     background-color: var(--color-secondary);
     border-radius: 4px;
     /* Thick solid wooden frame — warm walnut tones, premium handcrafted feel */
@@ -2092,38 +2110,19 @@ body.custom-cursor-ready * {
       0 2px 6px rgba(30, 15, 5, 0.16);
     cursor: pointer;
     padding: 0;
-
-    /* Slight hand-placed angle — cycles through 6 variations for any number of items */
-    &:nth-child(6n+1) {
-      transform: rotate(-0.8deg);
-    }
-
-    &:nth-child(6n+2) {
-      transform: rotate(0.5deg);
-    }
-
-    &:nth-child(6n+3) {
-      transform: rotate(-0.4deg);
-    }
-
-    &:nth-child(6n+4) {
-      transform: rotate(0.7deg);
-    }
-
-    &:nth-child(6n+5) {
-      transform: rotate(-0.6deg);
-    }
-
-    &:nth-child(6n) {
-      transform: rotate(0.3deg);
-    }
-
+    overflow: hidden;
     transition: transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
 
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
     &:hover {
-      transform: rotate(0deg) scale(1.03) !important;
+      transform: translateY(-4px);
       box-shadow: 0 12px 36px rgba(30, 15, 5, 0.32), inset 0 2px 0 rgba(220, 170, 90, 0.32);
       border-color: #9A5218;
     }
@@ -2131,28 +2130,16 @@ body.custom-cursor-ready * {
     &:focus-visible {
       outline: 2px solid var(--color-accent);
       outline-offset: 3px;
-      transform: rotate(0deg) !important;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .curated-frame {
-      transform: none !important;
       transition: box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-  }
 
-  /* ── Curated gallery: wider grid for 9+ photos ── */
-  @media (min-width: 768px) {
-    .curated-gallery {
-      max-width: 1040px;
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .curated-gallery--many {
-      grid-template-columns: repeat(4, 1fr);
+      &:hover {
+        transform: none;
+      }
     }
   }
 }

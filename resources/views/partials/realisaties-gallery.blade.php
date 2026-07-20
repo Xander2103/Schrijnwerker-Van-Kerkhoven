@@ -32,8 +32,14 @@
                         role="listitem"
                         aria-label="{{ __('site.photo_label', ['n' => $i + 1, 'm' => count($allUrls)]) }}"
                         data-lightbox-index="{{ $i }}"
-                        style="background-image:url('{{ $url }}')"
-                    ></button>
+                    >
+                        <img
+                            src="{{ $url }}"
+                            alt=""
+                            loading="{{ $i < 4 ? 'eager' : 'lazy' }}"
+                            decoding="async"
+                        >
+                    </button>
                 @endforeach
             </div>
         @else
