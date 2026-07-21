@@ -1,99 +1,103 @@
 <!DOCTYPE html>
 <html lang="{{ $locale ?? 'nl' }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     @php
         $currentLocale = $locale ?? 'nl';
-        $localeUrls  ??= [];
-        $routeName     = optional(request()->route())->getName();
+        $localeUrls ??= [];
+        $routeName = optional(request()->route())->getName();
 
         // Resolve once so <title>/meta-description and their OG/Twitter
         // equivalents can never drift apart (previously OG always showed
         // the homepage copy, regardless of the page actually being viewed).
-        $pageTitle       = trim($__env->yieldContent('page_title', __('site.meta_title_home')));
+        $pageTitle = trim($__env->yieldContent('page_title', __('site.meta_title_home')));
         $pageDescription = trim($__env->yieldContent('page_description', __('site.meta_desc_home')));
 
         // Canonical: self-reference via the locale-map the current route
         // published (falls back to the raw request path for routes that
         // don't override it). This also resolves the poorten/schuiframen
-        // cross-locale-slug duplicates (e.g. /fr/poorten) to their real
-        // canonical URL (/fr/portails) instead of canonicalizing to themselves.
-        $appUrl        = rtrim((string) config('app.url'), '/');
-        $canonicalPath = '/' . ltrim($localeUrls[$currentLocale] ?? request()->path(), '/');
-        $canonicalUrl  = $appUrl !== '' ? $appUrl . $canonicalPath : null;
+// cross-locale-slug duplicates (e.g. /fr/poorten) to their real
+// canonical URL (/fr/portails) instead of canonicalizing to themselves.
+$appUrl = rtrim((string) config('app.url'), '/');
+$canonicalPath = '/' . ltrim($localeUrls[$currentLocale] ?? request()->path(), '/');
+$canonicalUrl = $appUrl !== '' ? $appUrl . $canonicalPath : null;
 
-        $hreflangMap = ['nl' => 'nl-BE', 'fr' => 'fr-BE', 'en' => 'en'];
-        $ogLocaleMap = ['nl' => 'nl_BE', 'fr' => 'fr_BE', 'en' => 'en_US'];
+$hreflangMap = ['nl' => 'nl-BE', 'fr' => 'fr-BE', 'en' => 'en'];
+$ogLocaleMap = ['nl' => 'nl_BE', 'fr' => 'fr_BE', 'en' => 'en_US'];
 
-        $ogImagePath = config('seo.page_images.' . $routeName) ?? config('seo.og_image');
-        $ogImageUrl  = $ogImagePath ? asset($ogImagePath) : null;
+$ogImagePath = config('seo.page_images.' . $routeName) ?? config('seo.og_image');
+        $ogImageUrl = $ogImagePath ? asset($ogImagePath) : null;
     @endphp
 
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
 
-    @if(config('seo.noindex'))
+    @if (config('seo.noindex'))
         <meta name="robots" content="noindex">
     @endif
 
-    @if($canonicalUrl)
+    @if ($canonicalUrl)
         <link rel="canonical" href="{{ $canonicalUrl }}">
     @endif
 
     {{-- hreflang alternate links --}}
-    @foreach($hreflangMap as $loc => $hreflang)
-        @if(isset($localeUrls[$loc]))
+    @foreach ($hreflangMap as $loc => $hreflang)
+        @if (isset($localeUrls[$loc]))
             <link rel="alternate" hreflang="{{ $hreflang }}" href="{{ url($localeUrls[$loc]) }}">
         @endif
     @endforeach
-    @if(isset($localeUrls['nl']))
+    @if (isset($localeUrls['nl']))
         <link rel="alternate" hreflang="x-default" href="{{ url($localeUrls['nl']) }}">
     @endif
 
-    <meta property="og:title"       content="{{ $pageTitle }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
-    <meta property="og:type"        content="{{ config('seo.og_type', 'website') }}">
-    <meta property="og:site_name"   content="{{ config('site.nav_brand', config('site.name')) }}">
-    <meta property="og:locale"      content="{{ $ogLocaleMap[$currentLocale] ?? 'nl_BE' }}">
-    @foreach($ogLocaleMap as $loc => $ogLocale)
-        @if($loc !== $currentLocale && isset($localeUrls[$loc]))
+    <meta property="og:type" content="{{ config('seo.og_type', 'website') }}">
+    <meta property="og:site_name" content="{{ config('site.nav_brand', config('site.name')) }}">
+    <meta property="og:locale" content="{{ $ogLocaleMap[$currentLocale] ?? 'nl_BE' }}">
+    @foreach ($ogLocaleMap as $loc => $ogLocale)
+        @if ($loc !== $currentLocale && isset($localeUrls[$loc]))
             <meta property="og:locale:alternate" content="{{ $ogLocale }}">
         @endif
     @endforeach
-    @if($canonicalUrl)
+    @if ($canonicalUrl)
         <meta property="og:url" content="{{ $canonicalUrl }}">
     @endif
-    @if($ogImageUrl)
+    @if ($ogImageUrl)
         <meta property="og:image" content="{{ $ogImageUrl }}">
     @endif
 
     <meta name="twitter:card" content="{{ config('seo.twitter_card', 'summary_large_image') }}">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDescription }}">
-    @if($ogImageUrl)
+    @if ($ogImageUrl)
         <meta name="twitter:image" content="{{ $ogImageUrl }}">
     @endif
 
-    @if(config('images.favicon'))
-        <link rel="icon" href="{{ asset(config('images.favicon')) }}">
-    @endif
+    <link rel="icon" type="image/png" href="{{ asset('favicon-96x96.png') }}" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#2C1A0E">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Theme colors --}}
     <style>
         :root {
-            --color-primary:      {{ config('theme.color_primary') }};
+            --color-primary: {{ config('theme.color_primary') }};
             --color-primary-dark: {{ config('theme.color_primary_dark') }};
-            --color-secondary:    {{ config('theme.color_secondary') }};
-            --color-accent:       {{ config('theme.color_accent') }};
-            --color-text:         {{ config('theme.color_text') }};
-            --color-text-light:   {{ config('theme.color_text_light') }};
-            --color-bg:           {{ config('theme.color_bg') }};
-            --color-bg-alt:       {{ config('theme.color_bg_alt') }};
-            --color-border:       {{ config('theme.color_border') }};
+            --color-secondary: {{ config('theme.color_secondary') }};
+            --color-accent: {{ config('theme.color_accent') }};
+            --color-text: {{ config('theme.color_text') }};
+            --color-text-light: {{ config('theme.color_text_light') }};
+            --color-bg: {{ config('theme.color_bg') }};
+            --color-bg-alt: {{ config('theme.color_bg_alt') }};
+            --color-border: {{ config('theme.color_border') }};
         }
     </style>
 
@@ -144,7 +148,9 @@
     @stack('head')
 </head>
 @php $bodyClass = trim($__env->yieldContent('body_class')); @endphp
-<body class="client-page{{ $bodyClass ? ' '.$bodyClass : '' }}{{ config('interaction.custom_cursor.enabled') ? ' custom-cursor-enabled' : '' }}">
+
+<body
+    class="client-page{{ $bodyClass ? ' ' . $bodyClass : '' }}{{ config('interaction.custom_cursor.enabled') ? ' custom-cursor-enabled' : '' }}">
 
     @include('partials.nav')
 
@@ -157,4 +163,5 @@
     @stack('scripts')
 
 </body>
+
 </html>

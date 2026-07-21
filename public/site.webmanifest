@@ -1,0 +1,21 @@
+{
+  "name": "Schrijnwerkerij Van Kerkhoven",
+  "short_name": "Van Kerkhoven",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#2C1A0E",
+  "background_color": "#F0E6D0",
+  "display": "standalone"
+}
