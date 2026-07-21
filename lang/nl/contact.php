@@ -59,8 +59,17 @@ return [
     ],
 
     // Flash messages
-    'success'    => 'Bedankt, uw aanvraag werd ontvangen. We nemen zo snel mogelijk contact op.',
+    'success'    => 'Bedankt, uw aanvraag werd goed ontvangen. We nemen zo snel mogelijk contact met u op. U ontvangt ook een bevestiging per e-mail.',
     'send_error' => 'Er ging iets mis bij het versturen van uw aanvraag. Probeer het later opnieuw.',
+
+    // Confirmation e-mail to the visitor
+    'confirm_subject'       => 'We hebben uw aanvraag goed ontvangen – Van Kerkhoven',
+    'confirm_greeting'      => 'Beste :name,',
+    'confirm_intro'         => 'Bedankt voor uw aanvraag. We hebben uw bericht goed ontvangen en nemen zo snel mogelijk contact met u op.',
+    'confirm_type_label'    => 'Type aanvraag',
+    'confirm_message_label' => 'Uw bericht',
+    'confirm_signoff'       => 'Met vriendelijke groeten,',
+    'confirm_auto_notice'   => 'Dit is een automatisch verzonden bevestiging. Gelieve niet op deze e-mail te antwoorden.',
 
     // Email template labels (owner-facing)
     'email_subject'     => 'Nieuwe aanvraag via de website',

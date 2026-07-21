@@ -41,12 +41,12 @@ class AppServiceProvider extends ServiceProvider
             $limits = [
                 Limit::perMinute((int) config('contact.rate_limit.per_minute', 3))
                     ->by('contact-min:' . $ip),
-                Limit::perHour((int) config('contact.rate_limit.per_hour', 10))
-                    ->by('contact-hour:' . $ip),
+                Limit::perDay((int) config('contact.rate_limit.per_day', 10))
+                    ->by('contact-day:' . $ip),
             ];
 
             if ($normalizedEmail !== '') {
-                $limits[] = Limit::perHour((int) config('contact.rate_limit.per_hour_combo', 5))
+                $limits[] = Limit::perDay((int) config('contact.rate_limit.per_day_combo', 5))
                     ->by('contact-combo:' . $ip . ':' . hash('sha256', $normalizedEmail));
             }
 

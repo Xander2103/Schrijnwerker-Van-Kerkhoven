@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactConfirmation;
 use App\Mail\ContactInquiry;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\View\View;
@@ -75,19 +76,26 @@ class ContactController extends Controller
             return $this->fakeSuccess($locale);
         }
 
-        Cache::put($dedupKey, true, now()->addSeconds((int) config('contact.duplicate_window_seconds', 60)));
+        $mailData = [
+            'name'         => $validated['name'],
+            'email'        => $validated['email'],
+            'phone'        => $validated['phone'] ?? '',
+            'request_type' => $validated['request_type'],
+            'message'      => $validated['message'],
+            'submitted_at' => now()->format('d/m/Y H:i'),
+            'source_url'   => $request->headers->get('referer', ''),
+        ];
 
         try {
             Mail::to(config('contact.email'))->send(new ContactInquiry(
-                data: [
-                    'name'         => $validated['name'],
-                    'email'        => $validated['email'],
-                    'phone'        => $validated['phone'] ?? '',
-                    'request_type' => $validated['request_type'],
-                    'message'      => $validated['message'],
-                    'submitted_at' => now()->format('d/m/Y H:i'),
-                    'source_url'   => $request->headers->get('referer', ''),
-                ],
+                data: $mailData,
+                submissionLocale: $locale,
+            ));
+
+            // Only after the business mail was accepted: automatic confirmation
+            // to the visitor, from the noreply address, in the form's language.
+            Mail::to($validated['email'])->send(new ContactConfirmation(
+                data: $mailData,
                 submissionLocale: $locale,
             ));
         } catch (Throwable) {
@@ -97,6 +105,10 @@ class ContactController extends Controller
                 ->withInput($request->except(['website_url', 'form_token']))
                 ->with('contact_error', trans('contact.send_error'));
         }
+
+        // Mark as handled only after a successful send, so a mail failure
+        // never locks the visitor out of retrying within the dedup window.
+        Cache::put($dedupKey, true, now()->addSeconds((int) config('contact.duplicate_window_seconds', 60)));
 
         $this->logOutcome($request, $requestId, 'sent');
 

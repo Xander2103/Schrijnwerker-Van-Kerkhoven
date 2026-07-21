@@ -85,7 +85,8 @@ return [
 
     // Rate limit (429) page
     'rate_limited_eyebrow' => 'Even geduld',
-    'rate_limited_title'   => 'Te veel aanvragen',
-    'rate_limited_message' => 'U heeft het formulier de laatste tijd al vaak verzonden. Wacht even en probeer het straks opnieuw.',
+    'rate_limited_title'   => 'Even te veel aanvragen',
+    'rate_limited_message' => 'U hebt kort na elkaar meerdere aanvragen verstuurd. Wacht even en probeer het later opnieuw.',
     'rate_limited_cta'     => 'Terug naar contact',
+    'rate_limited_home'    => 'Naar de homepage',
 ];

@@ -59,8 +59,17 @@ return [
     ],
 
     // Flash messages
-    'success'    => 'Thank you, your request has been received. We will get back to you as soon as possible.',
+    'success'    => 'Thank you, your request has been received. We will get back to you as soon as possible. You will also receive a confirmation by e-mail.',
     'send_error' => 'Something went wrong while sending your request. Please try again later.',
+
+    // Confirmation e-mail to the visitor
+    'confirm_subject'       => 'We have received your request – Van Kerkhoven',
+    'confirm_greeting'      => 'Dear :name,',
+    'confirm_intro'         => 'Thank you for your request. We have received your message and will contact you as soon as possible.',
+    'confirm_type_label'    => 'Type of request',
+    'confirm_message_label' => 'Your message',
+    'confirm_signoff'       => 'Kind regards,',
+    'confirm_auto_notice'   => 'This is an automatically sent confirmation. Please do not reply to this e-mail.',
 
     // Email template labels (owner-facing)
     'email_subject'     => 'New enquiry via the website',

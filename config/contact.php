@@ -24,9 +24,11 @@ return [
     'duplicate_window_seconds' => 60,
 
     // Named RateLimiter thresholds — see App\Providers\AppServiceProvider.
+    // Counters live in the configured cache store and expire automatically
+    // (no permanent blocks, no manual unblocking needed).
     'rate_limit' => [
-        'per_minute'     => 3,
-        'per_hour'       => 10,
-        'per_hour_combo' => 5, // stricter limit for the same IP + e-mail pair
+        'per_minute'    => 3,
+        'per_day'       => 10,
+        'per_day_combo' => 5, // stricter limit for the same IP + e-mail pair
     ],
 ];

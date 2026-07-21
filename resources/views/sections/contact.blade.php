@@ -68,7 +68,7 @@
                 @endif
 
                 @if(session('contact_success'))
-                    <div class="form-success-alert" role="alert">
+                    <div class="form-success-alert" role="status" aria-live="polite">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" style="flex-shrink:0;margin-top:.1rem;">
                             <circle cx="10" cy="10" r="10" fill="#6ee7b7"/>
                             <path d="M6 10l3 3 5-5" stroke="#065f46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ContactConfirmation;
 use App\Mail\ContactInquiry;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
@@ -234,6 +235,7 @@ class ContactFormTest extends TestCase
         $response = $this->post('/nl/contact', $this->validPayload(['website_url' => 'http://spam.example.com']));
         $response->assertRedirect();
         Mail::assertNotSent(ContactInquiry::class);
+        Mail::assertNotSent(ContactConfirmation::class);
         $response->assertSessionHas('contact_success'); // fakes success so bots cannot detect the trap
         $response->assertSessionHasNoErrors();
     }
@@ -247,6 +249,7 @@ class ContactFormTest extends TestCase
 
         $response->assertRedirect();
         Mail::assertNotSent(ContactInquiry::class);
+        Mail::assertNotSent(ContactConfirmation::class);
         $response->assertSessionHas('contact_success'); // same fake-success behaviour as the honeypot
     }
 
@@ -272,22 +275,25 @@ class ContactFormTest extends TestCase
     // ── Rate limiting ──────────────────────────────────────────────────────
     public function test_rate_limit_blocks_after_three_submissions_per_minute(): void
     {
-        // 3 allowed per minute per IP — same sender, well under the per-hour(10)
-        // and combo(5) thresholds, so only the per-minute limiter can be at play.
-        $this->post('/nl/contact', $this->validPayload())->assertSessionHas('contact_success');
-        $this->post('/nl/contact', $this->validPayload())->assertSessionHas('contact_success');
-        $this->post('/nl/contact', $this->validPayload())->assertSessionHas('contact_success');
+        // 3 allowed per minute per IP — a different sender per attempt, so the
+        // duplicate guard and the IP+email combo limiter never interfere and
+        // only the per-minute limiter can be at play.
+        foreach (['a', 'b', 'c'] as $i) {
+            $this->post('/nl/contact', $this->validPayload(['email' => "visitor-{$i}@example.be"]))
+                ->assertSessionHas('contact_success');
+        }
 
-        $this->post('/nl/contact', $this->validPayload())->assertStatus(429);
+        $this->post('/nl/contact', $this->validPayload(['email' => 'visitor-d@example.be']))
+            ->assertStatus(429);
 
-        Mail::assertSentCount(3);
+        Mail::assertSent(ContactInquiry::class, 3);
     }
 
-    public function test_rate_limit_blocks_after_ten_submissions_per_hour(): void
+    public function test_rate_limit_blocks_after_ten_submissions_per_24_hours(): void
     {
         // Space requests 61s apart so the per-minute(3) bucket always resets,
-        // and use a different e-mail each time so the combo(5) limiter never
-        // fires — isolating the pure per-IP per-hour(10) limiter.
+        // and use a different e-mail each time so the combo limiter never
+        // fires — isolating the pure per-IP per-day(10) limiter.
         for ($i = 0; $i < 10; $i++) {
             $this->travel(61)->seconds();
 
@@ -303,20 +309,97 @@ class ContactFormTest extends TestCase
             'form_token' => $this->freshFormToken(),
         ]))->assertStatus(429);
 
-        Mail::assertSentCount(10);
+        Mail::assertSent(ContactInquiry::class, 10);
+
+        $this->travelBack();
+    }
+
+    public function test_rate_limit_resets_automatically_after_minute_decay(): void
+    {
+        foreach (['a', 'b', 'c'] as $i) {
+            $this->post('/nl/contact', $this->validPayload(['email' => "visitor-{$i}@example.be"]))
+                ->assertSessionHas('contact_success');
+        }
+
+        $this->post('/nl/contact', $this->validPayload(['email' => 'visitor-d@example.be']))
+            ->assertStatus(429);
+
+        // After the decay window the visitor can simply submit again — no
+        // manual unblock, the cache entry just expires.
+        $this->travel(2)->minutes();
+
+        $this->post('/nl/contact', $this->validPayload([
+            'email'      => 'visitor-d@example.be',
+            'form_token' => $this->freshFormToken(),
+        ]))->assertSessionHas('contact_success');
+
+        $this->travelBack();
+    }
+
+    public function test_rate_limit_still_blocks_within_the_24_hour_window(): void
+    {
+        // Distinguishes the per-24h limiter from a per-hour limiter: after the
+        // daily quota is used up, even 3 hours later a new attempt must still
+        // be refused, because the 24-hour window has not expired yet.
+        for ($i = 0; $i < 10; $i++) {
+            $this->travel(61)->seconds();
+
+            $this->post('/nl/contact', $this->validPayload([
+                'email'      => "visitor{$i}@example.be",
+                'form_token' => $this->freshFormToken(),
+            ]))->assertSessionHas('contact_success');
+        }
+
+        $this->travel(3)->hours();
+
+        $this->post('/nl/contact', $this->validPayload([
+            'email'      => 'visitor-later@example.be',
+            'form_token' => $this->freshFormToken(),
+        ]))->assertStatus(429);
+
+        $this->travelBack();
+    }
+
+    public function test_rate_limit_resets_automatically_after_24_hour_decay(): void
+    {
+        for ($i = 0; $i < 10; $i++) {
+            $this->travel(61)->seconds();
+
+            $this->post('/nl/contact', $this->validPayload([
+                'email'      => "visitor{$i}@example.be",
+                'form_token' => $this->freshFormToken(),
+            ]))->assertSessionHas('contact_success');
+        }
+
+        $this->travel(61)->seconds();
+        $this->post('/nl/contact', $this->validPayload([
+            'email'      => 'visitor-overflow@example.be',
+            'form_token' => $this->freshFormToken(),
+        ]))->assertStatus(429);
+
+        $this->travel(25)->hours();
+
+        $this->post('/nl/contact', $this->validPayload([
+            'email'      => 'visitor-returns@example.be',
+            'form_token' => $this->freshFormToken(),
+        ]))->assertSessionHas('contact_success');
 
         $this->travelBack();
     }
 
     public function test_no_mail_sent_for_rate_limited_request(): void
     {
-        $this->post('/nl/contact', $this->validPayload())->assertSessionHas('contact_success');
-        $this->post('/nl/contact', $this->validPayload())->assertSessionHas('contact_success');
-        $this->post('/nl/contact', $this->validPayload())->assertSessionHas('contact_success');
+        foreach (['a', 'b', 'c'] as $i) {
+            $this->post('/nl/contact', $this->validPayload(['email' => "visitor-{$i}@example.be"]))
+                ->assertSessionHas('contact_success');
+        }
 
-        $this->post('/nl/contact', $this->validPayload())->assertStatus(429);
+        $this->post('/nl/contact', $this->validPayload(['email' => 'visitor-d@example.be']))
+            ->assertStatus(429);
 
-        Mail::assertSentCount(3);
+        Mail::assertSent(ContactInquiry::class, 3);
+        Mail::assertSent(ContactConfirmation::class, 3);
+        Mail::assertNotSent(ContactInquiry::class, fn (ContactInquiry $m) => $m->hasReplyTo('visitor-d@example.be'));
     }
 
     // ── Duplicate submission ───────────────────────────────────────────────
@@ -327,7 +410,8 @@ class ContactFormTest extends TestCase
         $this->post('/nl/contact', $payload)->assertSessionHas('contact_success');
         $this->post('/nl/contact', $payload)->assertSessionHas('contact_success'); // fake success, silently ignored
 
-        Mail::assertSentCount(1);
+        Mail::assertSent(ContactInquiry::class, 1);
+        Mail::assertSent(ContactConfirmation::class, 1);
     }
 
     // ── Legacy /contact redirect ──────────────────────────────────────────
@@ -392,5 +476,116 @@ class ContactFormTest extends TestCase
         Mail::assertSent(ContactInquiry::class, function (ContactInquiry $mail) {
             return $mail->hasTo(config('contact.email'));
         });
+    }
+
+    // ── Confirmation mail to the visitor ───────────────────────────────────
+    public function test_valid_submission_sends_confirmation_mail_to_visitor(): void
+    {
+        $this->post('/nl/contact', $this->validPayload(['email' => 'jan@example.be']));
+
+        Mail::assertSent(ContactConfirmation::class, function (ContactConfirmation $mail) {
+            return $mail->hasTo('jan@example.be');
+        });
+    }
+
+    public function test_confirmation_mail_uses_configured_noreply_from_address(): void
+    {
+        $this->post('/nl/contact', $this->validPayload());
+
+        Mail::assertSent(ContactConfirmation::class, function (ContactConfirmation $mail) {
+            return $mail->envelope()->from->address === config('mail.from.address');
+        });
+    }
+
+    public function test_confirmation_mail_subject_is_dutch_for_nl_submission(): void
+    {
+        $this->post('/nl/contact', $this->validPayload());
+
+        Mail::assertSent(ContactConfirmation::class, function (ContactConfirmation $mail) {
+            return $mail->envelope()->subject === 'We hebben uw aanvraag goed ontvangen – Van Kerkhoven';
+        });
+    }
+
+    public function test_confirmation_mail_subject_is_french_for_fr_submission(): void
+    {
+        $this->post('/fr/contact', $this->validPayload());
+
+        Mail::assertSent(ContactConfirmation::class, function (ContactConfirmation $mail) {
+            return $mail->submissionLocale === 'fr'
+                && $mail->envelope()->subject === 'Nous avons bien reçu votre demande – Van Kerkhoven';
+        });
+    }
+
+    public function test_confirmation_mail_subject_is_english_for_en_submission(): void
+    {
+        $this->post('/en/contact', $this->validPayload());
+
+        Mail::assertSent(ContactConfirmation::class, function (ContactConfirmation $mail) {
+            return $mail->submissionLocale === 'en'
+                && $mail->envelope()->subject === 'We have received your request – Van Kerkhoven';
+        });
+    }
+
+    public function test_confirmation_mail_contains_name_type_and_message_summary(): void
+    {
+        $this->post('/nl/contact', $this->validPayload());
+
+        Mail::assertSent(ContactConfirmation::class, function (ContactConfirmation $mail) {
+            $html = $mail->render();
+
+            return str_contains($html, 'Jan Janssen')
+                && str_contains($html, 'Ramen op maat')
+                && str_contains($html, 'Ik wil graag een offerte voor nieuwe ramen.')
+                && str_contains($html, 'automatisch');
+        });
+    }
+
+    public function test_no_confirmation_mail_on_validation_error(): void
+    {
+        $this->post('/nl/contact', $this->validPayload(['email' => 'not-an-email']))
+            ->assertSessionHasErrors('email');
+
+        Mail::assertNotSent(ContactInquiry::class);
+        Mail::assertNotSent(ContactConfirmation::class);
+    }
+
+    public function test_duplicate_submission_sends_only_one_confirmation(): void
+    {
+        $payload = $this->validPayload();
+
+        $this->post('/nl/contact', $payload);
+        $this->post('/nl/contact', $payload);
+
+        Mail::assertSent(ContactConfirmation::class, 1);
+    }
+
+    // ── Success feedback on the contact page ───────────────────────────────
+    public function test_success_message_is_shown_as_accessible_live_region(): void
+    {
+        $response = $this->followingRedirects()->post('/nl/contact', $this->validPayload());
+
+        $response->assertSee('Bedankt, uw aanvraag werd goed ontvangen.');
+        $response->assertSee('bevestiging per e-mail');
+        $response->assertSee('role="status"', false);
+    }
+
+    public function test_form_input_is_cleared_after_success(): void
+    {
+        $this->post('/nl/contact', $this->validPayload())
+            ->assertSessionHas('contact_success')
+            ->assertSessionMissing('_old_input');
+    }
+
+    // ── Mail failure ───────────────────────────────────────────────────────
+    public function test_mail_failure_shows_error_and_no_success_message(): void
+    {
+        Mail::shouldReceive('to')->once()->andThrow(new \RuntimeException('smtp unavailable'));
+
+        $response = $this->post('/nl/contact', $this->validPayload());
+
+        $response->assertRedirect()
+            ->assertSessionHas('contact_error')
+            ->assertSessionMissing('contact_success')
+            ->assertSessionHas('_old_input.name', 'Jan Janssen');
     }
 }

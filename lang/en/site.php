@@ -86,6 +86,7 @@ return [
     // Rate limit (429) page
     'rate_limited_eyebrow' => 'One moment',
     'rate_limited_title'   => 'Too many requests',
-    'rate_limited_message' => 'You have already sent this form several times recently. Please wait a little before trying again.',
+    'rate_limited_message' => 'You submitted several requests in a short period of time. Please wait and try again later.',
     'rate_limited_cta'     => 'Back to contact',
+    'rate_limited_home'    => 'To the homepage',
 ];

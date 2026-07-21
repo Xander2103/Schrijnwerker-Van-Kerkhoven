@@ -59,8 +59,17 @@ return [
     ],
 
     // Flash messages
-    'success'    => 'Merci, votre demande a bien été reçue. Nous vous contacterons dans les plus brefs délais.',
+    'success'    => 'Merci, votre demande a bien été reçue. Nous vous contacterons dans les plus brefs délais. Vous recevrez également une confirmation par e-mail.',
     'send_error' => 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer plus tard.',
+
+    // Confirmation e-mail to the visitor
+    'confirm_subject'       => 'Nous avons bien reçu votre demande – Van Kerkhoven',
+    'confirm_greeting'      => 'Bonjour :name,',
+    'confirm_intro'         => 'Merci pour votre demande. Nous avons bien reçu votre message et vous contacterons dans les plus brefs délais.',
+    'confirm_type_label'    => 'Type de demande',
+    'confirm_message_label' => 'Votre message',
+    'confirm_signoff'       => 'Cordialement,',
+    'confirm_auto_notice'   => 'Ceci est une confirmation envoyée automatiquement. Merci de ne pas répondre à cet e-mail.',
 
     // Email template labels (owner-facing)
     'email_subject'     => 'Nouvelle demande via le site web',
