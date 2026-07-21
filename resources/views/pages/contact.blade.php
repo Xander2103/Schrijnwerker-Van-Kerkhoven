@@ -1,7 +1,7 @@
 @extends('layouts.client')
 
-@section('page_title', 'Contact — ' . config('site.name'))
-@section('page_description', __('contact.intro'))
+@section('page_title', __('pages.contact_title'))
+@section('page_description', __('pages.contact_desc'))
 
 @section('content')
 

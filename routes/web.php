@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
-use App\Mail\ContactInquiry;
 use App\Support\GalleryScanner;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Sitemap
+|--------------------------------------------------------------------------
+*/
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 /*
 |--------------------------------------------------------------------------
@@ -182,74 +186,10 @@ Route::prefix('{locale}')
         })->name('privacy');
 
         // ── Contact GET ─────────────────────────────────────────────────────
-        Route::get('/contact', function (string $locale): mixed {
-            return view('pages.contact');
-        })->name('contact');
+        Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 
         // ── Contact POST ────────────────────────────────────────────────────
-        Route::post('/contact', function (string $locale, Request $request): mixed {
-
-            // Honeypot — fake success so bots cannot distinguish from a real submission
-            if (!empty($request->input('website_url'))) {
-                return redirect()->route('contact', ['locale' => $locale])
-                    ->with('contact_success', trans('contact.success'));
-            }
-
-            // Daily rate limit: 2 submissions per IP per day
-            $ip       = $request->ip();
-            $cacheKey = 'contact:daily:' . sha1($ip . ':' . today()->toDateString());
-            $count    = (int) Cache::get($cacheKey, 0);
-
-            if ($count >= 2) {
-                return redirect()->route('contact', ['locale' => $locale])
-                    ->withInput()
-                    ->with('contact_rate_error',
-                        trans('contact.rate_error', ['phone' => config('site.phone')]));
-            }
-
-            $allowedTypes = config('contact.form_request_types', []);
-
-            $request->validate([
-                'name'         => ['required', 'string', 'max:100'],
-                'phone'        => ['required', 'string', 'max:30'],
-                'email'        => ['nullable', 'email', 'max:150'],
-                'request_type' => ['required', 'string', 'in:' . implode(',', $allowedTypes)],
-                'message'      => ['required', 'string', 'min:5', 'max:2000'],
-                'privacy'      => ['accepted'],
-            ], [
-                'name.required'         => trans('contact.validation.name_required'),
-                'phone.required'        => trans('contact.validation.phone_required'),
-                'email.email'           => trans('contact.validation.email_invalid'),
-                'request_type.required' => trans('contact.validation.type_required'),
-                'request_type.in'       => trans('contact.validation.type_invalid'),
-                'message.required'      => trans('contact.validation.message_required'),
-                'message.min'           => trans('contact.validation.message_min', ['min' => 5]),
-                'message.max'           => trans('contact.validation.message_max'),
-                'privacy.accepted'      => trans('contact.validation.privacy_accepted'),
-            ]);
-
-            // Increment rate-limit counter after successful validation
-            Cache::put($cacheKey, $count + 1, now()->endOfDay());
-
-            // Send notification email to site owner
-            try {
-                Mail::to(config('contact.email'))->send(new ContactInquiry(
-                    data: [
-                        'name'         => $request->input('name'),
-                        'email'        => $request->input('email'),
-                        'phone'        => $request->input('phone'),
-                        'request_type' => $request->input('request_type'),
-                        'message'      => $request->input('message'),
-                        'submitted_at' => now()->format('d/m/Y H:i'),
-                        'source_url'   => $request->headers->get('referer', ''),
-                    ],
-                    submissionLocale: $locale,
-                ));
-            } catch (\Throwable) {
-                // Mail failure must not block the user confirmation
-            }
-
-            return redirect()->route('contact', ['locale' => $locale])
-                ->with('contact_success', trans('contact.success'));
-        })->middleware('throttle:5,1')->name('contact.submit');
+        Route::post('/contact', [ContactController::class, 'store'])
+            ->middleware('throttle:contact')
+            ->name('contact.submit');
     });

@@ -22,7 +22,7 @@
                     @endif
                     <p>
                         <strong>{{ __('site.label_instagram') }}</strong><br>
-                        <a href="https://www.instagram.com/van.kerkhoven/"
+                        <a href="{{ config('site.instagram_url') }}"
                            target="_blank"
                            rel="noopener noreferrer"
                            aria-label="{{ __('site.instagram_aria') }}"
@@ -57,13 +57,13 @@
 
             <div class="reveal" data-reveal-delay="100">
 
-                @if(session('contact_rate_error'))
+                @if(session('contact_error'))
                     <div class="form-rate-alert" role="alert">
                         <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true" style="flex-shrink:0;margin-top:.1rem;">
                             <circle cx="10" cy="10" r="10" fill="#fed7aa"/>
                             <path d="M10 6v5M10 14v.5" stroke="#9a3412" stroke-width="2" stroke-linecap="round"/>
                         </svg>
-                        <span>{{ session('contact_rate_error') }}</span>
+                        <span>{{ session('contact_error') }}</span>
                     </div>
                 @endif
 
@@ -84,6 +84,7 @@
                         <label for="website_url">Laat dit veld leeg</label>
                         <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off">
                     </div>
+                    <input type="hidden" name="form_token" value="{{ $formToken ?? '' }}">
 
                     <div class="form-field">
                         <label for="contact-name">{{ __('contact.name_label') }} {{ __('contact.required_suffix') }}</label>
@@ -97,25 +98,25 @@
                     </div>
 
                     <div class="form-field">
-                        <label for="contact-phone">{{ __('contact.phone_label') }} {{ __('contact.required_suffix') }}</label>
-                        <input type="tel" id="contact-phone" name="phone"
-                               class="form-input{{ $errors->has('phone') ? ' form-input-error' : '' }}"
-                               placeholder="{{ __('contact.phone_placeholder') }}" autocomplete="tel"
-                               value="{{ old('phone') }}">
-                        @error('phone')
-                            <span class="form-error" role="alert">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="form-field">
-                        <label for="contact-email">
-                            {{ __('contact.email_label') }} <span style="color:var(--color-text-light);font-weight:400;">{{ __('contact.email_optional') }}</span>
-                        </label>
+                        <label for="contact-email">{{ __('contact.email_label') }} {{ __('contact.required_suffix') }}</label>
                         <input type="email" id="contact-email" name="email"
                                class="form-input{{ $errors->has('email') ? ' form-input-error' : '' }}"
                                placeholder="{{ __('contact.email_placeholder') }}" autocomplete="email"
                                value="{{ old('email') }}">
                         @error('email')
+                            <span class="form-error" role="alert">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-field">
+                        <label for="contact-phone">
+                            {{ __('contact.phone_label') }} <span style="color:var(--color-text-light);font-weight:400;">{{ __('contact.phone_optional') }}</span>
+                        </label>
+                        <input type="tel" id="contact-phone" name="phone"
+                               class="form-input{{ $errors->has('phone') ? ' form-input-error' : '' }}"
+                               placeholder="{{ __('contact.phone_placeholder') }}" autocomplete="tel"
+                               value="{{ old('phone') }}">
+                        @error('phone')
                             <span class="form-error" role="alert">{{ $message }}</span>
                         @enderror
                     </div>
@@ -163,7 +164,7 @@
                     @enderror
 
                     <div class="form-submit-row">
-                        <button type="submit" class="btn btn-primary">{{ __('contact.submit') }}</button>
+                        <button type="submit" class="btn btn-primary" data-loading-label="{{ __('contact.sending') }}">{{ __('contact.submit') }}</button>
                     </div>
 
                 </form>

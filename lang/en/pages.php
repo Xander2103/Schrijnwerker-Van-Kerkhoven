@@ -18,8 +18,10 @@ return [
     'lang_switcher_aria' => 'Choose language',
 
     // Contact page
-    'contact_back' => 'Back to home',
-    'contact_appt' => 'Appointments',
+    'contact_back'  => 'Back to home',
+    'contact_appt'  => 'Appointments',
+    'contact_title' => 'Contact — Van Kerkhoven Joinery Huldenberg',
+    'contact_desc'  => 'Get in touch with Van Kerkhoven in Huldenberg for custom windows, doors, stairs or gates. Call, e-mail or fill in the contact form.',
 
     // Ramen page
     'ramen_title'   => 'Custom wooden windows — Van Kerkhoven Joinery Huldenberg',
@@ -73,6 +75,7 @@ return [
 
     // Privacy page
     'privacy_title'   => 'Privacy policy — Van Kerkhoven',
+    'privacy_desc'    => 'Learn how Van Kerkhoven in Huldenberg handles your personal data, in line with GDPR.',
     'privacy_eyebrow' => 'Legal',
     'privacy_heading' => 'Privacy Policy',
     'privacy_back'    => 'Back to home',

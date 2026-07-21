@@ -13,8 +13,8 @@ return [
     // Form labels
     'name_label'      => 'Name',
     'phone_label'     => 'Phone number',
+    'phone_optional'  => '(optional)',
     'email_label'     => 'E-mail address',
-    'email_optional'  => '(optional)',
     'type_label'      => 'Type of request',
     'message_label'   => 'Message',
     'required_suffix' => '*',
@@ -31,7 +31,8 @@ return [
     'privacy_more' => 'More info',
 
     // Submit
-    'submit' => 'Submit request',
+    'submit'  => 'Submit request',
+    'sending' => 'Sending...',
 
     // Request type labels
     'request_types' => [
@@ -46,8 +47,9 @@ return [
     // Validation messages
     'validation' => [
         'name_required'    => 'Please enter your name.',
-        'phone_required'   => 'Please enter your phone number.',
+        'email_required'   => 'Please enter your e-mail address.',
         'email_invalid'    => 'Please enter a valid e-mail address.',
+        'phone_max'        => 'Your phone number is too long.',
         'type_required'    => 'Please choose a type of request.',
         'type_invalid'     => 'Please choose a valid type of request.',
         'message_required' => 'Please enter a message.',
@@ -58,7 +60,7 @@ return [
 
     // Flash messages
     'success'    => 'Thank you, your request has been received. We will get back to you as soon as possible.',
-    'rate_error' => 'You have already sent the maximum number of messages today. Please try again tomorrow or call us directly on :phone.',
+    'send_error' => 'Something went wrong while sending your request. Please try again later.',
 
     // Email template labels (owner-facing)
     'email_subject'     => 'New enquiry via the website',

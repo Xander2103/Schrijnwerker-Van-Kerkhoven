@@ -2,8 +2,8 @@
 
 return [
     // Meta
-    'meta_title_home' => 'Van Kerkhoven — Custom wooden windows, doors and stairs in Huldenberg',
-    'meta_desc_home'  => 'Van Kerkhoven joinery in Huldenberg crafts custom solid wood windows, doors and stairs. 45 years of expertise, own workshop, installation by appointment.',
+    'meta_title_home' => 'Carpenter in Huldenberg | Van Kerkhoven',
+    'meta_desc_home'  => 'Custom wooden windows, doors and stairs in solid wood. Van Kerkhoven in Huldenberg has worked from its own workshop for 45 years, installation by appointment.',
 
     // Hero
     'tagline'       => 'Custom joinery, from tree to installation.',
@@ -82,4 +82,10 @@ return [
     'footer_nav'     => 'Navigation',
     'footer_access'  => 'Availability',
     'footer_privacy' => 'Privacy policy',
+
+    // Rate limit (429) page
+    'rate_limited_eyebrow' => 'One moment',
+    'rate_limited_title'   => 'Too many requests',
+    'rate_limited_message' => 'You have already sent this form several times recently. Please wait a little before trying again.',
+    'rate_limited_cta'     => 'Back to contact',
 ];

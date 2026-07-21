@@ -12,6 +12,7 @@
                 <img
                     src="{{ asset(config('images.logo_header')) }}"
                     alt=""
+                    width="43"
                     height="44"
                     class="nav-logo-img"
                     aria-hidden="true"
@@ -110,7 +111,7 @@
     </div>
 
     <a
-        href="https://www.instagram.com/van.kerkhoven/"
+        href="{{ config('site.instagram_url') }}"
         class="nav-mobile-instagram"
         target="_blank"
         rel="noopener noreferrer"

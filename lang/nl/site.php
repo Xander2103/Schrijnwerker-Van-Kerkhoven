@@ -2,8 +2,8 @@
 
 return [
     // Meta
-    'meta_title_home' => 'Van Kerkhoven — Houten ramen, deuren en trappen op maat in Huldenberg',
-    'meta_desc_home'  => 'Algemene Schrijnwerkerij Van Kerkhoven in Huldenberg maakt houten ramen, deuren en trappen op maat in massief hout. 45 jaar expertise, eigen werkhuis en plaatsing op afspraak.',
+    'meta_title_home' => 'Schrijnwerker in Huldenberg | Van Kerkhoven',
+    'meta_desc_home'  => 'Houten ramen, deuren en trappen op maat in massief hout. Van Kerkhoven uit Huldenberg werkt al 45 jaar vanuit eigen werkhuis, plaatsing op afspraak.',
 
     // Hero
     'tagline'      => 'Schrijnwerk op maat, van boom tot plaatsing.',
@@ -82,4 +82,10 @@ return [
     'footer_nav'     => 'Navigatie',
     'footer_access'  => 'Bereikbaarheid',
     'footer_privacy' => 'Privacybeleid',
+
+    // Rate limit (429) page
+    'rate_limited_eyebrow' => 'Even geduld',
+    'rate_limited_title'   => 'Te veel aanvragen',
+    'rate_limited_message' => 'U heeft het formulier de laatste tijd al vaak verzonden. Wacht even en probeer het straks opnieuw.',
+    'rate_limited_cta'     => 'Terug naar contact',
 ];

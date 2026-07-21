@@ -22,7 +22,7 @@
                 @endif
                 <p style="font-size:.875rem;margin:0;">
                     <a
-                        href="https://www.instagram.com/van.kerkhoven/"
+                        href="{{ config('site.instagram_url') }}"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="{{ __('site.instagram_aria') }}"

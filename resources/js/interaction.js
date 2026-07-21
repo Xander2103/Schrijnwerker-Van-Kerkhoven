@@ -384,6 +384,30 @@
   }
 
   // ─────────────────────────────────────────────
+  // Contact form — disable the submit button and show a loading
+  // label on submit, so double-clicks / repeated Enter presses
+  // cannot fire a second request while the first is in flight.
+  // ─────────────────────────────────────────────
+  function initContactFormGuard() {
+    document.querySelectorAll('.contact-form').forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        if (form.dataset.submitting === 'true') {
+          e.preventDefault();
+          return;
+        }
+        form.dataset.submitting = 'true';
+
+        var btn = form.querySelector('button[type="submit"]');
+        if (btn) {
+          btn.disabled = true;
+          var loadingLabel = btn.dataset.loadingLabel;
+          if (loadingLabel) btn.textContent = loadingLabel;
+        }
+      });
+    });
+  }
+
+  // ─────────────────────────────────────────────
   // Transparent hero nav — homepage only.
   // Adds body.nav-scrolled once user scrolls 70 %
   // of viewport height; CSS handles the visual switch.
@@ -412,6 +436,7 @@
     initCustomCursor();
     initHeroNav();
     initAtelierCycle();
+    initContactFormGuard();
   }
 
   if (document.readyState === 'loading') {

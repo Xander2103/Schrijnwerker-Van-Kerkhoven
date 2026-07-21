@@ -13,8 +13,8 @@ return [
     // Form labels
     'name_label'      => 'Nom',
     'phone_label'     => 'Numéro de téléphone',
+    'phone_optional'  => '(optionnel)',
     'email_label'     => 'Adresse e-mail',
-    'email_optional'  => '(optionnel)',
     'type_label'      => 'Type de demande',
     'message_label'   => 'Message',
     'required_suffix' => '*',
@@ -31,7 +31,8 @@ return [
     'privacy_more' => 'Plus d\'info',
 
     // Submit
-    'submit' => 'Envoyer la demande',
+    'submit'  => 'Envoyer la demande',
+    'sending' => 'Envoi en cours...',
 
     // Request type labels
     'request_types' => [
@@ -46,8 +47,9 @@ return [
     // Validation messages
     'validation' => [
         'name_required'    => 'Veuillez indiquer votre nom.',
-        'phone_required'   => 'Veuillez indiquer votre numéro de téléphone.',
+        'email_required'   => 'Veuillez indiquer votre adresse e-mail.',
         'email_invalid'    => 'Veuillez indiquer une adresse e-mail valide.',
+        'phone_max'        => 'Votre numéro de téléphone est trop long.',
         'type_required'    => 'Veuillez choisir un type de demande.',
         'type_invalid'     => 'Veuillez choisir un type de demande valide.',
         'message_required' => 'Veuillez indiquer un message.',
@@ -58,7 +60,7 @@ return [
 
     // Flash messages
     'success'    => 'Merci, votre demande a bien été reçue. Nous vous contacterons dans les plus brefs délais.',
-    'rate_error' => 'Vous avez déjà envoyé le nombre maximum de messages aujourd\'hui. Réessayez demain ou appelez-nous directement au :phone.',
+    'send_error' => 'Une erreur est survenue lors de l\'envoi de votre demande. Veuillez réessayer plus tard.',
 
     // Email template labels (owner-facing)
     'email_subject'     => 'Nouvelle demande via le site web',

@@ -13,8 +13,8 @@ return [
     // Form labels
     'name_label'       => 'Naam',
     'phone_label'      => 'Telefoonnummer',
+    'phone_optional'   => '(optioneel)',
     'email_label'      => 'E-mailadres',
-    'email_optional'   => '(optioneel)',
     'type_label'       => 'Type aanvraag',
     'message_label'    => 'Bericht',
     'required_suffix'  => '*',
@@ -31,7 +31,8 @@ return [
     'privacy_more' => 'Meer info',
 
     // Submit
-    'submit' => 'Verstuur aanvraag',
+    'submit'  => 'Verstuur aanvraag',
+    'sending' => 'Bezig met verzenden...',
 
     // Request type labels (key = machine value stored in DB/mail)
     'request_types' => [
@@ -46,8 +47,9 @@ return [
     // Validation messages
     'validation' => [
         'name_required'    => 'Vul uw naam in.',
-        'phone_required'   => 'Vul uw telefoonnummer in.',
+        'email_required'   => 'Vul uw e-mailadres in.',
         'email_invalid'    => 'Vul een geldig e-mailadres in.',
+        'phone_max'        => 'Uw telefoonnummer is te lang.',
         'type_required'    => 'Kies een type aanvraag.',
         'type_invalid'     => 'Kies een geldig type aanvraag.',
         'message_required' => 'Vul een bericht in.',
@@ -58,7 +60,7 @@ return [
 
     // Flash messages
     'success'    => 'Bedankt, uw aanvraag werd ontvangen. We nemen zo snel mogelijk contact op.',
-    'rate_error' => 'U heeft vandaag al het maximale aantal berichten verstuurd. Probeer morgen opnieuw of bel ons direct op :phone.',
+    'send_error' => 'Er ging iets mis bij het versturen van uw aanvraag. Probeer het later opnieuw.',
 
     // Email template labels (owner-facing)
     'email_subject'     => 'Nieuwe aanvraag via de website',

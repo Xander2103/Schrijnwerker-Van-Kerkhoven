@@ -20,6 +20,8 @@ return [
     // Contact page
     'contact_back'    => 'Terug naar home',
     'contact_appt'    => 'Afspraken',
+    'contact_title'   => 'Contact — Van Kerkhoven Schrijnwerkerij Huldenberg',
+    'contact_desc'    => 'Neem contact op met Van Kerkhoven in Huldenberg voor ramen, deuren, trappen of poorten op maat. Bel, mail of vul het contactformulier in.',
 
     // Ramen page
     'ramen_title'   => 'Houten ramen op maat — Van Kerkhoven Schrijnwerkerij Huldenberg',
@@ -73,6 +75,7 @@ return [
 
     // Privacy page
     'privacy_title'   => 'Privacybeleid — Van Kerkhoven',
+    'privacy_desc'    => 'Lees hoe Algemene Schrijnwerkerij Van Kerkhoven in Huldenberg omgaat met uw persoonsgegevens, conform de GDPR-wetgeving.',
     'privacy_eyebrow' => 'Juridisch',
     'privacy_heading' => 'Privacybeleid',
     'privacy_back'    => 'Terug naar home',

@@ -16,4 +16,17 @@ return [
         'poorten',
         'andere_vraag',
     ],
+
+    // Minimum time (seconds) between form render and submission — anti-bot timing trap.
+    'min_seconds_to_submit' => 2,
+
+    // Window (seconds) in which an identical submission is treated as a duplicate.
+    'duplicate_window_seconds' => 60,
+
+    // Named RateLimiter thresholds — see App\Providers\AppServiceProvider.
+    'rate_limit' => [
+        'per_minute'     => 3,
+        'per_hour'       => 10,
+        'per_hour_combo' => 5, // stricter limit for the same IP + e-mail pair
+    ],
 ];

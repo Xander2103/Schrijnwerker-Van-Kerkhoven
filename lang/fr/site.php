@@ -2,8 +2,8 @@
 
 return [
     // Meta
-    'meta_title_home' => 'Van Kerkhoven — Fenêtres, portes et escaliers sur mesure à Huldenberg',
-    'meta_desc_home'  => 'Schrijnwerkerij Van Kerkhoven à Huldenberg fabrique des fenêtres, portes et escaliers sur mesure en bois massif. 45 ans d\'expertise, atelier propre, pose sur rendez-vous.',
+    'meta_title_home' => 'Menuisier à Huldenberg | Van Kerkhoven',
+    'meta_desc_home'  => 'Fenêtres, portes et escaliers sur mesure en bois massif. Van Kerkhoven à Huldenberg travaille depuis 45 ans dans son propre atelier, pose sur rendez-vous.',
 
     // Hero
     'tagline'       => 'Menuiserie sur mesure, de l\'arbre à la pose.',
@@ -82,4 +82,10 @@ return [
     'footer_nav'     => 'Navigation',
     'footer_access'  => 'Accessibilité',
     'footer_privacy' => 'Politique de confidentialité',
+
+    // Rate limit (429) page
+    'rate_limited_eyebrow' => 'Un instant',
+    'rate_limited_title'   => 'Trop de demandes',
+    'rate_limited_message' => 'Vous avez déjà envoyé ce formulaire plusieurs fois récemment. Merci de patienter avant de réessayer.',
+    'rate_limited_cta'     => 'Retour au contact',
 ];

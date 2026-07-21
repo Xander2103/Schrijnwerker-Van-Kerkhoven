@@ -1,6 +1,7 @@
 @extends('layouts.client')
 
 @section('page_title', __('pages.privacy_title'))
+@section('page_description', __('pages.privacy_desc'))
 
 @section('content')
 

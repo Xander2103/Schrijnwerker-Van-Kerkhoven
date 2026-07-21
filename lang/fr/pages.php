@@ -18,8 +18,10 @@ return [
     'lang_switcher_aria' => 'Choisir la langue',
 
     // Contact page
-    'contact_back' => 'Retour à l\'accueil',
-    'contact_appt' => 'Rendez-vous',
+    'contact_back'  => 'Retour à l\'accueil',
+    'contact_appt'  => 'Rendez-vous',
+    'contact_title' => 'Contact — Van Kerkhoven Menuiserie Huldenberg',
+    'contact_desc'  => 'Contactez Van Kerkhoven à Huldenberg pour vos fenêtres, portes, escaliers ou portails sur mesure. Appelez, écrivez-nous ou remplissez le formulaire.',
 
     // Ramen page
     'ramen_title'   => 'Fenêtres en bois sur mesure — Van Kerkhoven Menuiserie Huldenberg',
@@ -73,6 +75,7 @@ return [
 
     // Privacy page
     'privacy_title'   => 'Politique de confidentialité — Van Kerkhoven',
+    'privacy_desc'    => 'Découvrez comment Van Kerkhoven à Huldenberg traite vos données personnelles, conformément au RGPD.',
     'privacy_eyebrow' => 'Juridique',
     'privacy_heading' => 'Politique de confidentialité',
     'privacy_back'    => 'Retour à l\'accueil',

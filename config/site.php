@@ -25,6 +25,7 @@ return [
 
     'footer_text'   => '© ' . date('Y') . ' Algemene Schrijnwerkerij bv Van Kerkhoven · Hoekstraat 15–19B · 3040 Huldenberg · BTW BE 0700.781.844',
     'whatsapp_url'  => null,
+    'instagram_url' => 'https://www.instagram.com/van.kerkhoven/',
     'cta_primary'   => 'Neem contact op',
     'cta_secondary' => 'Bekijk ons werk',
 

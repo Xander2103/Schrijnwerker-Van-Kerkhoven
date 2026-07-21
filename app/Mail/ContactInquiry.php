@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -25,11 +26,35 @@ class ContactInquiry extends Mailable
         $subject = trans('contact.email_subject');
         App::setLocale($prevLocale);
 
-        return new Envelope(subject: $subject);
+        $replyTo = [];
+        $visitorEmail = $this->data['email'] ?? null;
+
+        if (!empty($visitorEmail)) {
+            $replyTo[] = new Address(
+                $this->stripHeaderControlChars((string) $visitorEmail),
+                $this->stripHeaderControlChars((string) ($this->data['name'] ?? '')),
+            );
+        }
+
+        return new Envelope(
+            // Always the configured mailer "from" address — never visitor input.
+            from: new Address(config('mail.from.address'), config('mail.from.name')),
+            replyTo: $replyTo,
+            subject: $subject,
+        );
     }
 
     public function content(): Content
     {
         return new Content(view: 'mail.contact-inquiry');
+    }
+
+    /**
+     * Defensive belt-and-suspenders against mail-header injection: strip any
+     * CR/LF a visitor-supplied value could contain before it reaches a header.
+     */
+    private function stripHeaderControlChars(string $value): string
+    {
+        return trim(str_replace(["\r", "\n"], '', $value));
     }
 }
