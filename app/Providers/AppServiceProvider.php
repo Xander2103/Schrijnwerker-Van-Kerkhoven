@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -23,7 +24,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->forceHttpsWhenConfigured();
         $this->configureContactRateLimiter();
+    }
+
+    /**
+     * When APP_URL is https, generate every URL as https.
+     *
+     * asset() and url() otherwise follow the scheme of the incoming request,
+     * which behind a TLS-terminating proxy is http. That would put http:// in
+     * og:image and in the schema.org @id while the canonical says https://.
+     */
+    private function forceHttpsWhenConfigured(): void
+    {
+        if (Str::startsWith((string) config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
     }
 
     /**

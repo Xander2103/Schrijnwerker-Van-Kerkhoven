@@ -51,6 +51,13 @@
                         @endphp
                         <li><a href="{{ $href }}">{{ $item['label'] }}</a></li>
                     @endforeach
+                    {{-- Realisatie-index: alleen in de footer, zodat het
+                         hoofdmenu compact blijft. --}}
+                    <li>
+                        <a href="{{ \App\Support\Projects::indexUrl($locale) }}">
+                            {{ __('projects.common.breadcrumb_index') }}
+                        </a>
+                    </li>
                 </ul>
             </div>
 

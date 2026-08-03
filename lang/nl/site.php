@@ -1,6 +1,9 @@
 <?php
 
 return [
+    // Toegankelijkheid
+    'skip_to_content' => 'Naar de inhoud',
+
     // Meta
     'meta_title_home' => 'Schrijnwerker in Huldenberg | Van Kerkhoven',
     'meta_desc_home'  => 'Houten ramen, deuren en trappen op maat in massief hout. Van Kerkhoven uit Huldenberg werkt al 45 jaar vanuit eigen werkhuis, plaatsing op afspraak.',

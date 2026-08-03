@@ -1,9 +1,15 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
 use App\Support\GalleryScanner;
+use App\Support\Projects;
+use App\Support\Regions;
+use App\Support\ServicePages;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -192,4 +198,35 @@ Route::prefix('{locale}')
         Route::post('/contact', [ContactController::class, 'store'])
             ->middleware('throttle:contact')
             ->name('contact.submit');
+
+        // ── Realisaties ─────────────────────────────────────────────────────
+        // Index + projectpagina's. Beide staan vóór de catch-all routes
+        // hieronder; de projectroute heeft twee segmenten en kan er dus
+        // sowieso niet mee botsen. De constraint bevat uitsluitend
+        // gepubliceerde slugs, zodat drafts geen route hebben.
+        Route::get('/{index}', [ProjectController::class, 'index'])
+            ->where('index', Projects::indexRouteConstraint())
+            ->name('projects.index');
+
+        Route::get('/{index}/{project}', [ProjectController::class, 'show'])
+            ->where('index', Projects::indexRouteConstraint())
+            ->where('project', Projects::routeConstraint())
+            ->name('projects.show');
+
+        // ── Lokale regiopagina's ────────────────────────────────────────────
+        // Eén route voor alle zes regio's × drie talen. De constraint komt uit
+        // config/regions.php, zodat deze route nooit een andere pad opslokt;
+        // RegionController geeft 404 wanneer de slug niet bij de taal hoort.
+        // Staat bewust als laatste, ná alle statische slugs hierboven.
+        Route::get('/{region}', [RegionController::class, 'show'])
+            ->where('region', Regions::routeConstraint())
+            ->name('region');
+
+        // ── Verdiepende dienstenpagina's ────────────────────────────────────
+        // Zelfde patroon als de regiopagina's: één route, constraint uit
+        // config/service-pages.php, en 404 wanneer de slug niet bij de taal
+        // hoort. De slugverzamelingen van beide routes zijn disjunct.
+        Route::get('/{service}', [ServiceController::class, 'show'])
+            ->where('service', ServicePages::routeConstraint())
+            ->name('service');
     });

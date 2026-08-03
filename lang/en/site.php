@@ -1,6 +1,9 @@
 <?php
 
 return [
+    // Toegankelijkheid
+    'skip_to_content' => 'Skip to content',
+
     // Meta
     'meta_title_home' => 'Carpenter in Huldenberg | Van Kerkhoven',
     'meta_desc_home'  => 'Custom wooden windows, doors and stairs in solid wood. Van Kerkhoven in Huldenberg has worked from its own workshop for 45 years, installation by appointment.',

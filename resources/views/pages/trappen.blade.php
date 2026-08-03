@@ -5,7 +5,10 @@
 
 @section('content')
 
-@php $locale ??= 'nl'; @endphp
+@php
+    $locale ??= 'nl';
+    $heroPreload = 'assets/client/images/trappen-hero.webp';
+@endphp
 
 <section
     class="page-hero page-hero--image"
@@ -28,5 +31,9 @@
 
 @php $galleryTitle = __('pages.trappen_gallery'); @endphp
 @include('partials.realisaties-gallery')
+
+@include('partials.subservices', ['coreKey' => 'trappen'])
+
+@include('partials.related-projects', ['cards' => \App\Support\Projects::forService('trappen', $locale)])
 
 @endsection

@@ -2,10 +2,21 @@
      Category gallery: wooden-framed static grid.
      Requires: $galleryImages (array of relative public paths)
      Optional: $galleryTitle (string)
+     Optional: $galleryAlts  (array, same order as $galleryImages) — when a
+               project supplies real per-photo descriptions they become the
+               img alt and the button label. Without it the images stay
+               decorative and the button keeps its generic "photo n of m"
+               label, exactly as before.
+     Optional: $galleryEagerCount — how many leading photos load eagerly.
+               Defaults to 4, which suits the category pages where this grid
+               sits near the top. Project pages pass 0, because there the
+               gallery is always below the fold.
      ============================================================ --}}
 @php
     $galleryTitle = $galleryTitle ?? __('site.gallery_eyebrow');
     $allUrls      = array_values(array_map(fn($p) => asset($p), $galleryImages ?? []));
+    $galleryAlts  = array_values($galleryAlts ?? []);
+    $galleryEagerCount = $galleryEagerCount ?? 4;
     $hasImages    = count($allUrls) > 0;
     $manyImages   = count($allUrls) > 9;
 @endphp
@@ -26,18 +37,24 @@
                 aria-label="{{ $galleryTitle }}"
             >
                 @foreach($allUrls as $i => $url)
+                    @php
+                        $alt = $galleryAlts[$i] ?? null;
+                        // Natuurlijke beeldverhouding: CSS kan de hoogte niet
+                        // reserveren, dus geven we de echte afmetingen mee.
+                        $dim = \App\Support\ImageDimensions::attributes($galleryImages[$i] ?? null);
+                    @endphp
                     <button
                         class="curated-frame"
                         type="button"
                         role="listitem"
-                        aria-label="{{ __('site.photo_label', ['n' => $i + 1, 'm' => count($allUrls)]) }}"
+                        aria-label="{{ $alt ?? __('site.photo_label', ['n' => $i + 1, 'm' => count($allUrls)]) }}"
                         data-lightbox-index="{{ $i }}"
                     >
                         <img
                             src="{{ $url }}"
-                            alt=""
-                            loading="{{ $i < 4 ? 'eager' : 'lazy' }}"
-                            decoding="async"
+                            alt="{{ $alt ?? '' }}"
+                            loading="{{ $i < $galleryEagerCount ? 'eager' : 'lazy' }}"
+                            decoding="async"{!! $dim !!}
                         >
                     </button>
                 @endforeach

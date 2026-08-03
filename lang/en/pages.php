@@ -23,11 +23,12 @@ return [
     'contact_title' => 'Contact — Van Kerkhoven Joinery Huldenberg',
     'contact_desc'  => 'Get in touch with Van Kerkhoven in Huldenberg for custom windows, doors, stairs or gates. Call, e-mail or fill in the contact form.',
 
-    // Ramen page
-    'ramen_title'   => 'Custom wooden windows — Van Kerkhoven Joinery Huldenberg',
-    'ramen_desc'    => 'Custom solid wood windows for renovation and new builds. Advice on wood species, finish and insulating glazing. Van Kerkhoven — 45 years of craftsmanship in Huldenberg.',
+    // Ramen page — deliberately broad: /wooden-windows and /aluminium-windows
+    // target the specific terms.
+    'ramen_title'   => 'Custom windows — Van Kerkhoven Joinery Huldenberg',
+    'ramen_desc'    => 'Custom windows for renovation and new builds, with advice on material, division and finish. Van Kerkhoven — 45 years of craftsmanship in Huldenberg.',
     'ramen_eyebrow' => 'Speciality',
-    'ramen_heading' => 'Custom wooden windows',
+    'ramen_heading' => 'Custom windows',
     'ramen_intro'   => 'Authentic craftsmanship in solid wood — from wood selection to installation by our own team.',
     'ramen_gallery' => 'Custom wooden windows — projects',
 
@@ -49,7 +50,7 @@ return [
 
     // Poorten page
     'poorten_title'   => 'Custom wooden gates — Van Kerkhoven Joinery Huldenberg',
-    'poorten_desc'    => 'Custom wooden gates for your home or business. Solid construction, durable materials and careful finishing. Van Kerkhoven — 45 years of craftsmanship in Huldenberg.',
+    'poorten_desc'    => 'Custom wooden gates for home or business, with solid construction and careful finishing. Van Kerkhoven, 45 years of joinery in Huldenberg.',
     'poorten_eyebrow' => 'Speciality',
     'poorten_heading' => 'Custom wooden gates',
     'poorten_intro'   => 'We create custom wooden gates that match the style of the home and the character of the building. With attention to solid construction, durable materials and careful finishing, we deliver gates that are both functional and refined.',
@@ -75,7 +76,7 @@ return [
 
     // Privacy page
     'privacy_title'   => 'Privacy policy — Van Kerkhoven',
-    'privacy_desc'    => 'Learn how Van Kerkhoven in Huldenberg handles your personal data, in line with GDPR.',
+    'privacy_desc'    => 'Learn how Van Kerkhoven in Huldenberg handles your personal data, which data we keep and what your rights are under the GDPR.',
     'privacy_eyebrow' => 'Legal',
     'privacy_heading' => 'Privacy Policy',
     'privacy_back'    => 'Back to home',

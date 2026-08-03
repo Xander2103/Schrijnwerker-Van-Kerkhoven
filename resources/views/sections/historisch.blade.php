@@ -42,6 +42,7 @@
                             alt="{{ __('site.historisch_alt') }}"
                             class="historisch-main-img"
                             loading="lazy"
+                            decoding="async"{!! \App\Support\ImageDimensions::attributes($historischMain) !!}
                         >
                     </div>
                 @endif
@@ -60,6 +61,7 @@
                                     src="{{ asset($img) }}"
                                     alt="{{ __('site.historisch_detail') }} {{ $k + 2 }}"
                                     loading="lazy"
+                                    decoding="async"{!! \App\Support\ImageDimensions::attributes($img) !!}
                                 >
                             </div>
                         @endforeach

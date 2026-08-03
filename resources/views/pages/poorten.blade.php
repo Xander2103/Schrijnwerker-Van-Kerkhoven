@@ -5,7 +5,10 @@
 
 @section('content')
 
-@php $locale ??= 'nl'; @endphp
+@php
+    $locale ??= 'nl';
+    $heroPreload = 'assets/client/images/poorten/hero-poorten.webp';
+@endphp
 
 <section
     class="page-hero page-hero--image"
@@ -28,5 +31,9 @@
 
 @php $galleryTitle = __('pages.poorten_gallery'); @endphp
 @include('partials.realisaties-gallery')
+
+@include('partials.subservices', ['coreKey' => 'poorten'])
+
+@include('partials.related-projects', ['cards' => \App\Support\Projects::forService('poorten', $locale)])
 
 @endsection

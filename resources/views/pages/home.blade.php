@@ -2,6 +2,8 @@
 
 @section('body_class', 'page-home')
 
+@php $heroPreload = config('images.hero'); @endphp
+
 @section('content')
 
     @if(config('site.sections.hero', true))
@@ -30,6 +32,10 @@
 
     @if(config('site.sections.gallery', false))
         @include('sections.gallery')
+    @endif
+
+    @if(config('site.sections.werkregio', true))
+        @include('sections.werkregio')
     @endif
 
     @if(config('site.sections.contact_cta', true))

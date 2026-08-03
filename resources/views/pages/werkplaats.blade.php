@@ -70,6 +70,10 @@
     </div>
 </section>
 
+@include('partials.subservices', ['coreKey' => 'werkplaats'])
+
+@include('partials.related-projects', ['cards' => \App\Support\Projects::forService('werkplaats', $locale)])
+
 <dialog
     class="realisaties-lightbox"
     id="realisaties-lightbox"

@@ -8,6 +8,8 @@
     @php
         $currentLocale = $locale ?? 'nl';
         $localeUrls ??= [];
+        $ogImage ??= null;
+        $heroPreload ??= null;
         $routeName = optional(request()->route())->getName();
 
         // Resolve once so <title>/meta-description and their OG/Twitter
@@ -28,7 +30,9 @@ $canonicalUrl = $appUrl !== '' ? $appUrl . $canonicalPath : null;
 $hreflangMap = ['nl' => 'nl-BE', 'fr' => 'fr-BE', 'en' => 'en'];
 $ogLocaleMap = ['nl' => 'nl_BE', 'fr' => 'fr_BE', 'en' => 'en_US'];
 
-$ogImagePath = config('seo.page_images.' . $routeName) ?? config('seo.og_image');
+// Pages that share a single route name (the region pages) publish their own
+// image as $ogImage; everything else keeps using the per-route seo config.
+$ogImagePath = $ogImage ?? config('seo.page_images.' . $routeName) ?? config('seo.og_image');
         $ogImageUrl = $ogImagePath ? asset($ogImagePath) : null;
     @endphp
 
@@ -43,14 +47,17 @@ $ogImagePath = config('seo.page_images.' . $routeName) ?? config('seo.og_image')
         <link rel="canonical" href="{{ $canonicalUrl }}">
     @endif
 
-    {{-- hreflang alternate links --}}
+    {{-- hreflang alternate links — dezelfde basis-URL als de canonical, zodat
+         de twee nooit uit elkaar kunnen lopen. url() zou het schema van het
+         binnenkomende request gebruiken en achter een TLS-terminerende proxy
+         http:// kunnen opleveren terwijl de canonical https:// zegt. --}}
     @foreach ($hreflangMap as $loc => $hreflang)
         @if (isset($localeUrls[$loc]))
-            <link rel="alternate" hreflang="{{ $hreflang }}" href="{{ url($localeUrls[$loc]) }}">
+            <link rel="alternate" hreflang="{{ $hreflang }}" href="{{ $appUrl . '/' . ltrim($localeUrls[$loc], '/') }}">
         @endif
     @endforeach
     @if (isset($localeUrls['nl']))
-        <link rel="alternate" hreflang="x-default" href="{{ url($localeUrls['nl']) }}">
+        <link rel="alternate" hreflang="x-default" href="{{ $appUrl . '/' . ltrim($localeUrls['nl'], '/') }}">
     @endif
 
     <meta property="og:title" content="{{ $pageTitle }}">
@@ -76,6 +83,17 @@ $ogImagePath = config('seo.page_images.' . $routeName) ?? config('seo.og_image')
     @if ($ogImageUrl)
         <meta name="twitter:image" content="{{ $ogImageUrl }}">
     @endif
+
+    {{-- LCP: de hero is een CSS-achtergrond, die de browser pas ontdekt nadat
+         de stylesheet geparsed is. Een preload haalt hem meteen op. Pagina's
+         zetten $heroPreload; zonder dat gebeurt er niets. --}}
+    @if (!empty($heroPreload))
+        <link rel="preload" as="image" href="{{ asset($heroPreload) }}" fetchpriority="high">
+    @endif
+
+    {{-- De twee gewichten die boven de vouw gebruikt worden. --}}
+    <link rel="preload" as="font" type="font/ttf" href="{{ asset('fonts/Inter_24pt-Regular.ttf') }}" crossorigin>
+    <link rel="preload" as="font" type="font/ttf" href="{{ asset('fonts/PlayfairDisplay-Bold.ttf') }}" crossorigin>
 
     <link rel="icon" type="image/png" href="{{ asset('favicon-96x96.png') }}" sizes="96x96">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
@@ -107,6 +125,9 @@ $ogImagePath = config('seo.page_images.' . $routeName) ?? config('seo.og_image')
         $business = [
             '@context'    => 'https://schema.org',
             '@type'       => 'Carpenter',
+            // Stable id so per-page graphs (Service nodes) can reference this
+            // one business instead of describing a second one.
+            '@id'         => url('/') . '#business',
             'name'        => config('site.name'),
             'description' => config('site.intro_short'),
             'email'       => config('contact.email'),
@@ -152,9 +173,13 @@ $ogImagePath = config('seo.page_images.' . $routeName) ?? config('seo.og_image')
 <body
     class="client-page{{ $bodyClass ? ' ' . $bodyClass : '' }}{{ config('interaction.custom_cursor.enabled') ? ' custom-cursor-enabled' : '' }}">
 
+    {{-- Eerste tabstop: laat toetsenbord- en schermlezergebruikers de
+         navigatie overslaan. Alleen zichtbaar zodra hij focus krijgt. --}}
+    <a href="#main" class="skip-link">{{ __('site.skip_to_content') }}</a>
+
     @include('partials.nav')
 
-    <main class="has-fixed-nav">
+    <main id="main" class="has-fixed-nav" tabindex="-1">
         @yield('content')
     </main>
 

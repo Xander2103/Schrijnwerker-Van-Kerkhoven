@@ -1,6 +1,10 @@
 @php
     $locale      ??= 'nl';
     $privacyLink = '/' . $locale . config('contact.privacy_link', '/privacy-policy');
+
+    // Op /contact is dit de hoofdtitel van de pagina; als sectie op een andere
+    // pagina blijft het een h2, zodat er nooit twee h1's op één pagina staan.
+    $contactHeadingLevel = $contactHeadingLevel ?? 'h2';
 @endphp
 
 <section id="contact" class="client-section wood-bg-beige">
@@ -8,7 +12,7 @@
 
         <div class="section-header reveal">
             <span class="section-eyebrow">{{ __('contact.eyebrow') }}</span>
-            <h2 class="section-title">{{ __('contact.heading') }}</h2>
+            <{{ $contactHeadingLevel }} class="section-title">{{ __('contact.heading') }}</{{ $contactHeadingLevel }}>
             <p class="section-intro">{{ __('contact.intro') }}</p>
         </div>
 

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 return [
     'hero'    => 'assets/client/images/hero.webp',

@@ -1,6 +1,9 @@
 <?php
 
 return [
+    // Toegankelijkheid
+    'skip_to_content' => 'Aller au contenu',
+
     // Meta
     'meta_title_home' => 'Menuisier à Huldenberg | Van Kerkhoven',
     'meta_desc_home'  => 'Fenêtres, portes et escaliers sur mesure en bois massif. Van Kerkhoven à Huldenberg travaille depuis 45 ans dans son propre atelier, pose sur rendez-vous.',
