@@ -10,7 +10,6 @@ return [
         'eyebrow'           => 'Zone d\'activité',
         'breadcrumb_aria'   => 'Fil d\'Ariane',
         'breadcrumb_home'   => 'Accueil',
-        'breadcrumb_region' => 'Zone d\'activité',
         'back'              => 'Retour à l\'accueil',
 
         'cta_contact'     => 'Nous contacter',
@@ -37,12 +36,6 @@ return [
         'faq_heading' => 'Questions fréquentes',
 
         'other_regions_heading' => 'Autres communes de notre zone d\'activité',
-
-        // Section « zone d'activité » sur la page d'accueil
-        'section_eyebrow' => 'Zone d\'activité',
-        'section_heading' => 'Où nous travaillons',
-        'section_text'    => 'Notre atelier se trouve à Huldenberg. De là, nous travaillons dans les communes environnantes — relevé, fabrication et pose se font en interne.',
-        'section_link'    => 'Menuisier à :city',
     ],
 
     'items' => [

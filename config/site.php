@@ -62,7 +62,6 @@ return [
         'reviews'     => true,
         'gallery'     => false,
         'atelier'     => false, // merged into bedrijf section
-        'werkregio'   => true,  // compacte lijst met de lokale regiopagina's
         'historisch'  => true,
         'contact_cta' => true,  // NEW: simple CTA linking to /contact
         'contact'     => false, // Contact moved to dedicated /contact page

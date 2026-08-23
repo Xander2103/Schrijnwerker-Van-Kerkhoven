@@ -84,6 +84,7 @@ return [
     // Footer
     'footer_nav'     => 'Navigatie',
     'footer_access'  => 'Bereikbaarheid',
+    'footer_region_text' => 'Ons werkhuis staat in :huldenberg. Van daaruit werken we in de streek tussen :tervuren en :leuven.',
     'footer_privacy' => 'Privacybeleid',
 
     // Rate limit (429) page

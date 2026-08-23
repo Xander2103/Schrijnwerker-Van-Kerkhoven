@@ -1,0 +1,5 @@
+Deploy.
+
+cd /var/www/schrijnwerkerijvankerkhoven
+chmod +x deploy.sh
+./deploy.sh

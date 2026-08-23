@@ -66,6 +66,21 @@
                 <p style="font-size:.875rem;color:rgba(255,255,255,.7);margin:0 0 .5rem;">
                     {{ __('contact.appointment') }}
                 </p>
+                @php
+                    $regionAnchor = static function (string $key) use ($locale): string {
+                        $slug = config('regions.items.' . $key . '.slugs.' . $locale);
+
+                        return '<a href="/' . $locale . '/' . $slug . '">'
+                            . e(\App\Support\Regions::name($key, $locale)) . '</a>';
+                    };
+                @endphp
+                <p style="font-size:.875rem;color:rgba(255,255,255,.7);margin:0 0 .5rem;">
+                    {!! __('site.footer_region_text', [
+                        'huldenberg' => $regionAnchor('huldenberg'),
+                        'tervuren'   => $regionAnchor('tervuren'),
+                        'leuven'     => $regionAnchor('leuven'),
+                    ]) !!}
+                </p>
                 @if(!empty(config('contact.privacy_link')))
                     <p style="margin-top:1rem;font-size:.875rem;">
                         <a href="/{{ $locale }}{{ config('contact.privacy_link') }}">{{ __('site.footer_privacy') }}</a>

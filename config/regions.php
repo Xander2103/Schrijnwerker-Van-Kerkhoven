@@ -9,16 +9,16 @@
 | die GalleryScanner gebruikt voor de realisatiefoto's. Alle tekst staat in
 | lang/{locale}/regions.php; hier staat alleen wat taalonafhankelijk is.
 |
-| De routeconstraint, de sitemap en de "Werkregio"-sectie worden allemaal uit
-| deze lijst opgebouwd — een regio toevoegen gebeurt dus op één plek.
+| De routeconstraint, de sitemap en de regiolinks in de footer worden allemaal
+| uit deze lijst opgebouwd — een regio toevoegen gebeurt dus op één plek.
 |
 */
 
 return [
 
     /*
-     * Volgorde bepaalt de volgorde in de "Werkregio"-sectie en in de sitemap.
-     * `slugs` moet voor elke ondersteunde locale een sleutel hebben.
+     * Volgorde bepaalt de volgorde in de sitemap en in de "Andere gemeenten"-
+     * sectie. `slugs` moet voor elke ondersteunde locale een sleutel hebben.
      */
     'items' => [
 

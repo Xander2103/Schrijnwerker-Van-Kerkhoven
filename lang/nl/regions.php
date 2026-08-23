@@ -10,7 +10,6 @@ return [
         'eyebrow'           => 'Werkregio',
         'breadcrumb_aria'   => 'Kruimelpad',
         'breadcrumb_home'   => 'Home',
-        'breadcrumb_region' => 'Werkregio',
         'back'              => 'Terug naar home',
 
         'cta_contact'     => 'Neem contact op',
@@ -37,12 +36,6 @@ return [
         'faq_heading' => 'Veelgestelde vragen',
 
         'other_regions_heading' => 'Andere gemeenten in onze werkregio',
-
-        // Compacte "Werkregio"-sectie op de homepage
-        'section_eyebrow' => 'Werkregio',
-        'section_heading' => 'Waar we werken',
-        'section_text'    => 'Ons werkhuis staat in Huldenberg. Van daaruit werken we in de omliggende gemeenten — opmeting, productie en plaatsing gebeuren allemaal in eigen beheer.',
-        'section_link'    => 'Schrijnwerker in :city',
     ],
 
     'items' => [

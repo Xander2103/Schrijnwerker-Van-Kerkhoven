@@ -84,6 +84,7 @@ return [
     // Footer
     'footer_nav'     => 'Navigation',
     'footer_access'  => 'Availability',
+    'footer_region_text' => 'Our workshop is in :huldenberg. From there we work across the area between :tervuren and :leuven.',
     'footer_privacy' => 'Privacy policy',
 
     // Rate limit (429) page

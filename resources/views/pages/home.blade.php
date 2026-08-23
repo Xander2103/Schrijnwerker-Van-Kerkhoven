@@ -34,10 +34,6 @@
         @include('sections.gallery')
     @endif
 
-    @if(config('site.sections.werkregio', true))
-        @include('sections.werkregio')
-    @endif
-
     @if(config('site.sections.contact_cta', true))
         @include('sections.contact-cta')
     @endif

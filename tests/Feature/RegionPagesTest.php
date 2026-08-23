@@ -278,7 +278,7 @@ class RegionPagesTest extends TestCase
         $node  = $this->graphNode($graph, 'BreadcrumbList');
 
         $this->assertNotNull($node, "No BreadcrumbList on the {$key} page ({$locale}).");
-        $this->assertCount(3, $node['itemListElement']);
+        $this->assertCount(2, $node['itemListElement']);
 
         foreach ($node['itemListElement'] as $i => $item) {
             $this->assertSame('ListItem', $item['@type']);
@@ -287,7 +287,7 @@ class RegionPagesTest extends TestCase
         }
 
         // The trail ends on the page itself, which carries no link.
-        $this->assertArrayNotHasKey('item', $node['itemListElement'][2]);
+        $this->assertArrayNotHasKey('item', $node['itemListElement'][1]);
         $this->assertSame(self::DOMAIN . '/' . $locale, $node['itemListElement'][0]['item']);
     }
 
@@ -342,7 +342,6 @@ class RegionPagesTest extends TestCase
         $this->assertStringContainsString('class="breadcrumbs"', $html);
         $this->assertStringContainsString('aria-current="page"', $html);
         $this->assertStringContainsString('href="/' . $locale . '"', $html);
-        $this->assertStringContainsString('href="/' . $locale . '#werkregio"', $html);
     }
 
     // ── Internal links ────────────────────────────────────────────────────
@@ -376,25 +375,60 @@ class RegionPagesTest extends TestCase
         }
     }
 
+    /** The regions the sitewide footer links to in running text. */
+    private const FOOTER_REGION_KEYS = ['huldenberg', 'tervuren', 'leuven'];
+
     #[DataProvider('localeProvider')]
-    public function test_regions_are_reachable_from_the_homepage(string $locale): void
+    public function test_homepage_no_longer_renders_the_werkregio_section(string $locale): void
     {
-        $html = $this->get('/' . $locale)->getContent();
+        $this->assertStringNotContainsString(
+            'id="werkregio"',
+            $this->get('/' . $locale)->getContent()
+        );
+    }
 
-        $this->assertStringContainsString('id="werkregio"', $html);
+    #[DataProvider('localeProvider')]
+    public function test_footer_links_to_the_region_pages(string $locale): void
+    {
+        // The footer is rendered on every page; the homepage and the contact
+        // page stand in for all of them here.
+        foreach (['/' . $locale, '/' . $locale . '/contact'] as $path) {
+            $html = $this->get($path)->getContent();
 
-        foreach (self::EXPECTED_KEYS as $key) {
-            $this->assertStringContainsString('href="' . $this->url($key, $locale) . '"', $html);
+            foreach (self::FOOTER_REGION_KEYS as $key) {
+                $this->assertStringContainsString(
+                    'href="' . $this->url($key, $locale) . '"',
+                    $html,
+                    "{$path} does not link to the {$key} region page."
+                );
+            }
         }
     }
 
     #[DataProvider('localeProvider')]
-    public function test_regions_are_reachable_from_the_contact_page(string $locale): void
+    public function test_no_region_page_is_an_orphan(string $locale): void
     {
-        $html = $this->get('/' . $locale . '/contact')->getContent();
+        // Crawl outward from the homepage: the footer links to a few regions
+        // in running text, and every region page links to its five siblings.
+        // Every region must be reachable that way.
+        $reachable = [];
 
         foreach (self::EXPECTED_KEYS as $key) {
-            $this->assertStringContainsString('href="' . $this->url($key, $locale) . '"', $html);
+            if (str_contains($this->get('/' . $locale)->getContent(), 'href="' . $this->url($key, $locale) . '"')) {
+                $reachable[$key] = true;
+            }
+        }
+
+        foreach (array_keys($reachable) as $key) {
+            foreach (self::EXPECTED_KEYS as $other) {
+                if (str_contains($this->html($key, $locale), 'href="' . $this->url($other, $locale) . '"')) {
+                    $reachable[$other] = true;
+                }
+            }
+        }
+
+        foreach (self::EXPECTED_KEYS as $key) {
+            $this->assertArrayHasKey($key, $reachable, "The {$key} page ({$locale}) is an orphan.");
         }
     }
 

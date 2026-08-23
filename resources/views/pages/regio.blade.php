@@ -21,9 +21,8 @@
     }
 
     $crumbs = [
-        ['label' => __('regions.common.breadcrumb_home'),   'url' => '/' . $locale],
-        ['label' => __('regions.common.breadcrumb_region'), 'url' => '/' . $locale . '#werkregio'],
-        ['label' => __($t . 'h1'),                          'url' => null],
+        ['label' => __('regions.common.breadcrumb_home'), 'url' => '/' . $locale],
+        ['label' => __($t . 'h1'),                        'url' => null],
     ];
 
     $heroPreload = $region['hero'];

@@ -84,6 +84,7 @@ return [
     // Footer
     'footer_nav'     => 'Navigation',
     'footer_access'  => 'Accessibilité',
+    'footer_region_text' => 'Notre atelier se trouve à :huldenberg. De là, nous travaillons dans la région entre :tervuren et :leuven.',
     'footer_privacy' => 'Politique de confidentialité',
 
     // Rate limit (429) page

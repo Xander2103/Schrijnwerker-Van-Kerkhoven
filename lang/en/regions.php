@@ -10,7 +10,6 @@ return [
         'eyebrow'           => 'Service area',
         'breadcrumb_aria'   => 'Breadcrumb',
         'breadcrumb_home'   => 'Home',
-        'breadcrumb_region' => 'Service area',
         'back'              => 'Back to home',
 
         'cta_contact'     => 'Get in touch',
@@ -37,12 +36,6 @@ return [
         'faq_heading' => 'Frequently asked questions',
 
         'other_regions_heading' => 'Other municipalities in our service area',
-
-        // Compact "service area" section on the homepage
-        'section_eyebrow' => 'Service area',
-        'section_heading' => 'Where we work',
-        'section_text'    => 'Our workshop is in Huldenberg. From there we work in the surrounding municipalities — measuring, production and installation are all handled in-house.',
-        'section_link'    => 'Carpenter in :city',
     ],
 
     'items' => [

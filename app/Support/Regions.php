@@ -6,7 +6,7 @@ namespace App\Support;
  * Read-only helper around config/regions.php.
  *
  * Everything that needs to know about the local landing pages — the route
- * constraint, the controller, the sitemap and the "Werkregio" section — goes
+ * constraint, the controller, the sitemap and the footer links — goes
  * through here, so a region is only ever declared once (in the config file).
  */
 class Regions

@@ -20,10 +20,6 @@
 
 @include('sections.contact', ['contactHeadingLevel' => 'h1'])
 
-@if(config('site.sections.werkregio', true))
-    @include('sections.werkregio')
-@endif
-
 @if(config('site.sections.location', true))
     @include('sections.location')
 @endif
